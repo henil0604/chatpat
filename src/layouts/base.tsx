@@ -15,7 +15,7 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
 
   useEffect(() => {
     if (status === "unauthenticated" || status == "authenticated") {
-      setLoading(true);
+      setLoading(false);
     }
   }, [status]);
 

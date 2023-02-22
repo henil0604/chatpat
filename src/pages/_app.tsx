@@ -3,11 +3,13 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 
 import { api } from "@/utils/api";
-import { MantineProvider } from "@mantine/core";
+import { createEmotionCache, MantineProvider } from "@mantine/core";
 
 import "@/styles/globals.css";
 import { RecoilRoot } from "recoil";
 import RecoilNexus from "recoil-nexus";
+
+const appendCache = createEmotionCache({ key: "mantine", prepend: false });
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -18,6 +20,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <RecoilNexus />
       <SessionProvider session={session}>
         <MantineProvider
+          emotionCache={appendCache}
           withGlobalStyles
           withNormalizeCSS
           theme={{
