@@ -11,34 +11,32 @@ interface BaseLayoutProps {
 export default function BaseLayout({ children }: BaseLayoutProps) {
   const [isLoading, setLoading] = useRecoilState($loading);
 
-  const { data, status } = useSession();
+  const { data: _, status } = useSession();
 
   useEffect(() => {
     if (status === "unauthenticated" || status == "authenticated") {
       setLoading(false);
     }
+
+    if (status === "loading") {
+      setLoading(true);
+    }
   }, [status]);
 
   return (
     <div>
-      {isLoading && <LoadingOverlay visible={true} overlayBlur={2} />}
+      {!isLoading && children}
 
-      {isLoading && (
-        <div
-          style={{
-            position: "fixed",
-            top: 6,
-            left: 0,
-            width: "100vw",
-            height: "100vw",
-            backgroundColor: "rgba(255, 255, 255, 0.99)",
-            zIndex: 100,
-            cursor: "wait",
-          }}
-        ></div>
-      )}
-
-      {children}
+      <LoadingOverlay
+        transitionDuration={0}
+        overlayOpacity={1}
+        overlayColor="#ffffff"
+        style={{
+          maxWidth: "100vw",
+          maxHeight: "100vh",
+        }}
+        visible={isLoading}
+      />
     </div>
   );
 }
