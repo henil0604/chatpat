@@ -7,6 +7,10 @@ import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons";
 
 interface AuthLayoutProps {
   children: any;
+  PreAuth?: any;
+  PostAuth?: any;
+  styles?: object;
+  className?: string;
 }
 
 const ContinueWithGithub = () => {
@@ -35,7 +39,8 @@ const ContinueWithGoogle = () => {
   return (
     <>
       <Button
-        color="white"
+        variant="white"
+        style={{ color: "black" }}
         leftIcon={<IconBrandGoogle />}
         onClick={handleClick}
       >
@@ -45,7 +50,13 @@ const ContinueWithGoogle = () => {
   );
 };
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
+export default function AuthLayout({
+  children,
+  PreAuth,
+  PostAuth,
+  styles,
+  className,
+}: AuthLayoutProps) {
   const { data: session, status } = useSession();
 
   useEffect(() => {
@@ -70,11 +81,15 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
+              padding: "0 20px",
+              ...styles,
             }}
-            className="gap-4"
+            className={"gap-4 " + className ? className : ""}
           >
-            {/* <ContinueWithGoogle /> */}
+            {PreAuth && PreAuth}
+            <ContinueWithGoogle />
             <ContinueWithGithub />
+            {PostAuth && PostAuth}
           </div>
         )}
         {session && children}
