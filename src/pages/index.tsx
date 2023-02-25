@@ -3,6 +3,7 @@ import Head from "next/head";
 import BaseLayout from "@/layouts/base";
 import { Paper } from "@mantine/core";
 import { APP_EXPECTED_RELEASE_DATE, APP_NAME, APP_TAGLINE } from "@/const";
+import OurSupporters from "@/components/OurSupporters";
 
 const Home: NextPage = () => {
   return (
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
         <meta name="description" content={`${APP_NAME} - ${APP_TAGLINE}`} />
       </Head>
       <BaseLayout>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB] py-16">
           <Paper shadow="xl" p="md">
             Coming Soon
           </Paper>
@@ -28,6 +29,9 @@ const Home: NextPage = () => {
             Expected Date of Release:{" "}
             <span className="text-red-700">{APP_EXPECTED_RELEASE_DATE}</span>
           </Paper>
+
+          <div className="mt-10" />
+          <OurSupporters />
         </main>
       </BaseLayout>
     </>
