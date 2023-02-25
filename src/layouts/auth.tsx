@@ -40,16 +40,7 @@ const ContinueWithGoogle = () => {
     <>
       <Button
         variant="white"
-        styles={(theme: any) => ({
-          root: {
-            backgroundColor: "#fff",
-            color: "black",
-
-            "&:hover": {
-              backgroundColor: theme.fn.darken("#fff", 0.05),
-            },
-          },
-        })}
+        color="dark"
         leftIcon={<IconBrandGoogle />}
         onClick={handleClick}
       >

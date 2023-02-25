@@ -9,7 +9,7 @@ import "@/styles/globals.css";
 import { RecoilRoot } from "recoil";
 import RecoilNexus from "recoil-nexus";
 
-const appendCache = createEmotionCache({ key: "mantine", prepend: false });
+const appendCache = createEmotionCache({ key: "mantine-ui", prepend: false });
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -21,7 +21,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <SessionProvider session={session}>
         <MantineProvider
           emotionCache={appendCache}
-          withGlobalStyles
+          // withGlobalStyles
           withNormalizeCSS
           theme={{
             colorScheme: "light",
