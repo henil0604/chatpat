@@ -40,7 +40,16 @@ const ContinueWithGoogle = () => {
     <>
       <Button
         variant="white"
-        style={{ color: "black" }}
+        styles={(theme: any) => ({
+          root: {
+            backgroundColor: "#fff",
+            color: "black",
+
+            "&:hover": {
+              backgroundColor: theme.fn.darken("#fff", 0.05),
+            },
+          },
+        })}
         leftIcon={<IconBrandGoogle />}
         onClick={handleClick}
       >
@@ -84,7 +93,7 @@ export default function AuthLayout({
               padding: "0 20px",
               ...styles,
             }}
-            className={"gap-4 " + className ? className : ""}
+            className={"gap-4 " + (className ? className : "")}
           >
             {PreAuth && PreAuth}
             <ContinueWithGoogle />

@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import AuthLayout from "@/layouts/auth";
-import { Paper } from "@mantine/core";
 import useUser from "@/hooks/useUser";
 
 const PreAuth = () => {
