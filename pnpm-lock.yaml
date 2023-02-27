@@ -3,9 +3,10 @@ lockfileVersion: 5.4
 specifiers:
   '@emotion/react': ^11.10.6
   '@emotion/server': ^11.10.0
-  '@mantine/core': ^5.10.4
+  '@mantine/core': ^5.10.5
   '@mantine/form': ^5.10.4
-  '@mantine/hooks': ^5.10.4
+  '@mantine/hooks': ^5.10.5
+  '@mantine/modals': ^5.10.5
   '@mantine/next': ^5.10.4
   '@next-auth/prisma-adapter': ^1.0.5
   '@prisma/client': ^4.9.0
@@ -38,9 +39,10 @@ specifiers:
 dependencies:
   '@emotion/react': 11.10.6_pmekkgnqduwlme35zpnqhenc34
   '@emotion/server': 11.10.0
-  '@mantine/core': 5.10.4_xgfpbscinl7gpxk3zixgsno7yu
+  '@mantine/core': 5.10.5_zrh3qbywp4klzxzvocxisz6a5a
   '@mantine/form': 5.10.4_react@18.2.0
-  '@mantine/hooks': 5.10.4_react@18.2.0
+  '@mantine/hooks': 5.10.5_react@18.2.0
+  '@mantine/modals': 5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy
   '@mantine/next': 5.10.4_pnokhhiiffeanlj7xihut5qdrq
   '@next-auth/prisma-adapter': 1.0.5_qpmskah7lm3ildf4stmwh4q42u
   '@prisma/client': 4.10.1_prisma@4.10.1
@@ -262,17 +264,17 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mantine/core/5.10.4_xgfpbscinl7gpxk3zixgsno7yu:
-    resolution: {integrity: sha512-HdkAfZUFDEZ+aStoxT/2ohxV0gLl2I2q32+35XpH/z6qqyhjKqI7lA7E5SB6oddIFOjCesOhIE9ob2L56dgktg==}
+  /@mantine/core/5.10.5_zrh3qbywp4klzxzvocxisz6a5a:
+    resolution: {integrity: sha512-F4tqHSEVM9D6/iSqHfPda+Xl5XgSEPHAAkT01Zwzj4Jnbd10qGrlqr/SFUop2CIcuKYnmra9XltUahUPXBC2BQ==}
     peerDependencies:
-      '@mantine/hooks': 5.10.4
+      '@mantine/hooks': 5.10.5
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@floating-ui/react': 0.19.2_zula6vjvt3wdocc4mwcxqa6nzi
-      '@mantine/hooks': 5.10.4_react@18.2.0
-      '@mantine/styles': 5.10.4_keyspdss4kub3atek752gc6fle
-      '@mantine/utils': 5.10.4_react@18.2.0
+      '@mantine/hooks': 5.10.5_react@18.2.0
+      '@mantine/styles': 5.10.5_keyspdss4kub3atek752gc6fle
+      '@mantine/utils': 5.10.5_react@18.2.0
       '@radix-ui/react-scroll-area': 1.0.2_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -292,12 +294,27 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@mantine/hooks/5.10.4_react@18.2.0:
-    resolution: {integrity: sha512-HkdJWJgZvm9zkIv0gQpnobSdZ8SlGWWZwyORw3+b5SCbAn/VHq0hmGUL5uvCZ7FoFuaWC/ZTCDhospa5YVjkpg==}
+  /@mantine/hooks/5.10.5_react@18.2.0:
+    resolution: {integrity: sha512-hFQp71QZDfivPzfIUOQZfMKLiOL/Cn2EnzacRlbUr55myteTfzYN8YMt+nzniE/6c4IRopFHEAdbKEtfyQc6kg==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /@mantine/modals/5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy:
+    resolution: {integrity: sha512-q3BCqAxulcIZCL48vUrwSaXDhxDng/2daVky8K1mTPYNlcm9iN1mqVTUC4uFWhn4b2UmPu4UdbNePEgLuhK4Mw==}
+    peerDependencies:
+      '@mantine/core': 5.10.5
+      '@mantine/hooks': 5.10.5
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 5.10.5_zrh3qbywp4klzxzvocxisz6a5a
+      '@mantine/hooks': 5.10.5_react@18.2.0
+      '@mantine/utils': 5.10.5_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@mantine/next/5.10.4_pnokhhiiffeanlj7xihut5qdrq:
@@ -347,8 +364,22 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/utils/5.10.4_react@18.2.0:
-    resolution: {integrity: sha512-Xrx7Pk+GOwk/0P0qa/JEknZ5AzUBRnD+Ghz1Wu3z4w32NwsNSgq/8YvFVhvxAP7FMbi7Z5xicHzHmhXy1BvZrw==}
+  /@mantine/styles/5.10.5_keyspdss4kub3atek752gc6fle:
+    resolution: {integrity: sha512-0NXk8c/XGzuTUkZc6KceF2NaTCMEu5mHR4ru0x+ttb9DGnLpHuGWduTHjSfr4hl6eAJgedD0zauO+VAhDzO9zA==}
+    peerDependencies:
+      '@emotion/react': '>=11.9.0'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@emotion/react': 11.10.6_pmekkgnqduwlme35zpnqhenc34
+      clsx: 1.1.1
+      csstype: 3.0.9
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@mantine/utils/5.10.5_react@18.2.0:
+    resolution: {integrity: sha512-FGMq4dGs5HhDAtI0z46uzxzKKPmZ3h5uKUyKg1ZHoFR1mBtcUMbB6FylFmHqKFRWlJ5IXqX9dwmiVrLYUOfTmA==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:

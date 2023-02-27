@@ -5,9 +5,11 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "@/utils/api";
 import { createEmotionCache, MantineProvider } from "@mantine/core";
 
-import "@/styles/globals.css";
 import { RecoilRoot } from "recoil";
 import RecoilNexus from "recoil-nexus";
+import { ModalsProvider } from "@mantine/modals";
+
+import "@/styles/globals.css";
 
 const appendCache = createEmotionCache({ key: "mantine-ui", prepend: false });
 
@@ -28,7 +30,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
             loader: "dots",
           }}
         >
-          <Component {...pageProps} />
+          <ModalsProvider>
+            <Component {...pageProps} />
+          </ModalsProvider>
         </MantineProvider>
       </SessionProvider>
     </RecoilRoot>
