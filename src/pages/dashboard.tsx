@@ -2,8 +2,8 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { APP_NAME } from "@/const";
 import AuthLayout from "@/layouts/auth";
-import useUser from "@/hooks/useUser";
 import CreateRoomCard from "@/components/CreateRoomCard";
+import JoinRoomCard from "@/components/JoinRoomCard";
 
 const Dashboard: NextPage = () => {
   return (
@@ -16,6 +16,7 @@ const Dashboard: NextPage = () => {
         <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
           <div className="container flex flex-col items-center justify-center gap-10 px-4 py-16 sm:flex-row sm:gap-5">
             <CreateRoomCard />
+            <JoinRoomCard />
           </div>
         </main>
       </AuthLayout>
