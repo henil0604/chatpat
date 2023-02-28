@@ -1,9 +1,16 @@
 import { Button, Group, TextInput, useMantineTheme } from "@mantine/core";
 import { openModal } from "@mantine/modals";
-import { IconHash } from "@tabler/icons";
+import { IconDoorEnter, IconHash } from "@tabler/icons";
 import { useForm } from "@mantine/form";
+import { useRouter } from "next/router";
+import { api } from "@/utils/api";
+import { setLoading } from "@/store/loading";
+import { showNotification } from "@mantine/notifications";
 
 export const JoinRoomModal = () => {
+  const router = useRouter();
+  const { client } = api.useContext();
+
   const form = useForm({
     initialValues: {
       roomName: "",
@@ -16,7 +23,48 @@ export const JoinRoomModal = () => {
     },
   });
 
-  const handleFormSubmit = (values: any) => {};
+  const handleFormSubmit = async (values: any) => {
+    setLoading(true);
+
+    const data = await client.room.getInfo.query({
+      roomName: values.roomName,
+    });
+
+    if (data.error && data.code === "ROOM_NOT_FOUND") {
+      showNotification({
+        title: "Oops!",
+        message: (
+          <>
+            {data.message}
+            <br />
+            (CODE: {data.code})
+          </>
+        ),
+        color: "red",
+        autoClose: 4000,
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (!data.error && data.code === "ROOM_FOUND") {
+      showNotification({
+        title: "Hurrey!",
+        message: (
+          <>
+            {data.message}
+            <br />
+            You are being Redirected...
+          </>
+        ),
+        color: "green",
+        autoClose: 3000,
+      });
+      router.push(`/r/${values.roomName}`);
+    }
+
+    setLoading(false);
+  };
 
   return (
     <>
@@ -78,8 +126,8 @@ const JoinRoomCard = () => {
         Join Room
       </h1>
       <hr className="my-5" />
-      <p className="text-base">
-        Join a room where you can talk with your friends
+      <p className="flex items-center justify-center text-base">
+        <IconDoorEnter size={100} />
       </p>
     </div>
   );

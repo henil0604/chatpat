@@ -54,4 +54,33 @@ export const roomRouter = createTRPCRouter({
             }
         }),
 
+    getInfo: protectedProcedure
+        .input(z.object({ roomName: z.string() }))
+        .query(async ({ input }) => {
+
+            const room = await prisma.room.findFirst({
+                where: {
+                    roomName: input.roomName
+                },
+                include: {
+                    owner: true
+                }
+            });
+
+            if (null === room) {
+                return {
+                    error: true,
+                    message: `Room Not Found`,
+                    code: 'ROOM_NOT_FOUND'
+                }
+            }
+
+            return {
+                message: "Room Found",
+                data: {
+                    ...room
+                },
+                code: 'ROOM_FOUND'
+            }
+        }),
 });

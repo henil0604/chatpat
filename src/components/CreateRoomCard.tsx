@@ -7,7 +7,7 @@ import {
   PasswordInput,
 } from "@mantine/core";
 import { openModal } from "@mantine/modals";
-import { IconHash } from "@tabler/icons";
+import { IconHash, IconPlus } from "@tabler/icons";
 import { useForm } from "@mantine/form";
 import { api } from "@/utils/api";
 import { setLoading } from "@/store/loading";
@@ -70,8 +70,6 @@ export const CreateRoomModal = () => {
             {data.message}
             <br />
             You are being Redirected...
-            <br />
-            (CODE: {data.code})
           </>
         ),
         color: "green",
@@ -168,8 +166,8 @@ const CreateRoomCard = () => {
         Create Room
       </h1>
       <hr className="my-5" />
-      <p className="text-base">
-        Create a room where you can talk with your friends
+      <p className="flex items-center justify-center text-base">
+        <IconPlus size={100} />
       </p>
     </div>
   );
