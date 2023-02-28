@@ -1,4 +1,15 @@
+<<<<<<< HEAD
 import { Button, Group, TextInput, useMantineTheme } from "@mantine/core";
+=======
+import {
+  Button,
+  Group,
+  TextInput,
+  useMantineTheme,
+  SegmentedControl,
+  PasswordInput,
+} from "@mantine/core";
+>>>>>>> 3-dashboard
 import { openModal } from "@mantine/modals";
 import { IconHash } from "@tabler/icons";
 import { useForm } from "@mantine/form";
@@ -7,11 +18,23 @@ export const CreateRoomModal = () => {
   const form = useForm({
     initialValues: {
       roomName: "",
+<<<<<<< HEAD
+=======
+      visibility: "public",
+      password: "",
+>>>>>>> 3-dashboard
     },
 
     validate: (values) => {
       return {
         roomName: values.roomName.length < 3 ? "Too Short" : null,
+<<<<<<< HEAD
+=======
+        password:
+          values.visibility === "private" && values.password.length < 4
+            ? "Too Short"
+            : null,
+>>>>>>> 3-dashboard
       };
     },
   });
@@ -26,6 +49,34 @@ export const CreateRoomModal = () => {
             placeholder="Room Name"
           />
 
+<<<<<<< HEAD
+=======
+          <div className="my-5" />
+
+          <Group spacing="xl">
+            <p>Visibility:</p>
+            <SegmentedControl
+              data={[
+                { value: "public", label: "Public" },
+                { value: "private", label: "Private" },
+              ]}
+              {...form.getInputProps("visibility")}
+            />
+          </Group>
+
+          <div className="my-5" />
+
+          {form.values.visibility === "private" && (
+            <>
+              <PasswordInput
+                placeholder="Password"
+                label="Password"
+                {...form.getInputProps("password")}
+              />
+            </>
+          )}
+
+>>>>>>> 3-dashboard
           <Group position="right" mt="lg">
             <Button type="submit">Create</Button>
           </Group>
