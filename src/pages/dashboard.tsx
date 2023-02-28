@@ -4,6 +4,7 @@ import { APP_NAME } from "@/const";
 import AuthLayout from "@/layouts/auth";
 import CreateRoomCard from "@/components/CreateRoomCard";
 import JoinRoomCard from "@/components/JoinRoomCard";
+import ProfileCard from "@/components/ProfileCard";
 
 const Dashboard: NextPage = () => {
   return (
@@ -13,8 +14,9 @@ const Dashboard: NextPage = () => {
         <meta name="description" content={`${APP_NAME} - Dashboard`} />
       </Head>
       <AuthLayout>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
-          <div className="container flex flex-col items-center justify-center gap-10 px-4 py-16 sm:flex-row sm:gap-5">
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB] pt-5">
+          <ProfileCard />
+          <div className="container flex flex-col items-center justify-center gap-10 px-4 py-10 sm:flex-row sm:gap-5">
             <CreateRoomCard />
             <JoinRoomCard />
           </div>
