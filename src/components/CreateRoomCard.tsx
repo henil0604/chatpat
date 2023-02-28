@@ -1,5 +1,39 @@
-import { useMantineTheme } from "@mantine/core";
+import { Button, Group, TextInput, useMantineTheme } from "@mantine/core";
 import { openModal } from "@mantine/modals";
+import { IconHash } from "@tabler/icons";
+import { useForm } from "@mantine/form";
+
+export const CreateRoomModal = () => {
+  const form = useForm({
+    initialValues: {
+      roomName: "",
+    },
+
+    validate: (values) => {
+      return {
+        roomName: values.roomName.length < 3 ? "Too Short" : null,
+      };
+    },
+  });
+
+  return (
+    <>
+      <div className="py-5">
+        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <TextInput
+            {...form.getInputProps("roomName")}
+            icon={<IconHash />}
+            placeholder="Room Name"
+          />
+
+          <Group position="right" mt="lg">
+            <Button type="submit">Create</Button>
+          </Group>
+        </form>
+      </div>
+    </>
+  );
+};
 
 const CreateRoomCard = () => {
   const theme = useMantineTheme();
@@ -21,6 +55,11 @@ const CreateRoomCard = () => {
         },
       },
       centered: true,
+      children: (
+        <>
+          <CreateRoomModal />
+        </>
+      ),
     });
   };
 
