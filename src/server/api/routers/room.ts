@@ -54,10 +54,9 @@ export const roomRouter = createTRPCRouter({
             }
         }),
 
-    getInfo: protectedProcedure
+    getInfo: publicProcedure
         .input(z.object({ roomName: z.string() }))
         .query(async ({ input }) => {
-
             const room = await prisma.room.findFirst({
                 where: {
                     roomName: input.roomName

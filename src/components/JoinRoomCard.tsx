@@ -1,5 +1,5 @@
 import { Button, Group, TextInput, useMantineTheme } from "@mantine/core";
-import { openModal } from "@mantine/modals";
+import { closeAllModals, openModal } from "@mantine/modals";
 import { IconDoorEnter, IconHash } from "@tabler/icons";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/router";
@@ -60,6 +60,7 @@ export const JoinRoomModal = () => {
         color: "green",
         autoClose: 3000,
       });
+      closeAllModals();
       router.push(`/r/${values.roomName}`);
     }
 
@@ -89,7 +90,7 @@ const JoinRoomCard = () => {
   const theme = useMantineTheme();
 
   const handleJoinRoomClick = () => {
-    const modal = openModal({
+    openModal({
       title: "Join Room",
       styles: {
         inner: {

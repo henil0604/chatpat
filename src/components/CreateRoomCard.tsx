@@ -6,7 +6,7 @@ import {
   SegmentedControl,
   PasswordInput,
 } from "@mantine/core";
-import { openModal } from "@mantine/modals";
+import { openModal, closeAllModals } from "@mantine/modals";
 import { IconHash, IconPlus } from "@tabler/icons";
 import { useForm } from "@mantine/form";
 import { api } from "@/utils/api";
@@ -75,6 +75,7 @@ export const CreateRoomModal = () => {
         color: "green",
         autoClose: 3000,
       });
+      closeAllModals();
       router.push(`/r/${values.roomName}`);
     }
 
@@ -129,7 +130,7 @@ const CreateRoomCard = () => {
   const theme = useMantineTheme();
 
   const handleCreateRoomClick = () => {
-    const modal = openModal({
+    openModal({
       title: "Create Room",
       styles: {
         inner: {
