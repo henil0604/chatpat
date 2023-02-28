@@ -45,6 +45,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    Room          Room[]
 }
 
 model VerificationToken {
@@ -54,4 +55,20 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Room {
+    id         String     @id @default(cuid()) @map("_id")
+    roomName   String
+    visibility Visibility
+    password   String?
+    owner      User       @relation(fields: [ownerId], references: [id])
+    ownerId    String
+
+    createdAt DateTime @default(now())
+}
+
+enum Visibility {
+    PUBLIC
+    PRIVATE
 }

@@ -9,8 +9,15 @@ import {
 import { openModal } from "@mantine/modals";
 import { IconHash } from "@tabler/icons";
 import { useForm } from "@mantine/form";
+import { api } from "@/utils/api";
+import { setLoading } from "@/store/loading";
+import { showNotification } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
 export const CreateRoomModal = () => {
+  const { client } = api.useContext();
+  const router = useRouter();
+
   const form = useForm({
     initialValues: {
       roomName: "",
@@ -29,7 +36,52 @@ export const CreateRoomModal = () => {
     },
   });
 
-  const handleFormSubmit = (values: any) => {};
+  const handleFormSubmit = async (values: any) => {
+    setLoading(true);
+
+    const data = await client.room.create.query({
+      roomName: values?.roomName,
+      visibility: values?.visibility,
+      password: values?.password,
+    });
+
+    if (data.error && data.code === "ROOM_ALREADY_EXISTS") {
+      showNotification({
+        title: "Oops!",
+        message: (
+          <>
+            {data.message}
+            <br />
+            (CODE: {data.code})
+          </>
+        ),
+        color: "red",
+        autoClose: 4000,
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (!data.error && data.code === "ROOM_CREATED") {
+      showNotification({
+        title: "Hurrey!",
+        message: (
+          <>
+            {data.message}
+            <br />
+            You are being Redirected...
+            <br />
+            (CODE: {data.code})
+          </>
+        ),
+        color: "green",
+        autoClose: 3000,
+      });
+      router.push(`/r/${values.roomName}`);
+    }
+
+    setLoading(false);
+  };
 
   return (
     <>

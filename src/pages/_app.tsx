@@ -10,6 +10,7 @@ import RecoilNexus from "recoil-nexus";
 import { ModalsProvider } from "@mantine/modals";
 
 import "@/styles/globals.css";
+import { NotificationsProvider } from "@mantine/notifications";
 
 const appendCache = createEmotionCache({ key: "mantine-ui", prepend: false });
 
@@ -31,7 +32,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
           }}
         >
           <ModalsProvider>
-            <Component {...pageProps} />
+            <NotificationsProvider>
+              <Component {...pageProps} />
+            </NotificationsProvider>
           </ModalsProvider>
         </MantineProvider>
       </SessionProvider>
