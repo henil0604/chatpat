@@ -37,7 +37,7 @@ export const roomRouter = createTRPCRouter({
                 data: {
                     roomName: input.roomName,
                     visibility: input.visibility === 'private' ? Visibility.PRIVATE : Visibility.PUBLIC,
-                    password: input.visibility === 'private' ? hash(input.password) : undefined,
+                    password: input.visibility === 'private' ? hash(input.password as string) : undefined,
                     owner: {
                         connect: {
                             id: user.id
