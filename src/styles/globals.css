@@ -11,6 +11,6 @@
 body,
 #__next {
   min-width: 100vw;
-  min-height: 100vh;
+  height: 100svh;
   overflow-x: hidden;
 }
