@@ -9,6 +9,7 @@ import {
 import { prisma } from '@/server/db'
 
 import { Visibility } from '@prisma/client'
+import hash from "@/utils/hash";
 
 
 export const roomRouter = createTRPCRouter({
@@ -36,7 +37,7 @@ export const roomRouter = createTRPCRouter({
                 data: {
                     roomName: input.roomName,
                     visibility: input.visibility === 'private' ? Visibility.PRIVATE : Visibility.PUBLIC,
-                    password: input.visibility === 'private' ? input.password : undefined,
+                    password: input.visibility === 'private' ? hash(input.password) : undefined,
                     owner: {
                         connect: {
                             id: user.id

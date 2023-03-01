@@ -25,12 +25,14 @@ const Header = ({ room }: HeaderProps) => {
   const router = useRouter();
 
   const handleExit = () => {
+    handleSignout();
     setRoomProp("isInside", false);
     void router.replace("/dashboard");
   };
 
   const handleSignout = () => {
     setRoomProp("isAuthorized", false);
+    setRoomProp("room.password.unhashed", undefined);
   };
 
   return (
@@ -38,13 +40,11 @@ const Header = ({ room }: HeaderProps) => {
       <div className="flex w-full justify-between px-3 py-2 sm:px-8 sm:py-5">
         <div className="text-lg font-bold sm:text-2xl">@{room.roomName}</div>
         <div id="actions" className="flex gap-2">
-          {room.visibility === Visibility.PRIVATE && (
-            <>
-              <ActionIcon onClick={handleSignout} variant="light" color="red">
-                <IconPower size={16} />
-              </ActionIcon>
-            </>
-          )}
+          <>
+            <ActionIcon onClick={handleSignout} variant="light" color="red">
+              <IconPower size={16} />
+            </ActionIcon>
+          </>
           <ActionIcon onClick={handleExit} variant="filled" color="red">
             <IconLogout size={16} />
           </ActionIcon>
@@ -105,8 +105,8 @@ export default function Room({ roomName, room, code }: any) {
   useEffect(() => {
     setRoomProp("isInside", true);
     setRoomProp("roomName", roomName);
-    setRoomProp("room.visibility", room.visibility);
-    setRoomProp("isAuthorized", room.visibility === Visibility.PUBLIC);
+    room && setRoomProp("room.visibility", room.visibility);
+    room && setRoomProp("isAuthorized", room.visibility === Visibility.PUBLIC);
 
     return () => {
       setRoomProp("isInside", false);
