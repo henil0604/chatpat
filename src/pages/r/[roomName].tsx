@@ -122,7 +122,7 @@ export default function Room({ roomName, room, code }: any) {
         <meta name="description" content={`@${roomName} - ${APP_NAME}`} />
       </Head>
       <AuthLayout>
-        <main className="min-h-screen bg-gradient-to-b from-[#4DABF7] to-[#1864AB] p-0 transition-all sm:p-5">
+        <main className="h-dscreen bg-gradient-to-b from-[#4DABF7] to-[#1864AB] p-0 transition-all sm:p-5">
           {code === "ROOM_NOT_FOUND" && (
             <>
               <RoomNotFoundCard />

@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         <meta name="description" content={`${APP_NAME} - ${APP_TAGLINE}`} />
       </Head>
       <BaseLayout>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
+        <main className="h-dscreen flex flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
           <div className="container flex flex-col items-center justify-center gap-2 px-4 py-16 ">
             <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
               {APP_NAME}
