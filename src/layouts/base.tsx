@@ -11,6 +11,20 @@ interface BaseLayoutProps {
 export default function BaseLayout({ children }: BaseLayoutProps) {
   const [isLoading, setLoading] = useRecoilState($loading);
 
+  useEffect(() => {
+    const updateVh = () => {
+      document.body
+        ?.style.setProperty("min-height", `${window.innerHeight}px`);
+      document
+        .getElementById("__next")
+        ?.style.setProperty("min-height", `${window.innerHeight}px`);
+    };
+
+    window.addEventListener("resize", updateVh);
+
+    return () => window.removeEventListener("resize", updateVh);
+  }, []);
+
   const { data: _, status } = useSession();
 
   useEffect(() => {
