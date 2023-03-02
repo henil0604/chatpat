@@ -65,7 +65,32 @@ const Body = ({ room }: BodyProps) => {
 
   return (
     <>
-      <div style={{}} className="flex w-full justify-between px-8 py-5"></div>
+      <div className="flex w-full flex-col gap-3 px-8 py-5">
+        <p>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio
+          doloribus dicta nam voluptate repellendus fugiat, at nihil temporibus
+          id, nisi quam ipsa asperiores nostrum error nobis nesciunt provident
+          quis molestiae delectus fugit. Possimus iste fugit, libero corrupti
+          aperiam quos soluta iure culpa dolorem quas hic officiis facilis dolor
+          sint quisquam?
+        </p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+        <p>Hi</p>
+      </div>
     </>
   );
 };
@@ -79,18 +104,40 @@ interface FooterProps {
 const Footer = ({ room }: FooterProps) => {
   const [roomState, setRoomState] = useRecoilState($room);
   const [msgValue, setMsgValue] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const handleSend = () => {
+    if (sending) {
+      return false;
+    }
+
+    setSending(true);
+    setMsgValue("");
+    // setSending(false);
+  };
 
   return (
-    <div className="flex w-full justify-between gap-1 px-3 py-5 sm:gap-2 sm:px-8">
+    <div className="flex w-full items-center justify-between gap-1 px-3 py-5 sm:gap-2 sm:px-8">
       <TextInput
         value={msgValue}
         placeholder="Type Here..."
+        onKeyDown={(event: any) => {
+          if (event.keyCode === 13 || event.which === 13) {
+            handleSend();
+            return false;
+          }
+        }}
         onChange={(event: any) => setMsgValue(event.currentTarget.value)}
         className="w-full"
       />
-      <Button variant="light">
+      <ActionIcon
+        onClick={handleSend}
+        loading={sending}
+        color="blue"
+        variant="light"
+      >
         <IconSend size={16} />
-      </Button>
+      </ActionIcon>
     </div>
   );
 };
@@ -122,7 +169,7 @@ export default function Room({ roomName, room, code }: any) {
         <meta name="description" content={`@${roomName} - ${APP_NAME}`} />
       </Head>
       <AuthLayout>
-        <main className="h-dscreen bg-gradient-to-b from-[#4DABF7] to-[#1864AB] p-0 transition-all sm:p-5">
+        <main className="min-h-dscreen bg-gradient-to-b from-[#4DABF7] to-[#1864AB] p-0 transition-all">
           {code === "ROOM_NOT_FOUND" && (
             <>
               <RoomNotFoundCard />
@@ -130,7 +177,7 @@ export default function Room({ roomName, room, code }: any) {
           )}
           {code === "ROOM_FOUND" && !roomState.isAuthorized && (
             <>
-              <div className="flex items-center justify-center">
+              <div className="h-dscreen flex items-center justify-center">
                 <div className="bg-white text-black sm:rounded-xl">
                   <PrivateRoomPasswordPrompt room={room} />
                 </div>
@@ -138,10 +185,14 @@ export default function Room({ roomName, room, code }: any) {
             </>
           )}
           {code === "ROOM_FOUND" && roomState.isAuthorized && (
-            <div className="flex max-h-screen flex-col bg-white text-black sm:rounded-xl">
-              <Header room={room} />
-              <Body room={room} />
-              <Footer room={room} />
+            <div className="max-h-dscreen flex flex-col overflow-y-auto sm:p-5">
+              <div className="h-dscreen flex grow flex-col overflow-y-auto bg-white text-black sm:rounded-xl">
+                <Header room={room} />
+                <div className="grow overflow-y-auto">
+                  <Body room={room} />
+                </div>
+                <Footer room={room} />
+              </div>
             </div>
           )}
         </main>

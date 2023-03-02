@@ -10,10 +10,19 @@
 
 body,
 #__next {
-  min-width: 100vw;
+  width: 100vw;
   min-height: 100dvh;
+  overflow-x: hidden;
 }
 
 .h-dscreen {
+  height: 100dvh;
+}
+
+.min-h-dscreen {
   min-height: 100dvh;
+}
+
+.max-h-dscreen {
+  max-height: 100dvh;
 }
