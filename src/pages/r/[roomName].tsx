@@ -65,32 +65,7 @@ const Body = ({ room }: BodyProps) => {
 
   return (
     <>
-      <div className="flex w-full flex-col gap-3 px-8 py-5">
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio
-          doloribus dicta nam voluptate repellendus fugiat, at nihil temporibus
-          id, nisi quam ipsa asperiores nostrum error nobis nesciunt provident
-          quis molestiae delectus fugit. Possimus iste fugit, libero corrupti
-          aperiam quos soluta iure culpa dolorem quas hic officiis facilis dolor
-          sint quisquam?
-        </p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-        <p>Hi</p>
-      </div>
+      <div className="flex w-full flex-col gap-3 px-8 py-5"></div>
     </>
   );
 };
