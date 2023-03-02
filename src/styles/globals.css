@@ -26,3 +26,9 @@ body,
 .max-h-dscreen {
   max-height: 100dvh;
 }
+
+.flex-all-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

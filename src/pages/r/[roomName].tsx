@@ -8,11 +8,21 @@ import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import RoomNotFoundCard from "@/components/RoomNotFoundCard";
 import { IconLogout, IconPower, IconSend } from "@tabler/icons";
-import $room, { getRoomProp, setRoomProp } from "@/store/room";
+import $room, {
+  addChat,
+  getRoomProp,
+  setRoomProp,
+  updateChat,
+} from "@/store/room";
 import { useEffect, useState } from "react";
-import { Visibility } from "@prisma/client";
+import { Status, Visibility } from "@prisma/client";
 import { useRecoilState } from "recoil";
 import PrivateRoomPasswordPrompt from "@/components/PrivateRoomPasswordPrompt";
+import { randomString } from "@/utils/random";
+import ChatBox from "@/components/ChatBox";
+import useUser from "@/hooks/useUser";
+import scrollToEnd from "@/utils/scrollToEnd";
+import syncMessages from "@/utils/syncMessages";
 
 /* -------------------------------------------------------------------------- */
 /*                                   HEADER                                   */
@@ -62,10 +72,20 @@ interface BodyProps {
 }
 const Body = ({ room }: BodyProps) => {
   const [roomState, setRoomState] = useRecoilState($room);
+  const user = useUser();
+
+  useEffect(() => {
+    scrollToEnd("#room-body-main");
+  }, [roomState.chats]);
 
   return (
     <>
-      <div className="flex w-full flex-col gap-3 px-8 py-5"></div>
+      <div className="flex w-full flex-col gap-3 px-8 py-5">
+        {user &&
+          roomState.chats.map((chat: any) => {
+            return <ChatBox key={chat.id} user={user} chat={chat} />;
+          })}
+      </div>
     </>
   );
 };
@@ -80,15 +100,43 @@ const Footer = ({ room }: FooterProps) => {
   const [roomState, setRoomState] = useRecoilState($room);
   const [msgValue, setMsgValue] = useState("");
   const [sending, setSending] = useState(false);
+  const user = useUser();
 
-  const handleSend = () => {
-    if (sending) {
+  const client = api.useContext();
+
+  const handleSend = async () => {
+    if (sending || msgValue.trim().length === 0) {
       return false;
     }
 
     setSending(true);
+
+    const messageId = randomString(50);
+    const message = msgValue;
     setMsgValue("");
-    // setSending(false);
+
+    addChat({
+      id: messageId,
+      message: message,
+      status: Status.ON_CLIENT,
+      roomId: room.id,
+      ownerId: user?.id,
+      owner: user,
+      createdAt: new Date(),
+    });
+
+    const res = await client.room.sendMessage.fetch({
+      message: message,
+      roomName: room.roomName,
+      sentAt: Date.now(),
+      messageId: messageId,
+    });
+
+    updateChat(messageId, {
+      status: Status.RECEIVED,
+    });
+
+    setSending(false);
   };
 
   return (
@@ -102,6 +150,7 @@ const Footer = ({ room }: FooterProps) => {
             return false;
           }
         }}
+        autoComplete="false"
         onChange={(event: any) => setMsgValue(event.currentTarget.value)}
         className="w-full"
       />
@@ -123,16 +172,21 @@ const Footer = ({ room }: FooterProps) => {
 export default function Room({ roomName, room, code }: any) {
   const router = useRouter();
   const [roomState, setRoomState] = useRecoilState($room);
+  const client = api.useContext();
 
   useEffect(() => {
-    setRoomProp("isInside", true);
-    setRoomProp("roomName", roomName);
-    room && setRoomProp("room.visibility", room.visibility);
-    room && setRoomProp("isAuthorized", room.visibility === Visibility.PUBLIC);
+    setRoomState({
+      ...roomState,
+      isInside: true,
+      roomName: roomName,
+      chats: room.Chat,
+      "room.visibility": room ? room.visibility : undefined,
+      isAuthorized: room ? room.visibility === Visibility.PUBLIC : false,
+    });
 
-    return () => {
-      setRoomProp("isInside", false);
-    };
+    const syncInterval = setInterval(() => {
+      syncMessages(client);
+    }, 10000);
   }, []);
 
   return (
@@ -163,7 +217,10 @@ export default function Room({ roomName, room, code }: any) {
             <div className="max-h-dscreen flex flex-col overflow-y-auto sm:p-5">
               <div className="h-dscreen flex grow flex-col overflow-y-auto bg-white text-black sm:rounded-xl">
                 <Header room={room} />
-                <div className="grow overflow-y-auto">
+                <div
+                  className="grow overflow-y-auto scroll-smooth"
+                  id="room-body-main"
+                >
                   <Body room={room} />
                 </div>
                 <Footer room={room} />

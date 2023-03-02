@@ -8,7 +8,7 @@ import {
 
 import { prisma } from '@/server/db'
 
-import { Visibility } from '@prisma/client'
+import { Status, Visibility } from '@prisma/client'
 import hash from "@/utils/hash";
 
 
@@ -63,7 +63,16 @@ export const roomRouter = createTRPCRouter({
                     roomName: input.roomName
                 },
                 include: {
-                    owner: true
+                    owner: true,
+                    Chat: {
+                        take: 30,
+                        orderBy: {
+                            createdAt: 'asc'
+                        },
+                        include: {
+                            owner: true
+                        }
+                    }
                 }
             });
 
@@ -78,9 +87,96 @@ export const roomRouter = createTRPCRouter({
             return {
                 message: "Room Found",
                 data: {
-                    ...room
+                    ...room,
                 },
                 code: 'ROOM_FOUND'
+            }
+        }),
+
+    sendMessage: protectedProcedure
+        .input(z.object({ messageId: z.string(), roomName: z.string(), message: z.string(), sentAt: z.number() }))
+        .query(async ({ input, ctx }) => {
+
+            const user = ctx.session.user;
+
+            const room = await prisma.room.findFirst({
+                where: {
+                    roomName: input.roomName
+                }
+            });
+
+            if (!room) {
+                return {
+                    error: true,
+                    message: "Room Not found",
+                    code: 'ROOM_NOT_FOUND'
+                }
+            }
+
+            const message = await prisma.chat.create({
+                data: {
+                    message: input.message,
+                    id: input.messageId,
+                    status: Status.RECEIVED,
+                    room: {
+                        connect: {
+                            roomName: input.roomName
+                        }
+                    },
+                    owner: {
+                        connect: {
+                            id: user.id
+                        }
+                    },
+                }
+            })
+
+            return {
+                message: "Message Sent",
+                data: {
+                    ...message
+                },
+                code: 'MESSAGE_SENT'
+            }
+        }),
+
+    getMessages: protectedProcedure
+        .input(z.object({ roomName: z.string(), count: z.number().default(30) }))
+        .query(async ({ input, ctx }) => {
+
+            const user = ctx.session.user;
+
+            const room = await prisma.room.findFirst({
+                where: {
+                    roomName: input.roomName
+                }
+            });
+
+            if (!room) {
+                return {
+                    error: true,
+                    message: "Room Not found",
+                    code: 'ROOM_NOT_FOUND'
+                }
+            }
+
+            const messages = await prisma.chat.findMany({
+                where: {
+                    roomId: room.id
+                },
+                take: input.count,
+                orderBy: {
+                    createdAt: 'asc'
+                },
+                include: {
+                    owner: true
+                }
+            })
+
+            return {
+                message: "Message Sent",
+                data: messages,
+                code: 'MESSAGE_FETCHED'
             }
         }),
 });

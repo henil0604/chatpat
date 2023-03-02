@@ -46,6 +46,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     Room          Room[]
+    Chat          Chat[]
 }
 
 model VerificationToken {
@@ -59,16 +60,33 @@ model VerificationToken {
 
 model Room {
     id         String     @id @default(cuid()) @map("_id")
-    roomName   String
+    roomName   String     @unique
     visibility Visibility
     password   String?
     owner      User       @relation(fields: [ownerId], references: [id])
     ownerId    String
 
     createdAt DateTime @default(now())
+    Chat      Chat[]
 }
 
 enum Visibility {
     PUBLIC
     PRIVATE
+}
+
+model Chat {
+    id        String   @id @default(cuid()) @map("_id")
+    room      Room     @relation(fields: [roomId], references: [id])
+    roomId    String
+    owner     User     @relation(fields: [ownerId], references: [id])
+    ownerId   String
+    message   String
+    status    Status
+    createdAt DateTime @default(now())
+}
+
+enum Status {
+    ON_CLIENT
+    RECEIVED
 }
