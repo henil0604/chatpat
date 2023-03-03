@@ -13,15 +13,15 @@ interface ChatBoxProps {
 }
 
 const formatTime = (date: Date) => {
-  let h = date.getHours();
-  let m = date.getMinutes();
-  let s = date.getSeconds();
+  let h: string | number = date.getHours();
+  let m: string | number = date.getMinutes();
+  let s: string | number = date.getSeconds();
   const meridian = h >= 12 ? "PM" : "AM";
   h = h % 12;
   h = h ? h : 12;
   m = m < 10 ? "0" + m : m;
   s = s < 10 ? "0" + s : s;
-  const strTime = h + ":" + m + " " + meridian;
+  const strTime: string = h + ":" + m + " " + meridian;
   return strTime;
 };
 
