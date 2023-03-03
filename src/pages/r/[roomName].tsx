@@ -74,16 +74,30 @@ const Body = ({ room }: BodyProps) => {
   const [roomState, setRoomState] = useRecoilState($room);
   const user = useUser();
 
-  useEffect(() => {
-    scrollToEnd("#room-body-main");
-  }, [roomState.chats]);
+  useEffect(() => {}, [roomState.chats]);
 
   return (
     <>
       <div className="flex w-full flex-col gap-3 px-8 py-5">
         {user &&
-          roomState.chats.map((chat: any) => {
-            return <ChatBox key={chat.id} user={user} chat={chat} />;
+          roomState.chats.map((chat: any, index) => {
+            let scroll = false;
+
+            if (chat.ownerId === user.id && chat.status === Status.RECEIVED) {
+              scroll = false;
+            }
+
+            if (chat.status === Status.ON_CLIENT) {
+              scroll = true;
+            }
+
+            if (chat.ownerId !== user.id) {
+              scroll = true;
+            }
+
+            return (
+              <ChatBox scroll={scroll} key={chat.id} user={user} chat={chat} />
+            );
           })}
       </div>
     </>
@@ -133,7 +147,7 @@ const Footer = ({ room }: FooterProps) => {
     });
 
     updateChat(messageId, {
-      status: Status.RECEIVED,
+      ...res.updates,
     });
 
     setSending(false);
@@ -183,10 +197,6 @@ export default function Room({ roomName, room, code }: any) {
       "room.visibility": room ? room.visibility : undefined,
       isAuthorized: room ? room.visibility === Visibility.PUBLIC : false,
     });
-
-    const syncInterval = setInterval(() => {
-      syncMessages(client);
-    }, 10000);
   }, []);
 
   return (

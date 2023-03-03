@@ -128,6 +128,7 @@ export const roomRouter = createTRPCRouter({
                             id: user.id
                         }
                     },
+                    createdAt: new Date(input.sentAt)
                 }
             })
 
@@ -135,6 +136,9 @@ export const roomRouter = createTRPCRouter({
                 message: "Message Sent",
                 data: {
                     ...message
+                },
+                updates: {
+                    status: Status.RECEIVED,
                 },
                 code: 'MESSAGE_SENT'
             }
@@ -174,7 +178,7 @@ export const roomRouter = createTRPCRouter({
             })
 
             return {
-                message: "Message Sent",
+                message: "Message Fetched",
                 data: messages,
                 code: 'MESSAGE_FETCHED'
             }

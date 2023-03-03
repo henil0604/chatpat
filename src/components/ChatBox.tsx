@@ -9,9 +9,14 @@ import { useEffect } from "react";
 interface ChatBoxProps {
   chat: any;
   user: any;
+  scroll: boolean;
 }
 
-const MyChatBox = ({ chat, user }: ChatBoxProps) => {
+interface MyChatBoxProps {
+  chat: any;
+  user: any;
+}
+const MyChatBox = ({ chat, user }: MyChatBoxProps) => {
   const matches = useMediaQuery("(max-width: 600px)");
 
   return (
@@ -25,27 +30,32 @@ const MyChatBox = ({ chat, user }: ChatBoxProps) => {
           style={{ maxWidth: matches ? "500px" : "1000px" }}
         >
           <div>{chat.message}</div>
-          <div className="flex w-full justify-end gap-2">
-            <div className="status flex-all-center text-sm text-gray-100">
+          <div className="flex w-full justify-end gap-1">
+            <div className="timestamp text-xs text-gray-300">12:05 PM</div>
+            <div className="status flex-all-center text-xs text-gray-300">
               {(!chat.status || chat.status === Status.RECEIVED) && (
                 <>
-                  <IconCheck size={16} />
+                  <IconCheck size={14} />
                 </>
               )}
               {chat.status === Status.ON_CLIENT && (
                 <>
-                  <IconClock size={16} />
+                  <IconClock size={14} />
                 </>
               )}
             </div>
-            <div className="timestamp text-sm text-gray-100">12:03 PM</div>
           </div>
         </div>
       </div>
     </div>
   );
 };
-const OtherChatBox = ({ chat, user }: ChatBoxProps) => {
+
+interface OtherChatBoxProps {
+  chat: any;
+  user: any;
+}
+const OtherChatBox = ({ chat, user }: OtherChatBoxProps) => {
   const matches = useMediaQuery("(max-width: 600px)");
 
   return (
@@ -60,7 +70,7 @@ const OtherChatBox = ({ chat, user }: ChatBoxProps) => {
         >
           <div>{chat.message}</div>
           <div className="flex w-full justify-start gap-2">
-            <div className="timestamp text-sm text-gray-800">12:03 PM</div>
+            <div className="timestamp text-xs text-gray-800"></div>
           </div>
         </div>
       </div>
@@ -68,9 +78,11 @@ const OtherChatBox = ({ chat, user }: ChatBoxProps) => {
   );
 };
 
-const ChatBox = ({ chat, user }: ChatBoxProps) => {
+const ChatBox = ({ chat, user, scroll }: ChatBoxProps) => {
   useEffect(() => {
-    scrollToEnd("#room-body-main");
+    if (scroll) {
+      scrollToEnd("#room-body-main");
+    }
   }, []);
 
   return (
