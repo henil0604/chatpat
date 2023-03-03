@@ -134,7 +134,7 @@ export const roomRouter = createTRPCRouter({
             })
 
             try {
-                pusher.trigger(`r-${room.id}`, "MSG-SENT", {
+                const pusherResponse = await pusher.trigger(`r-${room.id}`, "MSG-SENT", {
                     message: {
                         ...message,
                         owner: {
@@ -145,6 +145,8 @@ export const roomRouter = createTRPCRouter({
                         room: undefined
                     }
                 });
+
+                console.log(pusherResponse)
             } catch (e) {
                 console.warn(e)
             }
