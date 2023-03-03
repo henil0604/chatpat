@@ -23,6 +23,8 @@ import ChatBox from "@/components/ChatBox";
 import useUser from "@/hooks/useUser";
 import scrollToEnd from "@/utils/scrollToEnd";
 import syncMessages from "@/utils/syncMessages";
+import pusher from "@/utils/pusher-client";
+import initPusherClient, { pusherClientI } from "@/utils/room-pusher-handler";
 
 /* -------------------------------------------------------------------------- */
 /*                                   HEADER                                   */
@@ -187,6 +189,8 @@ export default function Room({ roomName, room, code }: any) {
   const router = useRouter();
   const [roomState, setRoomState] = useRecoilState($room);
   const client = api.useContext();
+  const user = useUser();
+  const [pusherClient, setPusherClient] = useState<null | pusherClientI>(null);
 
   useEffect(() => {
     setRoomState({
@@ -198,6 +202,33 @@ export default function Room({ roomName, room, code }: any) {
       isAuthorized: room ? room.visibility === Visibility.PUBLIC : false,
     });
   }, []);
+
+  useEffect(() => {
+    if (user && !pusherClient) {
+      const pc = initPusherClient({
+        room,
+        user,
+        client,
+      });
+
+      setRoomState({
+        ...roomState,
+        pusherClient: pc,
+      });
+
+      pc.bindIfNotExist("MSG-SENT", (data: any) => {
+        const message = data.message;
+        if (message.ownerId === user.id) {
+          return;
+        }
+        addChat({
+          ...data.message,
+        });
+      });
+
+      setPusherClient(pc);
+    }
+  }, [user]);
 
   return (
     <>

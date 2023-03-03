@@ -10,6 +10,7 @@ import { prisma } from '@/server/db'
 
 import { Status, Visibility } from '@prisma/client'
 import hash from "@/utils/hash";
+import pusher from "@/utils/pusher-server";
 
 
 export const roomRouter = createTRPCRouter({
@@ -131,6 +132,20 @@ export const roomRouter = createTRPCRouter({
                     createdAt: new Date(input.sentAt)
                 }
             })
+
+            try {
+                pusher.trigger(`r-${room.id}`, "MSG-SENT", {
+                    message: {
+                        ...message,
+                        owner: {
+                            ...user
+                        },
+                        ownerId: user.id,
+                        roomId: room.id,
+                        room: undefined
+                    }
+                });
+            } catch (e) { }
 
             return {
                 message: "Message Sent",

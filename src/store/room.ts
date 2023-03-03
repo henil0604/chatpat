@@ -1,16 +1,26 @@
+import { pusherClientI } from '@/utils/room-pusher-handler';
+import { Channel } from 'pusher-js';
 import {
     atom
 } from 'recoil';
 import { setRecoil, getRecoil } from 'recoil-nexus'
 
-const $room = atom({
+const $room = atom<{
+    isInside: boolean
+    roomName?: string
+    'room.visibility'?: string
+    isAuthorized: boolean
+    chats: never[]
+    pusherClient?: pusherClientI
+}>({
     key: 'room',
     default: {
         isInside: false,
         roomName: undefined,
         'room.visibility': undefined,
         isAuthorized: false,
-        chats: []
+        chats: [],
+        pusherClient: undefined
     }
 });
 
