@@ -12,12 +12,26 @@ interface ChatBoxProps {
   scroll: boolean;
 }
 
+const formatTime = (date: Date) => {
+  let h = date.getHours();
+  let m = date.getMinutes();
+  let s = date.getSeconds();
+  const meridian = h >= 12 ? "PM" : "AM";
+  h = h % 12;
+  h = h ? h : 12;
+  m = m < 10 ? "0" + m : m;
+  s = s < 10 ? "0" + s : s;
+  const strTime = h + ":" + m + " " + meridian;
+  return strTime;
+};
+
 interface MyChatBoxProps {
   chat: any;
   user: any;
 }
 const MyChatBox = ({ chat, user }: MyChatBoxProps) => {
   const matches = useMediaQuery("(max-width: 600px)");
+  const createdAt = formatTime(new Date(chat.createdAt));
 
   return (
     <div className="flex w-full flex-row-reverse justify-between gap-2">
@@ -31,7 +45,7 @@ const MyChatBox = ({ chat, user }: MyChatBoxProps) => {
         >
           <div>{chat.message}</div>
           <div className="flex w-full justify-end gap-1">
-            <div className="timestamp text-xs text-gray-300">12:05 PM</div>
+            <div className="timestamp text-xs text-gray-300">{createdAt}</div>
             <div className="status flex-all-center text-xs text-gray-300">
               {(!chat.status || chat.status === Status.RECEIVED) && (
                 <>
