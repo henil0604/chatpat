@@ -71,6 +71,7 @@ interface OtherChatBoxProps {
 }
 const OtherChatBox = ({ chat, user }: OtherChatBoxProps) => {
   const matches = useMediaQuery("(max-width: 600px)");
+  const createdAt = formatTime(new Date(chat.createdAt));
 
   return (
     <div className="flex w-full justify-between gap-2">
@@ -84,7 +85,7 @@ const OtherChatBox = ({ chat, user }: OtherChatBoxProps) => {
         >
           <div>{chat.message}</div>
           <div className="flex w-full justify-start gap-2">
-            <div className="timestamp text-xs text-gray-800"></div>
+            <div className="timestamp text-xs text-gray-800">{createdAt}</div>
           </div>
         </div>
       </div>
