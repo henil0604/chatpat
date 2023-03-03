@@ -145,7 +145,9 @@ export const roomRouter = createTRPCRouter({
                         room: undefined
                     }
                 });
-            } catch (e) { }
+            } catch (e) {
+                console.warn(e)
+            }
 
             return {
                 message: "Message Sent",
