@@ -231,13 +231,13 @@ export default function Room({ roomName, room, code }: any) {
     }
   }, [user]);
 
+  const title = `@${roomName} - ${APP_NAME}`;
+
   return (
     <>
       <Head>
-        <title>
-          @{roomName} - {APP_NAME}
-        </title>
-        <meta name="description" content={`@${roomName} - ${APP_NAME}`} />
+        <title>@{title}</title>
+        <meta name="description" content={`@${title}`} />
       </Head>
       <AuthLayout>
         <main className="min-h-dscreen bg-gradient-to-b from-[#4DABF7] to-[#1864AB] p-0 transition-all">

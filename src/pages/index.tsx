@@ -6,26 +6,15 @@ import { APP_EXPECTED_RELEASE_DATE, APP_NAME, APP_TAGLINE } from "@/const";
 import { IconBrandTwitter, IconMail } from "@tabler/icons";
 import Link from "next/link";
 import DocumentHeadItemsBase from "@/components/DocumentHeadItemsBase";
-import { useEffect } from 'react';
 
 const Home: NextPage = () => {
-  useEffect(()=>{
-  window.addEventListener("load",function() {
-      setTimeout(function(){
-          // Hide the address bar:
-          window.scrollTo(0, 1);
-      }, 0);
-  });
-
-  }, [])
+  const title = `${APP_NAME} - ${APP_TAGLINE}`;
 
   return (
     <>
       <Head>
-        <title>
-          {APP_NAME} - {APP_TAGLINE}
-        </title>
-        <meta name="description" content={`${APP_NAME} - ${APP_TAGLINE}`} />
+        <title>{title}</title>
+        <meta name="description" content={`${title}`} />
         <DocumentHeadItemsBase />
       </Head>
       <BaseLayout>
