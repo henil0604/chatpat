@@ -4,6 +4,7 @@ import BaseLayout from "@/layouts/base";
 import { Button, Paper } from "@mantine/core";
 import { APP_EXPECTED_RELEASE_DATE, APP_NAME, APP_TAGLINE } from "@/const";
 import { IconBrandTwitter, IconMail } from "@tabler/icons";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
@@ -15,10 +16,7 @@ const Home: NextPage = () => {
         <meta name="description" content={`${APP_NAME} - ${APP_TAGLINE}`} />
       </Head>
       <BaseLayout>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
-          <Paper shadow="xl" p="sm" className="font-bold">
-            Coming Soon
-          </Paper>
+        <main className="flex min-h-screen flex-col items-center justify-center gap-3 bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
           <div className="container flex flex-col items-center justify-center gap-1 px-4 py-10 ">
             <h1 className="text-6xl font-bold tracking-tight text-white sm:text-[5rem] sm:font-extrabold">
               {APP_NAME}
@@ -27,10 +25,11 @@ const Home: NextPage = () => {
               {APP_TAGLINE}
             </p>
           </div>
-          <Paper shadow="xl" p="xs">
-            Expected Date of Release:{" "}
-            <span className="text-red-700">{APP_EXPECTED_RELEASE_DATE}</span>
-          </Paper>
+          <Link href="/dashboard">
+            <Button color="dark" size="lg" radius="lg">
+              Open App
+            </Button>
+          </Link>
           <Paper shadow="xl" mt="sm" p="xs" className="flex flex-col">
             <div className="mb-2 text-center text-sm font-medium sm:text-base">
               Find us at...
