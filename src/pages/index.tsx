@@ -4,6 +4,7 @@ import BaseLayout from "@/layouts/base";
 import { Button, Paper } from "@mantine/core";
 import { APP_EXPECTED_RELEASE_DATE, APP_NAME, APP_TAGLINE } from "@/const";
 import { IconBrandTwitter, IconMail } from "@tabler/icons";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const title = `${APP_NAME} - ${APP_TAGLINE}`;
@@ -31,6 +32,11 @@ const Home: NextPage = () => {
             Expected Date of Release:{" "}
             <span className="text-red-700">{APP_EXPECTED_RELEASE_DATE}</span>
           </Paper>
+          <Link href="/preregister" className="mt-4">
+            <Button color="dark" my="md" size="lg" radius="lg">
+              Preregister Now!
+            </Button>
+          </Link>
           <Paper shadow="xl" mt="sm" p="xs" className="flex flex-col">
             <div className="mb-2 text-center text-sm font-medium sm:text-base">
               Find us at...
