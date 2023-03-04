@@ -6,13 +6,13 @@ import { APP_EXPECTED_RELEASE_DATE, APP_NAME, APP_TAGLINE } from "@/const";
 import { IconBrandTwitter, IconMail } from "@tabler/icons";
 
 const Home: NextPage = () => {
+  const title = `${APP_NAME} - ${APP_TAGLINE}`;
+
   return (
     <>
       <Head>
-        <title>
-          {APP_NAME} - {APP_TAGLINE}
-        </title>
-        <meta name="description" content={`${APP_NAME} - ${APP_TAGLINE}`} />
+        <title>{title}</title>
+        <meta name="description" content={`${title}`} />
       </Head>
       <BaseLayout>
         <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">

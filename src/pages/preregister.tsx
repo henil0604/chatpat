@@ -21,12 +21,13 @@ const PreAuth = () => {
 
 const Home: NextPage = () => {
   const user = useUser();
+  const title = `Pre-registration of ${APP_NAME}`;
 
   return (
     <>
       <Head>
-        <title>Pre-registration of {APP_NAME}</title>
-        <meta name="description" content={`${APP_NAME} - ${APP_TAGLINE}`} />
+        <title>{title}</title>
+        <meta name="description" content={`${title}`} />
       </Head>
       <AuthLayout
         PreAuth={<PreAuth />}
