@@ -1,9 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import BaseLayout from "@/layouts/base";
-import { Button } from "@mantine/core";
-import { APP_NAME, APP_TAGLINE } from "@/const";
-import Link from "next/link";
+import { Button, Paper } from "@mantine/core";
+import { APP_EXPECTED_RELEASE_DATE, APP_NAME, APP_TAGLINE } from "@/const";
+import { IconBrandTwitter, IconMail } from "@tabler/icons";
 
 const Home: NextPage = () => {
   return (
@@ -15,18 +15,39 @@ const Home: NextPage = () => {
         <meta name="description" content={`${APP_NAME} - ${APP_TAGLINE}`} />
       </Head>
       <BaseLayout>
-        <main className="h-dscreen flex flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
-          <div className="container flex flex-col items-center justify-center gap-2 px-4 py-16 ">
-            <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
+          <Paper shadow="xl" p="sm" className="font-bold">
+            Coming Soon
+          </Paper>
+          <div className="container flex flex-col items-center justify-center gap-1 px-4 py-10 ">
+            <h1 className="text-6xl font-bold tracking-tight text-white sm:text-[5rem] sm:font-extrabold">
               {APP_NAME}
             </h1>
-            <p className="italic text-white">{APP_TAGLINE}</p>
+            <p className="text-sm italic text-white sm:text-lg">
+              {APP_TAGLINE}
+            </p>
           </div>
-          <Link href="/dashboard">
-            <Button color="dark" size="lg" radius="lg">
-              Open App
-            </Button>
-          </Link>
+          <Paper shadow="xl" p="xs">
+            Expected Date of Release:{" "}
+            <span className="text-red-700">{APP_EXPECTED_RELEASE_DATE}</span>
+          </Paper>
+          <Paper shadow="xl" mt="sm" p="xs" className="flex flex-col">
+            <div className="mb-2 text-center text-sm font-medium sm:text-base">
+              Find us at...
+            </div>
+            <div className="flex gap-1">
+              <a href="mailto:chatpat@henil.xyz">
+                <Button color="red">
+                  <IconMail />
+                </Button>
+              </a>
+              <a href="https://twitter.com/realchatpat">
+                <Button>
+                  <IconBrandTwitter />
+                </Button>
+              </a>
+            </div>
+          </Paper>
         </main>
       </BaseLayout>
     </>
