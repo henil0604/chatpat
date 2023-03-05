@@ -126,7 +126,7 @@ const Footer = ({ room }: FooterProps) => {
       return false;
     }
 
-    setSending(true);
+    // setSending(true);
 
     const messageId = randomString(50);
     const message = msgValue;
