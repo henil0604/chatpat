@@ -105,7 +105,6 @@ const JoinRoomCard = () => {
           fontWeight: "bolder",
         },
       },
-      centered: true,
       children: (
         <>
           <JoinRoomModal />

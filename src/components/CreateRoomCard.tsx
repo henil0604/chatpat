@@ -145,7 +145,6 @@ const CreateRoomCard = () => {
           fontWeight: "bolder",
         },
       },
-      centered: true,
       children: (
         <>
           <CreateRoomModal />
