@@ -236,8 +236,8 @@ export default function Room({ roomName, room, code }: any) {
   return (
     <>
       <Head>
-        <title>@{title}</title>
-        <meta name="description" content={`@${title}`} />
+        <title>{title}</title>
+        <meta name="description" content={`${title}`} />
       </Head>
       <AuthLayout>
         <main className="min-h-dscreen bg-gradient-to-b from-[#4DABF7] to-[#1864AB] p-0 transition-all">
