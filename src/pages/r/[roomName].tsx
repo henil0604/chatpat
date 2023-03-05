@@ -10,6 +10,7 @@ import RoomNotFoundCard from "@/components/RoomNotFoundCard";
 import { IconLogout, IconPower, IconSend } from "@tabler/icons";
 import $room, {
   addChat,
+  getChat,
   getRoomProp,
   setRoomProp,
   updateChat,
@@ -219,7 +220,7 @@ export default function Room({ roomName, room, code }: any) {
       pc.bindIfNotExist("MSG-SENT", (data: any) => {
         console.log(data);
         const message = data.message;
-        if (message.ownerId === user.id) {
+        if (getChat(message.id) !== null) {
           return;
         }
         addChat({
