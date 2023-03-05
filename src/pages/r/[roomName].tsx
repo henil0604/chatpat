@@ -260,7 +260,7 @@ export default function Room({ roomName, room, code }: any) {
               <div className="h-dscreen flex grow flex-col overflow-y-auto bg-white text-black sm:rounded-xl">
                 <Header room={room} />
                 <div
-                  className="grow overflow-y-auto scroll-smooth"
+                  className="u-fancy-scrollbar grow overflow-y-auto scroll-smooth"
                   id="room-body-main"
                 >
                   <Body room={room} />

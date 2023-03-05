@@ -46,3 +46,20 @@ body,
   height: 100dvh;
   height: 100svh;
 }
+
+.flex-all-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.u-fancy-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+  background-color: #eee;
+}
+
+.u-fancy-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
