@@ -5,8 +5,20 @@ import { Button, Paper } from "@mantine/core";
 import { APP_EXPECTED_RELEASE_DATE, APP_NAME, APP_TAGLINE } from "@/const";
 import { IconBrandTwitter, IconMail } from "@tabler/icons";
 import Link from "next/link";
+import DocumentHeadItemsBase from "@/components/DocumentHeadItemsBase";
+import { useEffect } from 'react';
 
 const Home: NextPage = () => {
+  useEffect(()=>{
+  window.addEventListener("load",function() {
+      setTimeout(function(){
+          // Hide the address bar:
+          window.scrollTo(0, 1);
+      }, 0);
+  });
+
+  }, [])
+
   return (
     <>
       <Head>
@@ -14,9 +26,10 @@ const Home: NextPage = () => {
           {APP_NAME} - {APP_TAGLINE}
         </title>
         <meta name="description" content={`${APP_NAME} - ${APP_TAGLINE}`} />
+        <DocumentHeadItemsBase />
       </Head>
       <BaseLayout>
-        <main className="flex min-h-screen flex-col items-center justify-center gap-3 bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
+        <main className="h-fill-screen flex flex-col items-center justify-center gap-3 bg-gradient-to-b from-[#4DABF7] to-[#1864AB]">
           <div className="container flex flex-col items-center justify-center gap-1 px-4 py-10 ">
             <h1 className="text-6xl font-bold tracking-tight text-white sm:text-[5rem] sm:font-extrabold">
               {APP_NAME}
