@@ -11,7 +11,12 @@
 body,
 #__next {
   width: 100vw;
+  width: 100dvw;
+  min-height: 100vh;
+  min-height: 100lvh;
   min-height: 100dvh;
+  min-height: 100svh;
+  max-height: fit-content;
   overflow-x: hidden;
 }
 
@@ -32,7 +37,7 @@ body,
   min-height: 100lvh;
   min-height: 100dvh;
   min-height: 100svh;
-  max-height: auto;
+  max-height: fit-content;
 }
 
 .h-fix-fill-screen {
