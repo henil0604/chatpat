@@ -220,7 +220,7 @@ export default function Room({ roomName, room, code }: any) {
       pc.bindIfNotExist("MSG-SENT", (data: any) => {
         console.log(data);
         const message = data.message;
-        if (getChat(message.id) !== null) {
+        if (getChat(message.id).chat !== null) {
           return;
         }
         addChat({
