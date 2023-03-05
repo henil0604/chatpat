@@ -34,3 +34,10 @@ body,
   min-height: 100svh;
   max-height: auto;
 }
+
+.h-fix-fill-screen {
+  height: 100vh;
+  height: 100lvh;
+  height: 100dvh;
+  height: 100svh;
+}

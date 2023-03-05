@@ -14,7 +14,7 @@ const Dashboard: NextPage = () => {
         <meta name="description" content={`${APP_NAME} - Dashboard`} />
       </Head>
       <AuthLayout>
-        <main className="h-dscreen flex flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB] pt-5">
+        <main className="h-fill-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#4DABF7] to-[#1864AB] pt-5">
           <ProfileCard />
           <div className="flex flex-col items-center justify-center gap-10 py-10 sm:flex-row sm:gap-5">
             <CreateRoomCard />
