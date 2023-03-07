@@ -5,14 +5,16 @@ import {
 } from 'recoil';
 import { setRecoil, getRecoil } from 'recoil-nexus'
 
-const $room = atom<{
+export type $Iroom = {
     isInside: boolean
     roomName?: string
     'room.visibility'?: string
     isAuthorized: boolean
     chats: never[]
     pusherClient?: pusherClientI
-}>({
+}
+
+const $room = atom<$Iroom>({
     key: 'room',
     default: {
         isInside: false,
