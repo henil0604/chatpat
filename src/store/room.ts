@@ -9,8 +9,8 @@ export type $Iroom = {
     isInside: boolean
     roomName?: string
     'room.visibility'?: string
-    isAuthorized: boolean
-    chats: never[]
+    isAuthorized?: boolean
+    chats?: never[]
     pusherClient?: pusherClientI
 }
 

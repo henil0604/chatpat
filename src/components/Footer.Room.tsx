@@ -30,6 +30,7 @@ const Footer = ({
       return false;
     }
 
+    // NOTE: Below line restricts the user from sending message before the message is actually sent and received back from server
     // setSending(true);
 
     const messageId = randomString(50);

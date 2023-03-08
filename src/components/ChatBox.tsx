@@ -102,7 +102,7 @@ const ChatBox = ({ chat, user, scroll }: ChatBoxProps) => {
 
   return (
     <>
-      <div key={chat.messageId} className="w-full py-2">
+      <div key={chat.messageId} className="w-full py-1">
         {user.id === chat.ownerId && (
           <>
             <MyChatBox chat={chat} user={user} />

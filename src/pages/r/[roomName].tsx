@@ -28,6 +28,10 @@ export default function Room({ roomName, room, code }: any) {
   const [pusherClient, setPusherClient] = useState<null | pusherClientI>(null);
 
   useEffect(() => {
+    setRoomState({
+      isInside: true,
+    });
+
     if (!room) return;
 
     setRoomState({
