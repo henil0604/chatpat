@@ -47,8 +47,14 @@ export function logger() {
             commit,
             on: _addListener,
             LogType,
-            info
+            setInfo: _setInfo,
+            getInfo: () => info,
+            clone: _clone
         };
+    }
+
+    function _setInfo(i: Partial<LogInfo>) {
+        Object.assign(info, i);
     }
 
     // Set the log type
@@ -67,7 +73,9 @@ export function logger() {
     function _prefix(p: string): ReturnType<typeof constructReturn>;
     // Add prefix to the log
     function _prefix(p: PrefixLiteral | string) {
-        info.prefixes.push(p);
+        if (info.prefixes.includes(p) === false) {
+            info.prefixes.push(p);
+        }
         return constructReturn();
     }
 
@@ -127,6 +135,13 @@ export function logger() {
         });
 
         return constructReturn();
+    }
+
+    // clone the logger
+    function _clone() {
+        const log = logger()
+        log.setInfo(structuredClone(info));
+        return log;
     }
 
     // Return initial construct object
