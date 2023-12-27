@@ -5,7 +5,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 export const handle = sequence(luciaHandler, async ({ event, resolve }) => {
 
     logger()
-        .type(LogType.SUCCESS)
+        .type(LogType.OK)
         .prefix("hook")
         .prefix(event.request.method.toLowerCase())
         .message(event.url.pathname)
