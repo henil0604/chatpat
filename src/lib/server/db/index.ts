@@ -9,12 +9,22 @@ export const pool = new pg.Pool({
 	connectionString: DATABASE_URL
 });
 
-await pool.connect().then(() => {
+pool.on('connect', () => {
 	logger()
 		.type(LogType.SUCCESS)
 		.prefix("db")
 		.message("connected")
 		.commit()
-});
+})
+
+pool.on('error', () => {
+	logger()
+		.type(LogType.ERROR)
+		.prefix("db")
+		.message("error")
+		.commit();
+})
+
+await pool.connect();
 
 export const db = drizzle(pool);
