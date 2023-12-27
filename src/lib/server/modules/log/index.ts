@@ -11,7 +11,7 @@ export enum LogType {
 }
 
 // Define prefixes as a tuple
-export const Prefixes = [] as const;
+export const Prefixes = ["db"] as const;
 type PrefixLiteral = typeof Prefixes[number];
 
 // Map for event listeners
@@ -63,6 +63,8 @@ export function logger() {
         return constructReturn();
     }
 
+    function _prefix(p: PrefixLiteral): ReturnType<typeof constructReturn>;
+    function _prefix(p: string): ReturnType<typeof constructReturn>;
     // Add prefix to the log
     function _prefix(p: PrefixLiteral | string) {
         info.prefixes.push(p);
