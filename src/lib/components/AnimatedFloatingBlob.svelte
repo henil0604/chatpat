@@ -16,21 +16,33 @@
 
 <style scoped>
 	.blob {
-		animation: animate 7s ease infinite alternate forwards;
+		animation: animate 15s ease infinite alternate forwards;
 	}
 
 	@keyframes animate {
 		0% {
 			border-radius: 46% 51% 58% 21% / 41% 31% 76% 63%;
 		}
+		15% {
+			border-radius: 46% 55% 77% 44% / 50% 31% 76% 63%;
+		}
 		25% {
 			border-radius: 46% 55% 49% 74% / 50% 31% 76% 63%;
+		}
+		35% {
+			border-radius: 100% 24% 68% 89% / 83% 90% 76% 22%;
 		}
 		50% {
 			border-radius: 19% 81% 49% 74% / 39% 31% 76% 63%;
 		}
+		60% {
+			border-radius: 46% 55% 25% 89% / 50% 31% 76% 63%;
+		}
 		75% {
 			border-radius: 46% 55% 77% 44% / 50% 31% 76% 63%;
+		}
+		85% {
+			border-radius: 46% 55% 25% 89% / 50% 90% 76% 63%;
 		}
 		100% {
 			border-radius: 100% 75% 92% 74% / 60% 80% 30% 70%;
