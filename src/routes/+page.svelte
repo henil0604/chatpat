@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
+	import AnimatedChatpatTitle from '$lib/components/AnimatedChatpatTitle.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { onMount } from 'svelte';
 
@@ -9,4 +9,4 @@
 	});
 </script>
 
-<Button variant="default" class="shadow">Hello World</Button>
+<AnimatedChatpatTitle size={100} class="gap-10" />
