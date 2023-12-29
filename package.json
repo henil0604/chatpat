@@ -53,6 +53,7 @@
 		"@lucia-auth/adapter-postgresql": "^2.0.2",
 		"@lucia-auth/oauth": "^3.5.0",
 		"@prisma/client": "5.7.0",
+		"@trpc/client": "^10.45.0",
 		"@trpc/server": "^10.45.0",
 		"bits-ui": "^0.11.8",
 		"chalk": "^5.3.0",
