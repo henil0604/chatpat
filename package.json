@@ -15,7 +15,8 @@
 		"test:unit": "vitest",
 		"db:generate": "drizzle-kit generate:pg",
 		"db:push": "drizzle-kit push:pg",
-		"clean": "rm -rfv node_modules .svelte-kit test-results drizzle"
+		"clean": "rm -rfv node_modules .svelte-kit test-results drizzle",
+		"prepare": "npm run db:generate && npm run db:push"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
