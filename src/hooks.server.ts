@@ -4,13 +4,12 @@ import { LogType, logger } from '$lib/server/modules/log';
 import { sequence } from '@sveltejs/kit/hooks';
 
 export const handle = sequence(luciaHandler, trpcHandle, async ({ event, resolve }) => {
+	logger()
+		.type(LogType.OK)
+		.prefix('hook')
+		.prefix(event.request.method.toLowerCase())
+		.message(event.url.pathname)
+		.commit();
 
-    logger()
-        .type(LogType.OK)
-        .prefix("hook")
-        .prefix(event.request.method.toLowerCase())
-        .message(event.url.pathname)
-        .commit()
-
-    return resolve(event);
+	return resolve(event);
 });
