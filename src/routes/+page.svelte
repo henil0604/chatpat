@@ -1,12 +1,53 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import AnimatedChatpatTitle from '$lib/components/AnimatedChatpatTitle.svelte';
-	import { trpc } from '$lib/trpc/client';
+	import { Button } from '$lib/components/ui/button';
+	import { login } from '$lib/modules/auth';
 	import { onMount } from 'svelte';
+	import { tippy } from 'svelte-tippy';
 
-	onMount(async () => {
-		// basic use of trpc
-		console.log(await trpc().greeting.query());
-	});
+	onMount(async () => {});
 </script>
 
-<AnimatedChatpatTitle size={100} class="gap-10" />
+<div class="flex w-full flex-col items-center justify-center gap-3 py-32">
+	<AnimatedChatpatTitle size={100} class="gap-10" />
+
+	<div class="text-xl font-semibold">Flavor of Privacy</div>
+
+	<div class="my-2"></div>
+
+	{#if !$page.data.session || !$page.data.session.user}
+		<Button size="lg" class="text-lg" on:click={() => login('github', '/?prd')}>Pre-register</Button
+		>
+		<div
+			use:tippy={{
+				allowHTML: true,
+				content:
+					'<p class="text-center">Get exclusive access to upcoming pre-releases including alpha version</p>',
+				placement: 'bottom',
+				animation: 'scale',
+				delay: 300,
+				interactiveDebounce: 200,
+				hideOnClick: false,
+				interactiveBorder: 30
+			}}
+			class="cursor-pointer text-sm underline underline-offset-2"
+		>
+			Why Pre-register?
+		</div>
+	{/if}
+</div>
+
+<div
+	class="wave-wrapper absolute bottom-0 left-0 z-[-3] aspect-[960/540] max-lg:aspect-[960/1200] max-md:aspect-[960/1500]"
+></div>
+
+<style scoped>
+	.wave-wrapper {
+		width: 100%;
+		background: url('/svgs/wave1.svg');
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+	}
+</style>
