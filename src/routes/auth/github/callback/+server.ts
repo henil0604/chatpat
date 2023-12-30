@@ -35,7 +35,6 @@ export const GET = async ({ url, cookies, locals }) => {
 		locals.auth.setSession(session);
 
 		const redirectURL = cookies.get('oauth_redirectURL') || '/';
-		console.log('redirectURL?', redirectURL);
 		return new Response(null, {
 			status: 302,
 			headers: {
