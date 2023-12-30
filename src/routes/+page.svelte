@@ -3,16 +3,19 @@
 	import AnimatedChatpatTitle from '$lib/components/AnimatedChatpatTitle.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { login } from '$lib/modules/auth';
+	import mediaQueryObserver from '$lib/utils/mediaQuery';
 	import { onMount } from 'svelte';
 	import { tippy } from 'svelte-tippy';
+
+	let isMobile = mediaQueryObserver(1000);
 
 	onMount(async () => {});
 </script>
 
 <div class="flex w-full flex-col items-center justify-center gap-3 py-32">
-	<AnimatedChatpatTitle size={100} class="gap-10" />
+	<AnimatedChatpatTitle size={$isMobile ? 50 : 100} class={$isMobile ? `gap-5` : `gap-10`} />
 
-	<div class="text-xl font-semibold">Flavor of Privacy</div>
+	<div class="text-xl font-semibold max-md:text-base">Flavor of Privacy</div>
 
 	<div class="my-2"></div>
 
