@@ -6,11 +6,35 @@
 	import mediaQueryObserver from '$lib/utils/mediaQuery';
 	import { onMount } from 'svelte';
 	import { tippy } from 'svelte-tippy';
+	import Confetti from 'svelte-confetti';
 
 	let isMobile = mediaQueryObserver(1000);
-
-	onMount(async () => {});
 </script>
+
+{#if $page.url.searchParams.has('prd') && $page.data.session}
+	<div
+		style="
+ position: fixed;
+ top: -50px;
+ left: 0;
+ height: 100vh;
+ width: 100vw;
+ display: flex;
+ justify-content: center;
+ overflow: hidden;
+ pointer-events: none;"
+	>
+		<Confetti
+			x={[-5, 5]}
+			y={[0, 0.1]}
+			delay={[500, 4000]}
+			duration={5000}
+			amount={300}
+			fallDistance="100vh"
+			iterationCount={3}
+		/>
+	</div>
+{/if}
 
 <div class="flex w-full flex-col items-center justify-center gap-3 py-32">
 	<AnimatedChatpatTitle size={$isMobile ? 50 : 100} class={$isMobile ? `gap-5` : `gap-10`} />
