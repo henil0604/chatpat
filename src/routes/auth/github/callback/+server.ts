@@ -3,6 +3,7 @@
 import { auth, githubAuth } from '$lib/server/lucia';
 import { LogType, logger } from '$lib/server/modules/log/index.js';
 import { OAuthRequestError } from '@lucia-auth/oauth';
+import { redirect } from '@sveltejs/kit';
 
 const log = logger()
 	.type(LogType.OK)
@@ -54,12 +55,7 @@ export const GET = async ({ url, cookies, locals }) => {
 			.message(decodeURIComponent(redirectURL))
 			.commit();
 
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: `${url.origin}${decodeURIComponent(redirectURL)}`
-			}
-		});
+		throw redirect(302, decodeURIComponent(redirectURL));
 	} catch (e) {
 		console.log('error: ', e);
 		if (e instanceof OAuthRequestError) {
