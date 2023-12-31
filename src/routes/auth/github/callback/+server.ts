@@ -51,7 +51,7 @@ export const GET = async ({ url, cookies, locals }) => {
 
 		log.clone()
 			.prefix("redirectURL")
-			.message(redirectURL)
+			.message(decodeURIComponent(redirectURL))
 			.commit();
 
 		return new Response(null, {
