@@ -1,7 +1,15 @@
 // LINK: https://lucia-auth.com/guidebook/github-oauth/sveltekit/#validate-callback
 
 import { auth, githubAuth } from '$lib/server/lucia';
+import { LogType, logger } from '$lib/server/modules/log/index.js';
 import { OAuthRequestError } from '@lucia-auth/oauth';
+import { error, isRedirect, redirect } from '@sveltejs/kit';
+
+const log = logger()
+	.type(LogType.OK)
+	.prefix("auth")
+	.prefix("github")
+	.prefix("callback")
 
 export const GET = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get('github_oauth_state');
@@ -33,15 +41,27 @@ export const GET = async ({ url, cookies, locals }) => {
 			attributes: {}
 		});
 		locals.auth.setSession(session);
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: '/'
-			}
-		});
-	} catch (e) {
-		console.log('error: ', e);
-		if (e instanceof OAuthRequestError) {
+
+		const redirectURL = cookies.get('oauth_redirectURL') || '/';
+
+		log.clone()
+			.prefix("user")
+			.prefix("id")
+			.message(user.userId)
+			.commit();
+
+		log.clone()
+			.prefix("redirectURL")
+			.message(decodeURIComponent(redirectURL))
+			.commit();
+		throw redirect(302, decodeURIComponent(redirectURL));
+	} catch (error) {
+		if (isRedirect(error)) {
+			throw error;
+		}
+
+		console.log('error: ', error);
+		if (error instanceof OAuthRequestError) {
 			// invalid code
 			return new Response(null, {
 				status: 400
