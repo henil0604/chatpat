@@ -1,7 +1,14 @@
 // LINK: https://lucia-auth.com/guidebook/github-oauth/sveltekit/#validate-callback
 
 import { auth, githubAuth } from '$lib/server/lucia';
+import { LogType, logger } from '$lib/server/modules/log/index.js';
 import { OAuthRequestError } from '@lucia-auth/oauth';
+
+const log = logger()
+	.type(LogType.OK)
+	.prefix("auth")
+	.prefix("github")
+	.prefix("callback")
 
 export const GET = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get('github_oauth_state');
@@ -35,6 +42,18 @@ export const GET = async ({ url, cookies, locals }) => {
 		locals.auth.setSession(session);
 
 		const redirectURL = cookies.get('oauth_redirectURL') || '/';
+
+		log.clone()
+			.prefix("user")
+			.prefix("id")
+			.message(user.userId)
+			.commit();
+
+		log.clone()
+			.prefix("redirectURL")
+			.message(redirectURL)
+			.commit();
+
 		return new Response(null, {
 			status: 302,
 			headers: {
