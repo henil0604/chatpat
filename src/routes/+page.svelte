@@ -13,16 +13,7 @@
 
 {#if $page.url.searchParams.has('prd') && $page.data.session}
 	<div
-		style="
- position: fixed;
- top: -50px;
- left: 0;
- height: 100vh;
- width: 100vw;
- display: flex;
- justify-content: center;
- overflow: hidden;
- pointer-events: none;"
+		class="pointer-events-none fixed left-0 top-[-50px] flex h-screen w-screen justify-center overflow-hidden"
 	>
 		<Confetti
 			x={[-5, 5]}
