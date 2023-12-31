@@ -35,7 +35,8 @@
 	<div class="my-2"></div>
 
 	{#if !$page.data.session || !$page.data.session.user}
-		<Button size="lg" class="text-lg" on:click={() => login('github', '/?prd')}>Pre-register</Button
+		<Button size="lg" class="text-lg" on:click={() => login('github', '/?prd=1')}
+			>Pre-register</Button
 		>
 		<div
 			use:tippy={{
