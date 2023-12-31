@@ -41,7 +41,7 @@
 	{/if}
 
 	{#if !$page.data.session || !$page.data.session.user}
-		<Button size="lg" class="text-lg" on:click={() => login('google', '/?prd=1')}
+		<Button size="lg" class="text-lg" on:click={() => login('github', '/?prd=1')}
 			>Pre-register</Button
 		>
 		<div
