@@ -9,9 +9,11 @@
 	import Confetti from 'svelte-confetti';
 
 	let isMobile = mediaQueryObserver(1000);
+
+	$: userIsHereAfterPreRegistration = $page.url.searchParams.has('prd') && $page.data.session;
 </script>
 
-{#if $page.url.searchParams.has('prd') && $page.data.session}
+{#if userIsHereAfterPreRegistration}
 	<div
 		class="pointer-events-none fixed left-0 top-[-50px] flex h-screen w-screen justify-center overflow-hidden"
 	>
@@ -20,7 +22,7 @@
 			y={[0, 0.1]}
 			delay={[500, 4000]}
 			duration={5000}
-			amount={300}
+			amount={200}
 			fallDistance="100vh"
 			iterationCount={3}
 		/>
@@ -33,6 +35,10 @@
 	<div class="text-xl font-semibold max-md:text-base">Flavor of Privacy</div>
 
 	<div class="my-2"></div>
+
+	{#if userIsHereAfterPreRegistration}
+		<div>Thank you for registration! We will meet you soon!</div>
+	{/if}
 
 	{#if !$page.data.session || !$page.data.session.user}
 		<Button size="lg" class="text-lg" on:click={() => login('github', '/?prd=1')}
