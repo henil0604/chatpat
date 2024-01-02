@@ -40,7 +40,9 @@
 	<div class="my-2"></div>
 
 	{#if userIsHereAfterPreRegistration}
-		<div>Thank you for registration! We will try to contact you soon!</div>
+		<div class="max-w-[500px] px-4 text-center">
+			Thank you for registration! We will try to contact you soon!
+		</div>
 	{/if}
 
 	{#if userIsHereAfterPreRegistration === false && $page.data.session}
