@@ -20,4 +20,5 @@ export const authHandler = SvelteKitAuth({
     ],
     debug: true,
     adapter: DrizzleAdapter(db),
+    trustHost: true
 });
