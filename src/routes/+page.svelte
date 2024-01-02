@@ -24,8 +24,8 @@
 			x={[-5, 5]}
 			y={[0, 0.1]}
 			delay={[500, 4000]}
-			duration={5000}
-			amount={200}
+			duration={2000}
+			amount={300}
 			fallDistance="100vh"
 			iterationCount={3}
 		/>
@@ -40,7 +40,14 @@
 	<div class="my-2"></div>
 
 	{#if userIsHereAfterPreRegistration}
-		<div>Thank you for registration! We will try contact you soon!</div>
+		<div>Thank you for registration! We will try to contact you soon!</div>
+	{/if}
+
+	{#if userIsHereAfterPreRegistration === false && $page.data.session}
+		<div class="max-w-[500px] px-4 text-center">
+			Hey <b>{$page.data.session.user.name}</b>! You have already pre-registered! We will try to
+			contact you soon!
+		</div>
 	{/if}
 
 	{#if !$page.data.session || !$page.data.session.user}
