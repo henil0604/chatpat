@@ -4,6 +4,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
 import { DATABASE_URL } from '$env/static/private';
 import { LogType, logger } from '$lib/server/modules/log';
+import * as schema from './schema';
 
 const log = logger().prefix('db');
 
@@ -50,4 +51,7 @@ function connect() {
 // wait for the connection
 await connect();
 
-export const db = drizzle(pool);
+export const db = drizzle(pool, {
+	schema: schema,
+	logger: true
+});
