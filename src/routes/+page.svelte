@@ -7,10 +7,13 @@
 	import { onMount } from 'svelte';
 	import { tippy } from 'svelte-tippy';
 	import Confetti from 'svelte-confetti';
+	import { signIn } from '@auth/sveltekit/client';
 
 	let isMobile = mediaQueryObserver(1000);
 
 	$: userIsHereAfterPreRegistration = $page.url.searchParams.has('prd') && $page.data.session;
+
+	$: console.log($page.data);
 </script>
 
 {#if userIsHereAfterPreRegistration}
@@ -37,12 +40,18 @@
 	<div class="my-2"></div>
 
 	{#if userIsHereAfterPreRegistration}
-		<div>Thank you for registration! We will meet you soon!</div>
+		<div>Thank you for registration! We will try contact you soon!</div>
 	{/if}
 
 	{#if !$page.data.session || !$page.data.session.user}
-		<Button size="lg" class="text-lg" on:click={() => login('github', '/?prd=1')}
-			>Pre-register</Button
+		<Button
+			size="lg"
+			class="text-lg"
+			on:click={() => {
+				signIn(undefined, {
+					callbackUrl: '/?prd=1'
+				});
+			}}>Pre-register</Button
 		>
 		<div
 			use:tippy={{
