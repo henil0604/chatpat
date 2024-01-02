@@ -17,7 +17,7 @@ describe('log module', () => {
 
 	it('with callback', () => {
 		const log = logger().type(LogType.OK).message('Hello World');
-		log.on('commit', () => { });
+		log.on('commit', () => {});
 		expect(log.getInfo().listeners[0].event).toBe('commit');
 		expect(log.getInfo().listeners[1]).toBeUndefined();
 	});

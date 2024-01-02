@@ -6,4 +6,4 @@ export const AUTH_ENABLED_METHODS = ['github', 'google'] as const;
 export const SOCIAL_TWITTER_HANDLE = 'TeamChatpat';
 export const SOCIAL_TWITTER_LINK = `https://twitter.com/${SOCIAL_TWITTER_HANDLE}`;
 
-export const SOCIAL_EMAIL = "chatpat@henil.xyz"
+export const SOCIAL_EMAIL = 'chatpat@henil.xyz';

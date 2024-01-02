@@ -23,6 +23,7 @@ export const pool = new pg.Pool({
 
 // connect to database
 function connect() {
+	// eslint-disable-next-line no-async-promise-executor
 	return new Promise(async (resolve) => {
 		function onConnectionError() {
 			log.type(LogType.ERROR).message('connection error').commit();

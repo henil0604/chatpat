@@ -22,6 +22,7 @@ type ListenerMap = {
 type LogInfo = {
 	type: LogType;
 	prefixes: string[];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	message: string | any[];
 	listeners: {
 		event: keyof ListenerMap;
@@ -31,7 +32,7 @@ type LogInfo = {
 
 export function logger() {
 	// State object to hold logging information and listeners
-	let info: LogInfo = {
+	const info: LogInfo = {
 		type: LogType.UNKNOWN,
 		prefixes: [],
 		message: '',
@@ -64,6 +65,7 @@ export function logger() {
 	}
 
 	// Set the log message
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	function _message(...m: any[]) {
 		info.message = m;
 		return constructReturn();
