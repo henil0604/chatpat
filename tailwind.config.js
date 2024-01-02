@@ -1,3 +1,4 @@
+import colors from "tailwindcss/colors";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
@@ -47,7 +48,9 @@ const config = {
 				card: {
 					DEFAULT: "hsl(var(--card) / <alpha-value>)",
 					foreground: "hsl(var(--card-foreground) / <alpha-value>)"
-				}
+				},
+				theme: colors.blue,
+				'theme-foreground': colors.white,
 			},
 			borderRadius: {
 				lg: "var(--radius)",
