@@ -6,6 +6,9 @@
 	import { tippy } from 'svelte-tippy';
 	import Confetti from 'svelte-confetti';
 	import { signIn } from '@auth/sveltekit/client';
+	import { Mail, Twitter } from 'lucide-svelte';
+	import colors from 'tailwindcss/colors';
+	import { SOCIAL_EMAIL, SOCIAL_TWITTER_LINK } from '$lib/const';
 
 	let isMobile = mediaQueryObserver(1000);
 
@@ -77,6 +80,47 @@
 			Why Pre-register?
 		</div>
 	{/if}
+
+	<div class="my-2"></div>
+
+	<div class="flex gap-2">
+		<div
+			use:tippy={{
+				content: 'Follow us on Twitter',
+				placement: 'bottom',
+				animation: 'scale',
+				delay: 300,
+				interactiveDebounce: 200,
+				hideOnClick: false,
+				interactiveBorder: 30
+			}}
+		>
+			<Button
+				size="sm"
+				variant="outline"
+				href={SOCIAL_TWITTER_LINK}
+				class="bg-white p-3 shadow [&>svg]:stroke-sky-600"
+				target="_blank"
+			>
+				<Twitter />
+			</Button>
+		</div>
+		<div
+			use:tippy={{
+				content: 'Contact us via email',
+				placement: 'bottom',
+				animation: 'scale',
+				delay: 300,
+				interactiveDebounce: 200,
+				hideOnClick: false,
+				interactiveBorder: 30
+			}}
+		>
+			<Button size="sm" href="mailto:{SOCIAL_EMAIL}" variant="outline" class="bg-white p-3 shadow">
+				<Mail color={colors.red[500]} />
+			</Button>
+		</div>
+	</div>
 </div>
 
 <div
