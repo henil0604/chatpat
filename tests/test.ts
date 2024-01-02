@@ -10,3 +10,8 @@ test('index page has tagline', async ({ page }) => {
 	await page.goto('/');
 	await expect(page.getByText(/Flavor of Privacy/)).toBeVisible();
 });
+
+test('index page has pre-register button', async ({ page }) => {
+	await page.goto('/');
+	await expect(page.getByRole('button', { name: 'Pre-register' })).toBeVisible();
+});
