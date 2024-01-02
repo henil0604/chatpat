@@ -2,9 +2,7 @@
 	import { page } from '$app/stores';
 	import AnimatedChatpatTitle from '$lib/components/AnimatedChatpatTitle.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { login } from '$lib/modules/auth';
 	import mediaQueryObserver from '$lib/utils/mediaQuery';
-	import { onMount } from 'svelte';
 	import { tippy } from 'svelte-tippy';
 	import Confetti from 'svelte-confetti';
 	import { signIn } from '@auth/sveltekit/client';
