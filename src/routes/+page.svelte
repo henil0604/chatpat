@@ -33,6 +33,10 @@
 	</div>
 {/if}
 
+<svelte:head>
+	<title>ChatPat</title>
+</svelte:head>
+
 <div class="flex w-full flex-col items-center justify-center gap-3 py-32">
 	<AnimatedChatpatTitle size={$isMobile ? 50 : 100} class={$isMobile ? `gap-5` : `gap-10`} />
 
