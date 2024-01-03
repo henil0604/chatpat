@@ -2,6 +2,7 @@
 
 type Point = { x: number; y: number };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function formatPoints(points: Point[] | any[], close: boolean): number[] {
 	let formattedPoints: number[] = [...points];
 
