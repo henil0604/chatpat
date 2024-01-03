@@ -28,7 +28,7 @@
 			duration={2500}
 			amount={300}
 			fallDistance="100vh"
-			infinite
+			iterationCount={2}
 		/>
 	</div>
 {/if}
