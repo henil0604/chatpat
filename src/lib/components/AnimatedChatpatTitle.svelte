@@ -7,7 +7,7 @@
 	let className = '';
 	export { className as class };
 
-	const DEFAULT_ANIMATION_SPEED = 0.003;
+	const DEFAULT_ANIMATION_SPEED = 0.004;
 	let animationSpeed = DEFAULT_ANIMATION_SPEED;
 	let wrapperRef: HTMLDivElement;
 
