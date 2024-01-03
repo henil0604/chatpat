@@ -1,26 +1,26 @@
 // See https://kit.svelte.dev/docs/types#app
+
 // for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}
-		interface Locals {
-			auth: import('lucia').AuthRequest;
-		}
-		// interface PageData {}
+		// interface Locals { }
+		// interface PageData { }
 		// interface PageState {}
 		// interface Platform {}
 	}
 }
 
-// LINK: https://lucia-auth.com/guidebook/github-oauth/sveltekit/#update-your-database
-/// <reference types="lucia" />
-declare global {
-	namespace Lucia {
-		type Auth = import('$lib/server/lucia').Auth;
-		type DatabaseUserAttributes = {
-			username: string;
-		};
-		type DatabaseSessionAttributes = {};
+export declare module '@auth/core/types' {
+	// User coming from database
+	interface User {
+		id?: string;
+	}
+	interface Session {
+		// user that will be set to session
+		user: {
+			id?: string;
+		} & DefaultSession['user'];
 	}
 }
 

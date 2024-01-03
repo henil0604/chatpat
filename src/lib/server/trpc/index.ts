@@ -11,10 +11,10 @@ export const t = initTRPC.context<Context>().create();
     we're not using the event parameter is this example,
 */
 export async function createContext(event: RequestEvent) {
-    return {
-        session: await event.locals.auth.validate(),
-        event,
-    };
+	return {
+		session: await event.locals.auth.validate(),
+		event
+	};
 }
 
 /*
@@ -22,15 +22,15 @@ export async function createContext(event: RequestEvent) {
     (Used for `privateProcedure`)
 */
 const enforceUserAuthentication = t.middleware(({ ctx, next }) => {
-    if (!ctx.session?.user) {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-    return next({
-        ctx: {
-            // infers the `session` as non-nullable
-            session: { ...ctx.session, user: ctx.session.user },
-        },
-    });
+	if (!ctx.session?.user) {
+		throw new TRPCError({ code: 'UNAUTHORIZED' });
+	}
+	return next({
+		ctx: {
+			// infers the `session` as non-nullable
+			session: { ...ctx.session, user: ctx.session.user }
+		}
+	});
 });
 
 // Public Procedure (Unauthenticated)

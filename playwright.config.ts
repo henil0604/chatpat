@@ -10,7 +10,10 @@ const config: PlaywrightTestConfig = {
 	preserveOutput: 'always',
 	reporter: [
 		['json', { outputFile: './test-results/json.json', open: 'on-failure' }],
-	]
+	],
+	use: {
+		screenshot: 'on',
+	}
 };
 
 export default config;
