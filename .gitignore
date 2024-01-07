@@ -11,4 +11,3 @@ vite.config.ts.timestamp-*
 pnpm-lock.yaml
 /.docker-data
 /test-results
-/drizzle
