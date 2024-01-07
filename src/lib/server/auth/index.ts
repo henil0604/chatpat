@@ -4,7 +4,7 @@ import {
 	AUTH_GOOGLE_CLIENT_ID,
 	AUTH_GOOGLE_CLIENT_SECRET
 } from '$env/static/private';
-import { DrizzleAdapter } from '@auth/drizzle-adapter';
+import { PrismaAdapter } from '@auth/prisma-adapter';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import GitHub from '@auth/sveltekit/providers/github';
 import Google from '@auth/sveltekit/providers/google';
@@ -24,6 +24,6 @@ export const authHandler = SvelteKitAuth({
 		})
 	],
 	debug: true,
-	adapter: DrizzleAdapter(db),
+	adapter: PrismaAdapter(db),
 	trustHost: true
 });
