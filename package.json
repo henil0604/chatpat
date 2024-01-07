@@ -16,7 +16,7 @@
 		"db:generate": "prisma generate",
 		"db:push": "prisma db push",
 		"clean": "rm -rfv node_modules .svelte-kit test-results",
-		"prepare": "npm run db:generate && npm run db:push"
+		"prepare": "npm run db:generate"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
