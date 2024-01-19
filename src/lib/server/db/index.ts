@@ -1,14 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
-import { NODE_ENV } from "$env/static/private";
+import { NODE_ENV } from '$env/static/private';
 
 const globalForPrisma = globalThis as unknown as { db: PrismaClient };
 
 export const db =
 	globalForPrisma.db ||
 	new PrismaClient({
-		log:
-			NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+		log: NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error']
 	});
 
-if (NODE_ENV !== "production") globalForPrisma.db = db;
+if (NODE_ENV !== 'production') globalForPrisma.db = db;
