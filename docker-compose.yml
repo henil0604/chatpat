@@ -1,8 +1,27 @@
 version: '3.8'
 
 services:
-  postgres:
+  app:
+    container_name: chatpat-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CONTAINER_PORT: $CONTAINER_PORT
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - $HOST_PORT:$CONTAINER_PORT
+    networks:
+      - chatpat_network
+    depends_on:
+      - database
+  database:
     image: postgres:latest
+    restart: always
     environment:
       POSTGRES_DB: $DATABASE_NAME
       POSTGRES_USER: $DATABASE_USER
@@ -11,3 +30,8 @@ services:
       - $DATABASE_PORT:5432
     volumes:
       - ./.docker-data/db:/var/lib/postgresql/data
+    networks:
+      - chatpat_network
+
+networks:
+  chatpat_network:
