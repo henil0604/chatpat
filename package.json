@@ -19,10 +19,13 @@
 		"prepare": "npm run db:push && npm run db:generate"
 	},
 	"devDependencies": {
+		"@dicebear/collection": "^7.0.4",
+		"@dicebear/core": "^7.0.4",
 		"@sveltejs/adapter-auto": "^3.1.1",
 		"@sveltejs/kit": "^2.4.1",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@tailwindcss/typography": "^0.5.10",
+		"@types/lodash-es": "^4.17.12",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.16",
@@ -58,6 +61,7 @@
 		"bits-ui": "^0.11.8",
 		"chalk": "^5.3.0",
 		"clsx": "^2.0.0",
+		"lodash-es": "^4.17.21",
 		"lucide-svelte": "^0.302.0",
 		"moment": "^2.29.4",
 		"simplex-noise": "2.4.0",
