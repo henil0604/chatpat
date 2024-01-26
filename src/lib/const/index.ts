@@ -7,3 +7,18 @@ export const SOCIAL_TWITTER_HANDLE = 'TeamChatpat';
 export const SOCIAL_TWITTER_LINK = `https://twitter.com/${SOCIAL_TWITTER_HANDLE}`;
 
 export const SOCIAL_EMAIL = 'chatpat@henil.xyz';
+
+export const Pages: {
+    [key: string]: {
+        path: string,
+        secure?: boolean
+    }
+} = {
+    Application: {
+        path: '/app',
+        secure: true
+    },
+    SignIn: {
+        path: '/auth/signin'
+    }
+};

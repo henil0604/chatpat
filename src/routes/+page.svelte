@@ -6,7 +6,8 @@
 	import { tippy } from 'svelte-tippy';
 	import { Mail, Twitter } from 'lucide-svelte';
 	import colors from 'tailwindcss/colors';
-	import { SOCIAL_EMAIL, SOCIAL_TWITTER_LINK } from '$lib/const';
+	import { Pages, SOCIAL_EMAIL, SOCIAL_TWITTER_LINK } from '$lib/const';
+	import { goto } from '$app/navigation';
 
 	let isMobile = mediaQueryObserver(1000);
 
@@ -24,7 +25,13 @@
 
 	<div class="my-2"></div>
 
-	<Button size="lg" class="text-lg" on:click={() => {}}>Get Started</Button>
+	<Button
+		size="lg"
+		class="text-lg"
+		on:click={() => {
+			goto(Pages.Application.path);
+		}}>Get Started</Button
+	>
 
 	<div class="my-2"></div>
 
