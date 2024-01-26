@@ -7,9 +7,9 @@ export const load: LayoutServerLoad = async (event) => {
 	const { locals, url } = event;
 
 	// get the session
-	const session = await locals.getSession()
+	const session = await locals.getSession();
 	// if `session` and `session.user` exists, its `true`
-	const isLoggedIn = (session && session.user) ? true : false;
+	const isLoggedIn = session && session.user ? true : false;
 
 	// if the route is secure and the user is not logged in
 	if (isSecureRoute(url.pathname) === true && isLoggedIn === false) {

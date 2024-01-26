@@ -32,8 +32,8 @@ export const authHandler = SvelteKitAuth({
 	callbacks: {
 		session: async (params) => {
 			const { session, user } = params as {
-				session: Session,
-				user: AdapterUser
+				session: Session;
+				user: AdapterUser;
 			};
 
 			if (session.user) {
@@ -43,7 +43,7 @@ export const authHandler = SvelteKitAuth({
 			}
 
 			return session;
-		},
+		}
 	},
 	events: {
 		// triggered when new users is created
@@ -53,9 +53,9 @@ export const authHandler = SvelteKitAuth({
 					id: user.id
 				},
 				data: {
-					hasCompletedProfile: false,
+					hasCompletedProfile: false
 				}
-			})
+			});
 		}
 	}
 });

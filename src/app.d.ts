@@ -16,16 +16,16 @@ export declare module '@auth/core/types' {
 	interface User {
 		id: string;
 		username?: string;
-		hasCompletedProfile: boolean
+		hasCompletedProfile: boolean;
 	}
 	interface Session {
 		// user that will be set to session
 		user: {
 			id: string;
 			username?: string;
-			hasCompletedProfile: boolean
+			hasCompletedProfile: boolean;
 		} & DefaultSession['user'];
 	}
 }
 
-export { };
+export {};
