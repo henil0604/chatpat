@@ -20,5 +20,9 @@ export const Pages: {
     },
     SignIn: {
         path: '/auth/signin'
+    },
+    OnBoarding: {
+        path: '/onboard',
+        secure: true
     }
 };
