@@ -16,7 +16,7 @@
 		"db:generate": "prisma generate",
 		"db:push": "prisma db push",
 		"clean": "rm -rfv node_modules .svelte-kit test-results",
-		"prepare": "npm run db:generate"
+		"prepare": "npm run db:push && npm run db:generate"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.1.1",
