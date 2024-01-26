@@ -4,34 +4,14 @@
 	import { Button } from '$lib/components/ui/button';
 	import mediaQueryObserver from '$lib/utils/mediaQuery';
 	import { tippy } from 'svelte-tippy';
-	import Confetti from 'svelte-confetti';
-	import { signIn } from '@auth/sveltekit/client';
 	import { Mail, Twitter } from 'lucide-svelte';
 	import colors from 'tailwindcss/colors';
 	import { SOCIAL_EMAIL, SOCIAL_TWITTER_LINK } from '$lib/const';
 
 	let isMobile = mediaQueryObserver(1000);
 
-	$: userIsHereAfterPreRegistration = $page.url.searchParams.has('prd') && $page.data.session;
-
 	$: console.log($page.data);
 </script>
-
-{#if userIsHereAfterPreRegistration}
-	<div
-		class="pointer-events-none fixed left-0 top-[-50px] flex h-screen w-screen justify-center overflow-hidden"
-	>
-		<Confetti
-			x={[-5, 5]}
-			y={[0, 0.1]}
-			delay={[500, 4000]}
-			duration={2500}
-			amount={300}
-			fallDistance="100vh"
-			iterationCount={2}
-		/>
-	</div>
-{/if}
 
 <svelte:head>
 	<title>ChatPat</title>
@@ -44,46 +24,7 @@
 
 	<div class="my-2"></div>
 
-	{#if userIsHereAfterPreRegistration}
-		<div class="max-w-[500px] px-4 text-center">
-			Your registration is acknowledged; we aim to contact you shortly.
-		</div>
-	{/if}
-
-	{#if userIsHereAfterPreRegistration === false && $page.data.session}
-		<div class="max-w-[500px] px-4 text-center">
-			Hey <b>{$page.data.session.user.name}</b>! We acknowledge your pre-registration and will make
-			every effort to reach out to you promptly.
-		</div>
-	{/if}
-
-	{#if !$page.data.session || !$page.data.session.user}
-		<Button
-			size="lg"
-			class="text-lg"
-			on:click={() => {
-				signIn(undefined, {
-					callbackUrl: '/?prd=1'
-				});
-			}}>Pre-register</Button
-		>
-		<div
-			use:tippy={{
-				allowHTML: true,
-				content:
-					'<p class="text-center">Get exclusive access to upcoming pre-releases including alpha version</p>',
-				placement: 'bottom',
-				animation: 'scale',
-				delay: 300,
-				interactiveDebounce: 200,
-				hideOnClick: false,
-				interactiveBorder: 30
-			}}
-			class="cursor-pointer text-sm underline underline-offset-2"
-		>
-			Why Pre-register?
-		</div>
-	{/if}
+	<Button size="lg" class="text-lg" on:click={() => {}}>Get Started</Button>
 
 	<div class="my-2"></div>
 
