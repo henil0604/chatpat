@@ -6,12 +6,19 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import { debounce } from 'lodash-es';
+	import { trpc } from '$lib/trpc/client';
+	import { onMount } from 'svelte';
+	import AnimatedFloatingBlob from '$lib/components/AnimatedFloatingBlob.svelte';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
+	import { Pages } from '$lib/const';
+	import { fade } from 'svelte/transition';
 
 	let data = $page.data;
 	let user = data.session!.user!;
 
 	$: profileData = {
-		username: user.email?.split('@')[0],
+		username: user.email?.split('@')[0] || '',
 		imageSeed: user.name!
 	};
 
@@ -21,9 +28,14 @@
 		error: null | string;
 	} = {
 		checking: false,
-		available: true,
+		available: null,
 		error: null
 	};
+
+	$: isSubmitting = false;
+
+	$: isButtonDisabled =
+		usernameStatus.available === false || usernameStatus.checking || isSubmitting;
 
 	function generateAvatar(seed: string) {
 		return createAvatar(adventurerNeutral, {
@@ -31,28 +43,106 @@
 		});
 	}
 
-	function checkUsernameAvailability() {
+	async function checkUsernameAvailability() {
 		debouncedCheckUsernameAvailability.cancel();
+		usernameStatus.checking = true;
 
-		if (profileData.username?.trim() === '') {
+		if (profileData.username.trim() === '') {
 			usernameStatus.checking = false;
 			usernameStatus.available = false;
 			usernameStatus.error = 'Username must not be empty';
-			return;
+			return false;
 		}
+
+		const response = await trpc().isUsernameAvailable.query({
+			username: profileData.username
+		});
+
+		if (response.error) {
+			usernameStatus.available = false;
+			usernameStatus.checking = false;
+			usernameStatus.error = response.message || 'Something went wrong';
+			return false;
+		}
+
+		if (response.code === 'DONE' && response.data) {
+			usernameStatus.checking = false;
+			usernameStatus.available = response.data.isAvailable;
+			usernameStatus.error = null;
+			return true;
+		}
+		return false;
 	}
 
 	const debouncedCheckUsernameAvailability = debounce(checkUsernameAvailability, 500);
 
-	$: console.log(profileData);
+	async function handleSubmit() {
+		isSubmitting = true;
+		if (!(await checkUsernameAvailability())) {
+			return;
+		}
+
+		if (profileData.imageSeed.trim() === '') {
+			profileData.imageSeed = Math.random().toString();
+			return;
+		}
+
+		const response = await trpc().completeUserProfile.mutate({
+			username: profileData.username,
+			image: generateAvatar(profileData.imageSeed).toDataUriSync()
+		});
+
+		if (response.error) {
+			toast.error(response.message || 'Something went wrong', {
+				duration: 5000,
+				description: `CODE: ${response.code}`
+			});
+		}
+
+		if (response.error === false && response.code === 'DONE') {
+			goto($page.url.searchParams.get('redirectTo') || Pages.Application.path);
+		}
+
+		isSubmitting = false;
+	}
+
+	onMount(async () => {
+		if (profileData.username.trim() !== '') {
+			await checkUsernameAvailability();
+		}
+	});
 </script>
 
 <!-- body wrap -->
 <div class="flex-center min-h-screen min-w-full max-md:items-start">
 	<!-- card wrap -->
 	<div
-		class="relative flex min-w-[400px] flex-col rounded-lg border border-gray-300 px-8 py-4 shadow transition hover:shadow-md max-md:min-h-screen max-md:w-full max-md:min-w-[none]"
+		class="relative flex min-w-[400px] max-w-[600px] flex-col overflow-hidden rounded-lg border border-gray-300 px-6 py-4 shadow transition hover:shadow-md max-md:min-h-screen max-md:w-full max-md:min-w-[none] max-md:max-w-[none]"
 	>
+		<!-- top-right -->
+		<AnimatedFloatingBlob
+			noiseStep={0.007}
+			class="absolute bottom-[-50px] left-[-40px] z-[2] max-h-[none] min-h-[100px] min-w-[100px] max-w-[none] transition-all duration-[700ms] max-md:hidden [&>svg>path]:transition-colors {isSubmitting
+				? 'scale-[10] duration-[700ms]'
+				: ''}"
+		/>
+
+		{#if isSubmitting}
+			<p
+				in:fade
+				out:fade
+				class="absolute left-1/2 top-1/2 z-[3] -translate-x-1/2 -translate-y-1/2 text-xl font-bold text-white max-md:hidden"
+			>
+				Just a second...
+			</p>
+		{/if}
+
+		<!-- bottom-left -->
+		<AnimatedFloatingBlob
+			noiseStep={0.007}
+			class="absolute right-[-40px] top-[-50px] z-[2] max-h-[none] min-h-[100px] min-w-[100px] max-w-[none] duration-[700ms] max-md:hidden [&>svg>path]:transition-colors"
+		/>
+
 		<!-- header -->
 		<h1 class="flex gap-2 text-lg font-bold">
 			<Info />
@@ -83,6 +173,7 @@
 
 		<div class="my-3"></div>
 
+		<!-- username wrap -->
 		<div class="">
 			<div class="grid w-full items-center gap-1">
 				<Label for="username">Username</Label>
@@ -100,7 +191,11 @@
 						class="px-3 py-2 focus-visible:outline-none"
 						bind:value={profileData.username}
 						placeholder="bob_the_builder"
-						on:input={debouncedCheckUsernameAvailability}
+						on:input={() => {
+							profileData.username = profileData.username.trim();
+							debouncedCheckUsernameAvailability();
+						}}
+						autocomplete="off"
 					/>
 				</div>
 				{#if usernameStatus.checking}
@@ -124,6 +219,13 @@
 					</div>
 				{/if}
 			</div>
+		</div>
+
+		<div class="my-3"></div>
+
+		<!-- submit wrap -->
+		<div class="flex w-full justify-end">
+			<Button bind:disabled={isButtonDisabled} on:click={handleSubmit}>Get Started</Button>
 		</div>
 	</div>
 </div>
