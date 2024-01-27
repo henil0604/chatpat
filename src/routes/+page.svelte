@@ -25,13 +25,35 @@
 
 	<div class="my-2"></div>
 
-	<Button
-		size="lg"
-		class="text-lg"
-		on:click={() => {
-			goto(Pages.Application.path);
-		}}>Get Started</Button
-	>
+	{#if $page.data.session?.user}
+		<Button
+			on:click={() => {
+				goto(Pages.Application.path);
+			}}
+			variant="outline"
+			class="flex h-fit gap-2 rounded border border-gray-300 shadow transition-all hover:shadow-lg"
+		>
+			<div class="flex-center h-8 w-8">
+				<img
+					class="rounded-full border border-gray-800"
+					src={$page.data.session.user.image}
+					alt=""
+				/>
+			</div>
+
+			<div>
+				Continue as <span class="font-bold">{$page.data.session.user.name}</span>
+			</div>
+		</Button>
+	{:else}
+		<Button
+			size="lg"
+			class="text-lg"
+			on:click={() => {
+				goto(Pages.Application.path);
+			}}>Get Started</Button
+		>
+	{/if}
 
 	<div class="my-2"></div>
 
