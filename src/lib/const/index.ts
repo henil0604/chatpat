@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export const AUTH_BASE_URL = '/auth';
 export const AUTH_OAUTH_BASE_URL = `${AUTH_BASE_URL}`;
 
@@ -26,3 +28,16 @@ export const Pages: {
 		secure: true
 	}
 };
+
+export const ResponseCodes = ['INVALID_INPUT', 'DONE', 'EMPTY_INPUT', 'ERROR', 'DATABASE_QUERY_ERROR'] as const;
+
+export const DefaultTRPCResponseSchema = z.object({
+	error: z.boolean(),
+	code: z.enum(ResponseCodes),
+	message: z.string().optional(),
+	data: z.any()
+})
+
+export const Regex = {
+	username: /^[a-zA-Z0-9._]+$/
+}
