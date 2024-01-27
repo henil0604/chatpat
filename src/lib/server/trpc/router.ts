@@ -17,7 +17,6 @@ export const router = t.router({
 		}))
 		.query(async ({ ctx, input }) => {
 			// TODO: remove this
-			await new Promise(resolve => setTimeout(resolve, 1000))
 
 			// check if the username is empty
 			if (input.username.trim() === "") {
@@ -88,7 +87,6 @@ export const router = t.router({
 			}).optional()
 		}))
 		.mutation(async ({ ctx, input }) => {
-			await new Promise(resolve => setTimeout(resolve, 1000))
 
 			try {
 				await ctx.db.user.update({
