@@ -60,7 +60,7 @@
 		const points = createPoints();
 
 		(function animate() {
-			pathEl.setAttribute('d', spline(points, 1, true));
+			pathEl?.setAttribute('d', spline(points, 1, true));
 
 			// for every point...
 			for (let i = 0; i < points.length; i++) {
@@ -89,12 +89,6 @@
 
 <div class={cn('max-h-full max-w-full overflow-visible', className)}>
 	<svg class="overflow-visible" viewBox="0 0 200 200">
-		<defs>
-			<linearGradient id="gradient" gradientTransform="rotate(90)">
-				<stop id="gradientStop1" offset="0%" stop-color="#000" />
-				<stop id="gradientStop2 " offset="100%" stop-color="#333" />
-			</linearGradient>
-		</defs>
-		<path d="" bind:this={pathEl} fill="url('#gradient')"></path>
+		<path d="" bind:this={pathEl} fill="#000"></path>
 	</svg>
 </div>
