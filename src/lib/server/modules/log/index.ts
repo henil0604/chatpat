@@ -11,7 +11,7 @@ export enum LogType {
 }
 
 // Define prefixes as a tuple
-export const Prefixes = ['db'] as const;
+export const Prefixes = ['db', 'trpc'] as const;
 type PrefixLiteral = (typeof Prefixes)[number];
 
 // Map for event listeners
