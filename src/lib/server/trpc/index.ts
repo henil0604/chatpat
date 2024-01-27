@@ -1,25 +1,27 @@
 import { initTRPC } from '@trpc/server';
 import type { RequestEvent } from '@sveltejs/kit';
 import { TRPCError, type inferAsyncReturnType } from '@trpc/server';
+import { db } from '$lib/server/db';
 
 export type Context = inferAsyncReturnType<typeof createContext>;
 
 export const t = initTRPC.context<Context>().create();
 
 /*
-    what ever you return from this function will be available in `ctx` param in t.query function
-    we're not using the event parameter is this example,
+	what ever you return from this function will be available in `ctx` param in t.query function
+	we're not using the event parameter is this example,
 */
 export async function createContext(event: RequestEvent) {
 	return {
-		session: await event.locals.auth.validate(),
+		session: await event.locals.getSession(),
+		db,
 		event
 	};
 }
 
 /*
-    This middleware ensures that user is properly authenticated 
-    (Used for `privateProcedure`)
+	This middleware ensures that user is properly authenticated 
+	(Used for `privateProcedure`)
 */
 const enforceUserAuthentication = t.middleware(({ ctx, next }) => {
 	if (!ctx.session?.user) {
