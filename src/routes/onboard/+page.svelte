@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { Dices, Info, Triangle, AlertTriangle, AtSign, BadgeCheck } from 'lucide-svelte';
 	import { createAvatar } from '@dicebear/core';
-	import { adventurerNeutral } from '@dicebear/collection';
+	import { loreleiNeutral } from '@dicebear/collection';
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import { debounce } from 'lodash-es';
@@ -13,6 +13,8 @@
 	import { goto } from '$app/navigation';
 	import { Pages } from '$lib/const';
 	import { fade } from 'svelte/transition';
+	import { generateAvatar } from '$lib/utils/avatar';
+	import Avatar from '$lib/components/Avatar.svelte';
 
 	let data = $page.data;
 	let user = data.session!.user!;
@@ -36,12 +38,6 @@
 
 	$: isButtonDisabled =
 		usernameStatus.available === false || usernameStatus.checking || isSubmitting;
-
-	function generateAvatar(seed: string) {
-		return createAvatar(adventurerNeutral, {
-			seed
-		});
-	}
 
 	async function checkUsernameAvailability() {
 		debouncedCheckUsernameAvailability.cancel();
@@ -89,7 +85,7 @@
 
 		const response = await trpc().completeUserProfile.mutate({
 			username: profileData.username,
-			image: generateAvatar(profileData.imageSeed).toDataUriSync()
+			image: `dice:${profileData.imageSeed}`
 		});
 
 		if (response.error) {
@@ -154,7 +150,7 @@
 		<!-- image wrap -->
 		<div class="flex-center w-full">
 			<div class="relative h-28 w-28">
-				<img
+				<Avatar
 					class="rounded-full border-2 border-black"
 					src={generateAvatar(profileData.imageSeed).toDataUriSync()}
 					alt=""

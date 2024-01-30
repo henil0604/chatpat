@@ -8,6 +8,7 @@
 	import colors from 'tailwindcss/colors';
 	import { Pages, SOCIAL_EMAIL, SOCIAL_TWITTER_LINK } from '$lib/const';
 	import { goto } from '$app/navigation';
+	import Avatar from '$lib/components/Avatar.svelte';
 
 	let isMobile = mediaQueryObserver(1000);
 
@@ -30,15 +31,10 @@
 			on:click={() => {
 				goto(Pages.Application.path);
 			}}
-			variant="outline"
 			class="flex h-fit gap-2 rounded border border-gray-300 shadow transition-all hover:shadow-lg"
 		>
 			<div class="flex-center h-8 w-8">
-				<img
-					class="rounded-full border border-gray-800"
-					src={$page.data.session.user.image}
-					alt=""
-				/>
+				<Avatar class="rounded border border-gray-800" src={$page.data.session.user.image} />
 			</div>
 
 			<div>
