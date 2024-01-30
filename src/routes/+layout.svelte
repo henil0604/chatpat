@@ -10,6 +10,10 @@
 	import { onMount } from 'svelte';
 	import DesktopOnly from '$lib/components/DesktopOnly.svelte';
 	import MobileOnly from '$lib/components/MobileOnly.svelte';
+	import { dev } from '$app/environment';
+	import { inject } from '@vercel/analytics';
+
+	inject({ mode: dev ? 'development' : 'production' });
 
 	onMount(() => {
 		import('ldrs/ring');
