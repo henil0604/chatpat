@@ -9,6 +9,8 @@
 	import { Pages, SOCIAL_EMAIL, SOCIAL_TWITTER_LINK } from '$lib/const';
 	import { goto } from '$app/navigation';
 	import Avatar from '$lib/components/Avatar.svelte';
+	import DesktopOnly from '$lib/components/DesktopOnly.svelte';
+	import MobileOnly from '$lib/components/MobileOnly.svelte';
 
 	let isMobile = mediaQueryObserver(1000);
 
@@ -20,7 +22,13 @@
 </svelte:head>
 
 <div class="flex w-full flex-col items-center justify-center gap-3 py-32">
-	<AnimatedChatpatTitle size={$isMobile ? 50 : 100} class={$isMobile ? `gap-5` : `gap-10`} />
+	<DesktopOnly>
+		<AnimatedChatpatTitle size={100} class="gap-10" />
+	</DesktopOnly>
+
+	<MobileOnly>
+		<AnimatedChatpatTitle size={50} class="gap-5" />
+	</MobileOnly>
 
 	<div class="text-xl font-semibold max-md:text-base">Flavor of Privacy</div>
 
