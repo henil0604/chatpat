@@ -16,8 +16,6 @@ export const router = t.router({
 			}).optional()
 		}))
 		.query(async ({ ctx, input }) => {
-			// TODO: remove this
-
 			// check if the username is empty
 			if (input.username.trim() === "") {
 				return {
