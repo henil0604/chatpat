@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Dices, Info, Triangle, AlertTriangle, AtSign, BadgeCheck } from 'lucide-svelte';
-	import { createAvatar } from '@dicebear/core';
-	import { loreleiNeutral } from '@dicebear/collection';
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import { debounce } from 'lodash-es';
@@ -15,6 +13,8 @@
 	import { fade } from 'svelte/transition';
 	import { generateAvatar } from '$lib/utils/avatar';
 	import Avatar from '$lib/components/Avatar.svelte';
+	import DesktopOnly from '$lib/components/DesktopOnly.svelte';
+	import { setGlobalLoading } from '$lib/utils/setGlobalLoading';
 
 	let data = $page.data;
 	let user = data.session!.user!;
@@ -72,8 +72,13 @@
 
 	const debouncedCheckUsernameAvailability = debounce(checkUsernameAvailability, 500);
 
+	$: isSubmitting === true
+		? setGlobalLoading(true, 'Just a second...', 'mobile')
+		: setGlobalLoading(false);
+
 	async function handleSubmit() {
 		isSubmitting = true;
+
 		if (!(await checkUsernameAvailability())) {
 			return;
 		}
@@ -116,28 +121,36 @@
 		class="relative flex min-w-[400px] max-w-[600px] flex-col overflow-hidden rounded-lg border border-gray-300 px-6 py-4 shadow transition hover:shadow-md max-md:min-h-screen max-md:w-full max-md:min-w-[none] max-md:max-w-[none]"
 	>
 		<!-- top-right -->
-		<AnimatedFloatingBlob
-			noiseStep={0.007}
-			class="absolute bottom-[-50px] left-[-40px] z-[2] max-h-[none] min-h-[100px] min-w-[100px] max-w-[none] transition-all duration-[700ms] max-md:hidden [&>svg>path]:transition-colors {isSubmitting
-				? 'scale-[10] duration-[700ms]'
-				: ''}"
-		/>
+		<DesktopOnly>
+			<AnimatedFloatingBlob
+				noiseStep={0.007}
+				class="absolute bottom-[-50px] left-[-40px] z-[2] max-h-[none] min-h-[100px] min-w-[100px] transition-all duration-[700ms] {isSubmitting
+					? 'scale-[10] duration-[700ms]'
+					: ''}"
+			/>
+		</DesktopOnly>
 
 		{#if isSubmitting}
-			<p
-				in:fade
-				out:fade
-				class="absolute left-1/2 top-1/2 z-[3] -translate-x-1/2 -translate-y-1/2 text-xl font-bold text-white max-md:hidden"
-			>
-				Just a second...
-			</p>
+			<DesktopOnly>
+				<p
+					in:fade
+					out:fade
+					class="absolute left-1/2 top-1/2 z-[3] -translate-x-1/2 -translate-y-1/2 text-xl font-bold text-white"
+				>
+					Just a second...
+				</p>
+			</DesktopOnly>
 		{/if}
 
 		<!-- bottom-left -->
-		<AnimatedFloatingBlob
-			noiseStep={0.007}
-			class="absolute right-[-40px] top-[-50px] z-[2] max-h-[none] min-h-[100px] min-w-[100px] max-w-[none] duration-[700ms] max-md:hidden [&>svg>path]:transition-colors"
-		/>
+		<DesktopOnly>
+			<AnimatedFloatingBlob
+				noiseStep={0.007}
+				class="absolute right-[-40px] top-[-50px] z-[2] max-h-[none] min-h-[100px] min-w-[100px] max-w-[none] transition-all duration-[700ms] {isSubmitting
+					? 'scale-[10] duration-[700ms]'
+					: ''}"
+			/>
+		</DesktopOnly>
 
 		<!-- header -->
 		<h1 class="flex gap-2 text-lg font-bold">

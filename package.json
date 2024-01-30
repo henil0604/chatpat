@@ -33,6 +33,7 @@
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.30.0",
+		"ldrs": "^1.0.1",
 		"mode-watcher": "^0.1.2",
 		"playwright-core": "^1.40.1",
 		"postcss": "^8.4.32",
