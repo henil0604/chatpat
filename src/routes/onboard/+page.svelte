@@ -114,6 +114,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Complete your profile - ChatPat</title>
+</svelte:head>
+
 <!-- body wrap -->
 <div class="flex-center min-h-screen min-w-full max-md:items-start">
 	<!-- card wrap -->
