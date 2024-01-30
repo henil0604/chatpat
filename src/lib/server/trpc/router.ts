@@ -113,6 +113,13 @@ export const router = t.router({
 				}
 			}
 
+			log
+				.clone()
+				.prefix("completeUserProfile")
+				.type(LogType.OK)
+				.message("user profile complete", `(ID: ${ctx.session.user.id})`)
+				.commit();
+
 			return {
 				error: false,
 				code: 'DONE',
