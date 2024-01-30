@@ -4,7 +4,7 @@
 allowed_branches=("main" "dev")
 
 # Get the current branch name
-current_branch=$(git rev-parse --abbrev-ref HEAD)
+current_branch=$VERCEL_GIT_COMMIT_REF
 
 # Check if the current branch is in the allowed branches array
 if [[ ! " ${allowed_branches[@]} " =~ " $current_branch " ]]; then
