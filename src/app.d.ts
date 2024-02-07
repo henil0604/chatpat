@@ -1,5 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 
+import type { UserRole } from "@prisma/client";
+
 // for information about these interfaces
 declare global {
 	namespace App {
@@ -17,6 +19,7 @@ export declare module '@auth/core/types' {
 		id: string;
 		username?: string;
 		hasCompletedProfile: boolean;
+		role: UserRole
 	}
 	interface Session {
 		// user that will be set to session
@@ -24,8 +27,9 @@ export declare module '@auth/core/types' {
 			id: string;
 			username?: string;
 			hasCompletedProfile: boolean;
+			role: UserRole
 		} & DefaultSession['user'];
 	}
 }
 
-export {};
+export { };
