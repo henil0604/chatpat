@@ -43,6 +43,12 @@ model User {
   image               String?
   hasCompletedProfile Boolean   @default(false)
   username            String?
+  role                UserRole  @default(USER)
   accounts            Account[]
   sessions            Session[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
