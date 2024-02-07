@@ -11,6 +11,7 @@ import Google from '@auth/sveltekit/providers/google';
 import { db } from '$lib/server/db';
 import type { Session } from '@auth/core/types';
 import type { AdapterUser } from '@auth/core/adapters';
+import { UserRole } from '@prisma/client';
 
 export const authHandler = SvelteKitAuth({
 	providers: [
@@ -40,6 +41,7 @@ export const authHandler = SvelteKitAuth({
 				session.user.id = user.id;
 				session.user.hasCompletedProfile = user.hasCompletedProfile;
 				session.user.username = user.username;
+				session.user.role = user.role;
 			}
 
 			return session;
@@ -53,7 +55,8 @@ export const authHandler = SvelteKitAuth({
 					id: user.id
 				},
 				data: {
-					hasCompletedProfile: false
+					hasCompletedProfile: false,
+					role: UserRole.USER
 				}
 			});
 		}
