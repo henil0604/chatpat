@@ -15,6 +15,7 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 	import DesktopOnly from '$lib/components/DesktopOnly.svelte';
 	import { setGlobalLoading } from '$lib/utils/setGlobalLoading';
+	import tippy from 'svelte-tippy';
 
 	let data = $page.data;
 	let user = data.session!.user!;
@@ -172,15 +173,22 @@
 					src={generateAvatar(profileData.imageSeed).toDataUriSync()}
 					alt=""
 				/>
-				<Button
-					on:click={() => {
-						profileData.imageSeed = Math.random().toString();
+				<div
+					use:tippy={{
+						content: 'Randomize'
 					}}
-					variant="secondary"
-					class="absolute bottom-0 right-0 h-fit p-1"
+					class="absolute bottom-0 right-0 h-fit w-fit"
 				>
-					<Dices size={20} />
-				</Button>
+					<Button
+						on:click={() => {
+							profileData.imageSeed = Math.random().toString();
+						}}
+						variant="outline"
+						class="h-fit w-fit p-1"
+					>
+						<Dices size={20} />
+					</Button>
+				</div>
 			</div>
 		</div>
 
