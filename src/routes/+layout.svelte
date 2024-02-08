@@ -10,12 +10,29 @@
 	import { onMount } from 'svelte';
 	import DesktopOnly from '$lib/components/DesktopOnly.svelte';
 	import MobileOnly from '$lib/components/MobileOnly.svelte';
-	import { dev } from '$app/environment';
-	import { inject } from '@vercel/analytics';
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+	import { browser, dev } from '$app/environment';
 
-	inject({ mode: dev ? 'development' : 'production' });
-	injectSpeedInsights();
+	async function initializeVercel() {
+		if (browser) return;
+		const { logger, LogType } = await import('$lib/server/modules/log');
+		const log = logger().prefix('initializeVercel');
+		const { isVercel } = await import('$lib/server/utils/isVercel');
+		// if not vercel, return
+		if (isVercel() === false) {
+			log.type(LogType.OK).message('Vercel not detected').commit();
+			return;
+		}
+
+		log.type(LogType.OK).message('Initializing vercel dependencies').commit();
+
+		const { inject } = await import('@vercel/analytics');
+		const { injectSpeedInsights } = await import('@vercel/speed-insights/sveltekit');
+
+		inject({ mode: dev ? 'development' : 'production' });
+		injectSpeedInsights();
+	}
+
+	initializeVercel();
 
 	onMount(() => {
 		import('ldrs/ring');
