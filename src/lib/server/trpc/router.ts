@@ -2,6 +2,7 @@ import { DefaultTRPCResponseSchema, Regex } from '$lib/const';
 import { privateProcedure, t } from '$lib/server/trpc';
 import { z } from 'zod';
 import { LogType, logger } from '$lib/server/modules/log';
+import { isUsernameAvailable } from '../utils/isUsernameAvailable';
 
 const log = logger().prefix("trpc");
 
@@ -34,27 +35,9 @@ export const router = t.router({
 				}
 			}
 
-			// get the user
-			const user = await ctx.db.user.findFirst({
-				where: {
-					username: input.username
-				},
-				select: {
-					// only the id
-					id: true
-				}
-			}).catch(error => {
-				log
-					.clone()
-					.prefix("isUsernameAvailable")
-					.prefix("db")
-					.type(LogType.ERROR)
-					.message("user fetch failed", error)
-					.commit();
-			})
+			const usernameAvailableCheck = await isUsernameAvailable(input.username);
 
-			// if user already exists, username is not available
-			if (user !== null) {
+			if (usernameAvailableCheck === false) {
 				return {
 					error: false,
 					code: 'DONE',
@@ -85,6 +68,26 @@ export const router = t.router({
 			}).optional()
 		}))
 		.mutation(async ({ ctx, input }) => {
+
+			// if user has already completed profile
+			if (ctx.session.user.hasCompletedProfile === true) {
+				return {
+					error: true,
+					code: 'FORBIDDEN',
+					message: 'User has already completed profile'
+				}
+			}
+
+			const usernameAvailableCheck = await isUsernameAvailable(input.username);
+
+			// if username is not available
+			if (usernameAvailableCheck === false) {
+				return {
+					error: true,
+					code: 'FORBIDDEN',
+					message: 'Username is not available'
+				}
+			}
 
 			try {
 				await ctx.db.user.update({
