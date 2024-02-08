@@ -29,7 +29,7 @@ export const Pages: {
 	}
 };
 
-export const ResponseCodes = ['INVALID_INPUT', 'DONE', 'EMPTY_INPUT', 'ERROR', 'DATABASE_QUERY_ERROR'] as const;
+export const ResponseCodes = ['INVALID_INPUT', 'DONE', 'EMPTY_INPUT', 'ERROR', 'DATABASE_QUERY_ERROR', 'FORBIDDEN'] as const;
 
 export const DefaultTRPCResponseSchema = z.object({
 	error: z.boolean(),
