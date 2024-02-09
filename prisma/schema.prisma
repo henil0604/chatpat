@@ -46,8 +46,33 @@ model User {
   role                UserRole  @default(USER)
   accounts            Account[]
   sessions            Session[]
-  friends             User[]    @relation("UserFriends")
-  symmetricFriends    User[]    @relation("UserFriends")
+
+  friends          User[] @relation("UserFriends")
+  symmetricFriends User[] @relation("UserFriends")
+
+  sentFriendRequest     FriendRequest[] @relation(name: "senderUser")
+  receiverFriendRequest FriendRequest[] @relation(name: "receiverUser")
+}
+
+model FriendRequest {
+  id String @id @default(cuid())
+
+  senderUser   User   @relation(name: "senderUser", fields: [senderUserId], references: [id])
+  senderUserId String
+
+  receiverUser   User   @relation(name: "receiverUser", fields: [receiverUserId], references: [id])
+  receiverUserId String
+
+  status FriendRequestStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 enum UserRole {
