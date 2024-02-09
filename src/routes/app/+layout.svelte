@@ -1,5 +1,4 @@
 <script>
-	import MyProfile from './MyProfile.svelte';
 </script>
 
 <!-- outer wrapper -->

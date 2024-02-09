@@ -1,6 +1,5 @@
 <script>
 	import { page } from '$app/stores';
-	import MyProfile from './MyProfile.svelte';
 </script>
 
 <div class="flex min-h-full min-w-full flex-col">
