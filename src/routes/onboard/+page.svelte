@@ -51,7 +51,7 @@
 			return false;
 		}
 
-		const response = await trpc().isUsernameAvailable.query({
+		const response = await trpc().user.isUsernameAvailable.query({
 			username: profileData.username
 		});
 
@@ -89,7 +89,7 @@
 			return;
 		}
 
-		const response = await trpc().completeUserProfile.mutate({
+		const response = await trpc().user.completeProfile.mutate({
 			username: profileData.username,
 			image: `dice:${profileData.imageSeed}`
 		});
