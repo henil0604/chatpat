@@ -46,6 +46,8 @@ model User {
   role                UserRole  @default(USER)
   accounts            Account[]
   sessions            Session[]
+  friends             User[]    @relation("UserFriends")
+  symmetricFriends    User[]    @relation("UserFriends")
 }
 
 enum UserRole {
