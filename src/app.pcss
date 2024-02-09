@@ -101,3 +101,29 @@
 		@apply flex items-center justify-center;
 	}
 }
+
+.fancy-scrollbar {
+	--sb-track-color: #ffffff;
+	--sb-thumb-color: #5c635f;
+	--sb-size: 5px;
+}
+
+.fancy-scrollbar::-webkit-scrollbar {
+	width: var(--sb-size);
+}
+
+.fancy-scrollbar::-webkit-scrollbar-track {
+	background: var(--sb-track-color);
+	border-radius: 1px;
+}
+
+.fancy-scrollbar::-webkit-scrollbar-thumb {
+	background: var(--sb-thumb-color);
+	border-radius: 1px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+	.fancy-scrollbar {
+		scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+	}
+}
