@@ -102,7 +102,7 @@
 		}
 
 		if (response.error === false && response.code === 'DONE') {
-			goto($page.url.searchParams.get('redirectTo') || Pages.Application.path);
+			await goto($page.url.searchParams.get('redirectTo') || Pages.Application.path);
 		}
 
 		isSubmitting = false;
