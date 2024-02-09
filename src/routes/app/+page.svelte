@@ -13,16 +13,16 @@
 	</div>
 	<div class="fancy-scrollbar relative h-full min-w-full overflow-y-auto">
 		{#each Array(30) as _, i}
-			<div class="flex flex-row gap-3 px-5 py-4">
+			<div class="flex flex-row gap-3 border-t px-5 py-4">
 				<div>
-					<Skeleton class="h-12 w-12 rounded-full bg-gray-300" />
+					<Skeleton class="h-10 w-10 rounded-full bg-gray-300" />
 				</div>
-				<div class="flex flex-col gap-1">
+				<div class="flex w-full flex-col gap-1">
 					<div>
-						<Skeleton class="h-[25px] w-[100px] bg-gray-300" />
+						<Skeleton class="h-[20px] w-[100px] bg-gray-300" />
 					</div>
-					<div>
-						<Skeleton class="h-[25px] w-[300px] bg-gray-300" />
+					<div class="w-full">
+						<Skeleton class="h-[16px] w-[90%] bg-gray-300" />
 					</div>
 				</div>
 			</div>
