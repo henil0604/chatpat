@@ -3,8 +3,9 @@ import { privateProcedure, t } from '$lib/server/trpc';
 import { z } from 'zod';
 import { LogType, logger } from '$lib/server/modules/log';
 import { isUsernameAvailable } from '$lib/server/utils/isUsernameAvailable';
+import { userFriendRouter } from './user.friend';
 
-const log = logger().prefix("trpc").prefix("userRouter");
+const log = logger().prefix("trpc").prefix("router.user");
 
 export const userRouter = t.router({
     isUsernameAvailable: privateProcedure
@@ -130,7 +131,9 @@ export const userRouter = t.router({
                     id: ctx.session.user.id
                 }
             }
-        })
+        }),
+
+    friend: userFriendRouter
 });
 
 export type UserRouter = typeof userRouter;
