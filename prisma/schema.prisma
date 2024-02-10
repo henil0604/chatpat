@@ -47,6 +47,7 @@ model User {
   accounts            Account[]
   sessions            Session[]
 
+  // LINK https://stackoverflow.com/questions/73942737/many-to-many-self-relation-prisma-one-field
   friends          User[] @relation("UserFriends")
   symmetricFriends User[] @relation("UserFriends")
 
