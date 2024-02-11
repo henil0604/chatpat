@@ -21,11 +21,10 @@
 		{#each paths as path}
 			{@const isActive = $page.url.pathname === path.href}
 			<a href={path.href} class="relative {isActive ? '[&>svg]:fill-white' : ''}">
-				{#if isActive}
-					<div
-						class="absolute left-1/2 top-full h-10 w-10 -translate-x-1/2 rounded-full bg-white blur-lg"
-					></div>
-				{/if}
+				<div
+					class="absolute left-1/2 top-full h-10 w-10 -translate-x-1/2 rounded-full bg-white blur-lg"
+					class:hidden={!isActive}
+				></div>
 
 				<svelte:component this={path.icon} />
 			</a>
