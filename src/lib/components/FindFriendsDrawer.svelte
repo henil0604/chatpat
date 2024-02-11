@@ -77,7 +77,7 @@
 <Drawer.Root bind:open>
 	<Drawer.Content>
 		<!-- wrapper -->
-		<div class="flex h-[50dvh] w-full justify-center">
+		<div class="flex h-[500px] w-full justify-center">
 			<div class="min-w-6xl flex flex-col py-3 max-md:min-w-full max-md:max-w-none">
 				<!-- search bar -->
 				<div class="relative flex px-3">
