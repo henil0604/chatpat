@@ -133,7 +133,62 @@ export const userRouter = t.router({
             }
         }),
 
-    friend: userFriendRouter
+    searchMany: privateProcedure
+        .input(z.object({
+            filters: z.object({
+                username: z.string(),
+            })
+        }))
+        .output(DefaultTRPCResponseSchema.extend({
+            data: z.array(z.object({
+                id: z.string(),
+                username: z.string().optional().nullable(),
+                image: z.string().optional().nullable(),
+                name: z.string().optional().nullable()
+            })).optional()
+        }))
+        .query(async ({ ctx, input }) => {
+
+            try {
+                const users = await ctx.db.user.findMany({
+                    where: {
+                        username: {
+                            contains: input.filters.username,
+                            not: {
+                                equals: ctx.session.user.username
+                            }
+                        }
+                    },
+                    select: {
+                        id: true,
+                        username: true,
+                        image: true,
+                        name: true
+                    }
+                })
+
+                return {
+                    code: 'DONE',
+                    error: false,
+                    data: users || []
+                }
+            } catch (error) {
+                log.clone()
+                    .prefix("searchMany")
+                    .type(LogType.ERROR)
+                    .message("failed to query", error)
+                    .commit()
+
+                return {
+                    code: 'DATABASE_QUERY_ERROR',
+                    error: false,
+                    message: 'Failed to fetch'
+                }
+            }
+
+        }),
+
+    friend: userFriendRouter,
 });
 
 export type UserRouter = typeof userRouter;

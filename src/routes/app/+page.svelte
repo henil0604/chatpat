@@ -5,13 +5,13 @@
 	import type { PageData } from './$types';
 	import { Plus } from 'lucide-svelte';
 	import Header from './Header.svelte';
-	import ContactsDrawer from '$lib/components/ContactsDrawer.svelte';
-	import { isContactsDrawerOpen } from '$lib/store/app';
+	import FindFriendsDrawer from '$lib/components/FindFriendsDrawer.svelte';
+	import { isFindFriendsDrawerOpen } from '$lib/store/app';
 
 	export let data: PageData;
 </script>
 
-<ContactsDrawer bind:open={$isContactsDrawerOpen} />
+<FindFriendsDrawer bind:open={$isFindFriendsDrawerOpen} />
 
 <div class="relative flex h-full min-w-full flex-col">
 	<!-- top bar -->
@@ -21,7 +21,7 @@
 			<div class="flex-center h-full w-full flex-col gap-2 py-5">
 				<div class="text-muted-foreground">You have no Pats</div>
 				<div>
-					<Button size="sm" class="gap-1" on:click={() => ($isContactsDrawerOpen = true)}
+					<Button size="sm" class="gap-1" on:click={() => ($isFindFriendsDrawerOpen = true)}
 						><Plus /> Add</Button
 					>
 				</div>

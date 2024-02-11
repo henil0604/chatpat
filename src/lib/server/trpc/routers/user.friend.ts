@@ -40,6 +40,7 @@ export const userFriendRouter = t.router({
                 }
             } catch (error) {
                 log.clone()
+                    .prefix("getBasicAll")
                     .type(LogType.ERROR)
                     .message("failed to query", error)
                     .commit()
