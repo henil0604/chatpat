@@ -3,6 +3,7 @@
 <script lang="ts">
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { Button } from '$lib/components/ui/button';
+	import { Input } from '$lib/components/ui/input';
 	import { AtSign } from 'lucide-svelte';
 	import colors from 'tailwindcss/colors';
 	import { trpc } from '$lib/trpc/client';
@@ -76,7 +77,7 @@
 <Drawer.Root bind:open>
 	<Drawer.Content>
 		<!-- wrapper -->
-		<div class="flex min-h-[50dvh] w-full justify-center">
+		<div class="flex h-[50dvh] w-full justify-center">
 			<div class="min-w-6xl flex flex-col py-3 max-md:min-w-full max-md:max-w-none">
 				<!-- search bar -->
 				<div class="relative flex px-3">
@@ -85,12 +86,12 @@
 							<div class="flex-center">
 								<AtSign class="text-muted-foreground" size={17} />
 							</div>
-							<input
+							<Input
 								bind:value={inputUsername}
 								on:input={debouncedHandleSearchInput}
 								type="text"
 								id="username"
-								class="px-3 py-2 focus-visible:outline-none"
+								class="focus-visible:ring-none h-full border-none py-2 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
 								placeholder="bob_the_builder"
 								autocomplete="off"
 								autocorrect="off"
