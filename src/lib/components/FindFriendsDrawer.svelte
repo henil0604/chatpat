@@ -74,7 +74,7 @@
 </script>
 
 <Drawer.Root bind:open>
-	<Drawer.Content class="min-h-[80%]">
+	<Drawer.Content class="min-h-[50%]">
 		<!-- wrapper -->
 		<div class="flex-center w-full">
 			<div class="min-w-6xl flex flex-col py-3 max-md:min-w-full max-md:max-w-none">
