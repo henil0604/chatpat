@@ -5,24 +5,29 @@
 	import type { PageData } from './$types';
 	import { Plus } from 'lucide-svelte';
 	import Header from './Header.svelte';
-	import Footer from './Footer.svelte';
+	import ContactsDrawer from '$lib/components/ContactsDrawer.svelte';
+	import { isContactsDrawerOpen } from '$lib/store/app';
 
 	export let data: PageData;
 </script>
+
+<ContactsDrawer bind:open={$isContactsDrawerOpen} />
 
 <div class="relative flex h-full min-w-full flex-col">
 	<!-- top bar -->
 	<Header />
 	<div class="fancy-scrollbar min-w-full flex-grow overflow-y-auto">
-		{#if data.friends.length !== 0}
+		{#if data.friends.length === 0}
 			<div class="flex-center h-full w-full flex-col gap-2 py-5">
-				<div class="text-muted-foreground">You have no friends (yet) :(</div>
+				<div class="text-muted-foreground">You have no Pats</div>
 				<div>
-					<Button size="sm" class="gap-1"><Plus /> Add</Button>
+					<Button size="sm" class="gap-1" on:click={() => ($isContactsDrawerOpen = true)}
+						><Plus /> Add</Button
+					>
 				</div>
 			</div>
 		{:else}
-			{#each Array(30) as _, i}
+			{#each Array(20) as _, i}
 				<div class="flex flex-row gap-3 border-t px-5 py-4">
 					<div>
 						<Skeleton class="h-10 w-10 rounded-full bg-gray-300" />
@@ -39,5 +44,4 @@
 			{/each}
 		{/if}
 	</div>
-	<Footer />
 </div>
