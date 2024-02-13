@@ -76,7 +76,7 @@
 <Drawer.Root bind:open>
 	<Drawer.Content class="h-[50%]">
 		<!-- wrapper -->
-		<div class="mx-auto flex w-full max-w-md flex-col overflow-auto">
+		<div class="mx-auto flex w-full max-w-md flex-col overflow-auto pb-64">
 			<!-- search bar -->
 			<div class="relative flex px-3">
 				<div class="grid w-full items-center gap-1">
@@ -101,11 +101,11 @@
 
 			<!-- list -->
 			{#if loading}
-				<div class="flex-center h-full w-full flex-col py-4">
+				<div class="flex-center w-full flex-col py-4">
 					<l-ring size="30" stroke="2" bg-opacity="0" speed="1.5" color={colors.gray[700]}></l-ring>
 				</div>
 			{:else if usersList.length === 0}
-				<div class="py-3 text-center text-muted-foreground">Nothing to see</div>
+				<div class="py-4 text-center text-muted-foreground">Nothing to see</div>
 			{:else}
 				<div class="flex w-full flex-col">
 					{#each usersList as user}
