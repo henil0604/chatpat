@@ -5,6 +5,7 @@ import { LogType, logger } from '$lib/server/modules/log';
 import { isUsernameAvailable } from '$lib/server/utils/isUsernameAvailable';
 import { userFriendRouter } from './user.friend';
 import type { inferRouterOutputs } from '@trpc/server';
+import { sendFriendRequest } from '$lib/server/utils/sendFriendRequest';
 
 const log = logger().prefix("trpc").prefix("router.user");
 
@@ -172,7 +173,7 @@ export const userRouter = t.router({
                                 username: true,
                             }
                         },
-                        sentFriendRequest: {
+                        sentFriendRequests: {
                             select: {
                                 id: true,
                                 status: true,
@@ -180,7 +181,7 @@ export const userRouter = t.router({
                                 receiverUserId: true
                             }
                         },
-                        receiverFriendRequest: {
+                        receivedFriendRequests: {
                             select: {
                                 id: true,
                                 status: true,
@@ -198,11 +199,11 @@ export const userRouter = t.router({
                         friendStatus = 'FRIEND'
                     }
 
-                    if (user.sentFriendRequest.find(u => u.receiverUserId === ctx.session.user.id)) {
+                    if (user.sentFriendRequests.find(u => u.receiverUserId === ctx.session.user.id)) {
                         friendStatus = 'REQUEST_RECEIVED';
                     }
 
-                    if (user.receiverFriendRequest.find(u => u.senderUserId === ctx.session.user.id)) {
+                    if (user.receivedFriendRequests.find(u => u.senderUserId === ctx.session.user.id)) {
                         friendStatus = 'REQUEST_SENT';
                     }
 
@@ -234,6 +235,39 @@ export const userRouter = t.router({
                 }
             }
 
+        }),
+
+    sendFriendRequest: privateProcedure.
+        input(z.object({
+            userId: z.string()
+        }))
+        .output(DefaultTRPCResponseSchema.extend({
+            data: z.object({
+                id: z.string(),
+            }).optional(),
+        }))
+        .query(async ({ ctx, input }) => {
+
+            const user = ctx.session.user;
+
+            try {
+                const requestDoc = await sendFriendRequest(user.id, input.userId);
+
+                return {
+                    error: false,
+                    code: 'DONE',
+                    data: {
+                        id: requestDoc.id,
+                    }
+                }
+
+            } catch (error) {
+                return {
+                    error: true,
+                    code: 'DATABASE_QUERY_ERROR',
+                    message: 'friend request creation failed',
+                }
+            }
         }),
 
     friend: userFriendRouter,

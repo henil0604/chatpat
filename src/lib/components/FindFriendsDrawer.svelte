@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { ArrowLeft, AtSign, MoveLeft, Plus } from 'lucide-svelte';
+	import { ArrowLeft, AtSign, Check, MoveLeft, Plus } from 'lucide-svelte';
 	import colors from 'tailwindcss/colors';
 	import { trpc } from '$lib/trpc/client';
 	import { debounce } from 'lodash-es';
@@ -67,8 +67,31 @@
 	async function handleAddFriend(userId: string) {
 		loadingUserId = userId;
 
+		const sendFriendRequestResponse = await trpc().user.sendFriendRequest.query({
+			userId
+		});
+
+		console.log('sendFriendRequestResponse?', sendFriendRequestResponse);
+
+		if (sendFriendRequestResponse.error === true) {
+			toast.error(sendFriendRequestResponse.message || 'Something went wrong', {
+				duration: 5000,
+				description: `CODE: ${sendFriendRequestResponse.code}`
+			});
+			return false;
+		}
+
+		usersList = usersList.map((user) => {
+			return {
+				...user,
+				friendStatus: user.id === userId ? 'REQUEST_SENT' : user.friendStatus
+			};
+		});
+
 		loadingUserId = null;
 	}
+
+	async function handleAcceptRequest(userId: string) {}
 
 	// listen for model close
 	// NOTE for future (anyone),
@@ -149,6 +172,20 @@
 								>
 									<Plus /> Add
 								</Button>
+							{/if}
+
+							{#if user.friendStatus === 'REQUEST_SENT'}
+								<Button size="sm" disabled>Request Sent</Button>
+							{/if}
+
+							{#if user.friendStatus === 'REQUEST_RECEIVED'}
+								<Button
+									on:click={() => {
+										handleAcceptRequest(user.id);
+									}}
+									size="sm"
+									class="gap-1"><Check size={18} /> Accept</Button
+								>
 							{/if}
 						</div>
 					</div>

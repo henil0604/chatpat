@@ -74,6 +74,7 @@ enum FriendRequestStatus {
   PENDING
   ACCEPTED
   REJECTED
+  CANCELED
 }
 
 enum UserRole {
