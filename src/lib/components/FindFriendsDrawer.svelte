@@ -77,8 +77,8 @@
 <Drawer.Root bind:open preventScroll={false}>
 	<Drawer.Content>
 		<!-- wrapper -->
-		<div class="flex h-[50svh] w-full justify-center">
-			<div class="min-w-6xl flex flex-col py-3 max-md:min-w-full max-md:max-w-none">
+		<div class="flex max-h-[80dvh] w-full justify-center">
+			<div class="min-w-6xl flex flex-col py-3 pb-64 max-md:min-w-full max-md:max-w-none">
 				<!-- search bar -->
 				<div class="relative flex px-3">
 					<div class="grid w-full items-center gap-1">
