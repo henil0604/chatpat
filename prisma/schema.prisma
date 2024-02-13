@@ -51,8 +51,8 @@ model User {
   friends          User[] @relation("UserFriends")
   symmetricFriends User[] @relation("UserFriends")
 
-  sentFriendRequest     FriendRequest[] @relation(name: "senderUser")
-  receiverFriendRequest FriendRequest[] @relation(name: "receiverUser")
+  sentFriendRequests     FriendRequest[] @relation(name: "senderUser")
+  receivedFriendRequests FriendRequest[] @relation(name: "receiverUser")
 }
 
 model FriendRequest {

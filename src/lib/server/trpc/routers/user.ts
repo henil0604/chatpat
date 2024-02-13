@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { LogType, logger } from '$lib/server/modules/log';
 import { isUsernameAvailable } from '$lib/server/utils/isUsernameAvailable';
 import { userFriendRouter } from './user.friend';
+import type { inferRouterOutputs } from '@trpc/server';
 
 const log = logger().prefix("trpc").prefix("router.user");
 
@@ -144,7 +145,8 @@ export const userRouter = t.router({
                 id: z.string(),
                 username: z.string().optional().nullable(),
                 image: z.string().optional().nullable(),
-                name: z.string().optional().nullable()
+                name: z.string().optional().nullable(),
+                friendStatus: z.enum(["FRIEND", "REQUEST_SENT", "REQUEST_RECEIVED", "NOT_FRIEND"])
             })).optional()
         }))
         .query(async ({ ctx, input }) => {
@@ -163,14 +165,60 @@ export const userRouter = t.router({
                         id: true,
                         username: true,
                         image: true,
-                        name: true
+                        name: true,
+                        friends: {
+                            select: {
+                                id: true,
+                                username: true,
+                            }
+                        },
+                        sentFriendRequest: {
+                            select: {
+                                id: true,
+                                status: true,
+                                senderUserId: true,
+                                receiverUserId: true
+                            }
+                        },
+                        receiverFriendRequest: {
+                            select: {
+                                id: true,
+                                status: true,
+                                senderUserId: true,
+                                receiverUserId: true
+                            }
+                        }
+                    }
+                })
+
+                const metaUsers = users.map(user => {
+                    let friendStatus: 'NOT_FRIEND' | 'FRIEND' | 'REQUEST_SENT' | 'REQUEST_RECEIVED' = 'NOT_FRIEND';
+
+                    if (user.friends.find(u => u.id === ctx.session.user.id)) {
+                        friendStatus = 'FRIEND'
+                    }
+
+                    if (user.sentFriendRequest.find(u => u.receiverUserId === ctx.session.user.id)) {
+                        friendStatus = 'REQUEST_RECEIVED';
+                    }
+
+                    if (user.receiverFriendRequest.find(u => u.senderUserId === ctx.session.user.id)) {
+                        friendStatus = 'REQUEST_SENT';
+                    }
+
+                    return {
+                        id: user.id,
+                        username: user.username,
+                        image: user.image,
+                        name: user.name,
+                        friendStatus: friendStatus
                     }
                 })
 
                 return {
                     code: 'DONE',
                     error: false,
-                    data: users || []
+                    data: metaUsers
                 }
             } catch (error) {
                 log.clone()
@@ -192,3 +240,4 @@ export const userRouter = t.router({
 });
 
 export type UserRouter = typeof userRouter;
+export type UserRouterOutput = inferRouterOutputs<UserRouter>;
