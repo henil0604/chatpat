@@ -6,7 +6,6 @@
 	import { Plus } from 'lucide-svelte';
 	import Header from './Header.svelte';
 	import FindFriendsDrawer from '$lib/components/FindFriendsDrawer.svelte';
-	import * as Drawer from '$lib/components/ui/drawer';
 	import { isFindFriendsDrawerOpen } from '$lib/store/app';
 
 	export let data: PageData;
