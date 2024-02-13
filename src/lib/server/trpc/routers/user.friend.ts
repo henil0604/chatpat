@@ -11,7 +11,8 @@ export const userFriendRouter = t.router({
             data: z.array(z.object({
                 id: z.string(),
                 username: z.string().optional().nullable(),
-                image: z.string().optional().nullable()
+                image: z.string().optional().nullable(),
+                name: z.string().optional().nullable()
             })).optional()
         }))
         .query(async ({ ctx, input }) => {
@@ -27,7 +28,8 @@ export const userFriendRouter = t.router({
                             select: {
                                 id: true,
                                 username: true,
-                                image: true
+                                image: true,
+                                name: true
                             }
                         }
                     }

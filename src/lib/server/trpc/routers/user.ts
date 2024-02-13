@@ -6,6 +6,7 @@ import { isUsernameAvailable } from '$lib/server/utils/isUsernameAvailable';
 import { userFriendRouter } from './user.friend';
 import type { inferRouterOutputs } from '@trpc/server';
 import { sendFriendRequest } from '$lib/server/utils/sendFriendRequest';
+import { acceptFriendRequest } from '$lib/server/utils/acceptFriendRequest';
 
 const log = logger().prefix("trpc").prefix("router.user");
 
@@ -262,10 +263,55 @@ export const userRouter = t.router({
                 }
 
             } catch (error) {
+                logger()
+                    .clone()
+                    .prefix("sendFriendRequest")
+                    .message("failed to query", error)
+                    .commit();
+
                 return {
                     error: true,
                     code: 'DATABASE_QUERY_ERROR',
                     message: 'friend request creation failed',
+                }
+            }
+        }),
+
+    acceptFriendRequest: privateProcedure.
+        input(z.object({
+            userId: z.string()
+        }))
+        .output(DefaultTRPCResponseSchema.extend({
+            data: z.object({
+                id: z.string()
+            }).optional()
+        }))
+        .query(async ({ ctx, input }) => {
+
+            const user = ctx.session.user;
+
+            const request = await ctx.db.friendRequest.findFirst({
+                where: {
+                    senderUserId: input.userId,
+                    receiverUserId: user.id,
+                }
+            })
+
+            if (!request) {
+                return {
+                    error: false,
+                    code: 'FORBIDDEN',
+                    message: 'Request not found',
+                }
+            }
+
+            await acceptFriendRequest(request.id, input.userId, user.id);
+
+            return {
+                error: false,
+                code: 'DONE',
+                data: {
+                    id: request.id
                 }
             }
         }),

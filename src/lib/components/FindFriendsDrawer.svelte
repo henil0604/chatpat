@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { ArrowLeft, AtSign, Check, MoveLeft, Plus } from 'lucide-svelte';
+	import { ArrowLeft, AtSign, Check, HeartHandshake, Plus } from 'lucide-svelte';
 	import colors from 'tailwindcss/colors';
 	import { trpc } from '$lib/trpc/client';
 	import { debounce } from 'lodash-es';
@@ -91,7 +91,32 @@
 		loadingUserId = null;
 	}
 
-	async function handleAcceptRequest(userId: string) {}
+	async function handleAcceptRequest(userId: string) {
+		loadingUserId = userId;
+
+		const acceptFriendRequestResponse = await trpc().user.acceptFriendRequest.query({
+			userId
+		});
+
+		console.log('acceptFriendRequestResponse?', acceptFriendRequestResponse);
+
+		if (acceptFriendRequestResponse.code !== 'DONE') {
+			toast.error(acceptFriendRequestResponse.message || 'Something went wrong', {
+				duration: 5000,
+				description: `CODE: ${acceptFriendRequestResponse.code}`
+			});
+			return false;
+		}
+
+		usersList = usersList.map((user) => {
+			return {
+				...user,
+				friendStatus: user.id === userId ? 'FRIEND' : user.friendStatus
+			};
+		});
+
+		loadingUserId = null;
+	}
 
 	// listen for model close
 	// NOTE for future (anyone),
@@ -186,6 +211,13 @@
 									size="sm"
 									class="gap-1"><Check size={18} /> Accept</Button
 								>
+							{/if}
+
+							{#if user.friendStatus === 'FRIEND'}
+								<Button size="sm" disabled class="gap-1">
+									<HeartHandshake size={18} />
+									Friends
+								</Button>
 							{/if}
 						</div>
 					</div>

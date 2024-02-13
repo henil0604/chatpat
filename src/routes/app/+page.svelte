@@ -7,6 +7,7 @@
 	import Header from './Header.svelte';
 	import FindFriendsDrawer from '$lib/components/FindFriendsDrawer.svelte';
 	import { isFindFriendsDrawerOpen } from '$lib/store/app';
+	import Avatar from '$lib/components/Avatar.svelte';
 
 	export let data: PageData;
 </script>
@@ -27,14 +28,14 @@
 				</div>
 			</div>
 		{:else}
-			{#each Array(20) as _, i}
+			{#each data.friends as friend}
 				<div class="flex flex-row gap-3 border-t px-5 py-4">
 					<div>
-						<Skeleton class="h-10 w-10 rounded-full bg-gray-300" />
+						<Avatar class="w-12 rounded-full border border-gray-400" src={friend.image} alt="" />
 					</div>
 					<div class="flex w-full flex-col gap-1">
 						<div>
-							<Skeleton class="h-[20px] w-[100px] bg-gray-300" />
+							{friend.name}
 						</div>
 						<div class="w-full">
 							<Skeleton class="h-[16px] w-[90%] bg-gray-300" />
