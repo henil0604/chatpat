@@ -3,7 +3,6 @@
 <script lang="ts">
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
 	import { AtSign } from 'lucide-svelte';
 	import colors from 'tailwindcss/colors';
 	import { trpc } from '$lib/trpc/client';
@@ -74,11 +73,11 @@
 	}
 </script>
 
-<Drawer.Root bind:open preventScroll={false}>
-	<Drawer.Content>
+<Drawer.Root bind:open>
+	<Drawer.Content class="max-h-[95%]">
 		<!-- wrapper -->
-		<div class="flex max-h-[80dvh] w-full justify-center">
-			<div class="min-w-6xl flex flex-col py-3 pb-64 max-md:min-w-full max-md:max-w-none">
+		<div class="flex w-full justify-center overflow-auto">
+			<div class="min-w-6xl flex flex-col py-3 max-md:min-w-full max-md:max-w-none">
 				<!-- search bar -->
 				<div class="relative flex px-3">
 					<div class="grid w-full items-center gap-1">
@@ -86,12 +85,12 @@
 							<div class="flex-center">
 								<AtSign class="text-muted-foreground" size={17} />
 							</div>
-							<Input
+							<input
 								bind:value={inputUsername}
 								on:input={debouncedHandleSearchInput}
 								type="text"
 								id="username"
-								class="focus-visible:ring-none h-full border-none py-2 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+								class="focus-visible:ring-none h-full border-none px-2 py-2 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
 								placeholder="bob_the_builder"
 								autocomplete="off"
 								autocorrect="off"
