@@ -209,7 +209,9 @@
 										handleAcceptRequest(user.id);
 									}}
 									size="sm"
-									class="gap-1"><Check size={18} /> Accept</Button
+									class="gap-1"
+								>
+									Accept</Button
 								>
 							{/if}
 
