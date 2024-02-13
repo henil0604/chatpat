@@ -7,6 +7,7 @@ import { userFriendRouter } from './user.friend';
 import type { inferRouterOutputs } from '@trpc/server';
 import { sendFriendRequest } from '$lib/server/utils/sendFriendRequest';
 import { acceptFriendRequest } from '$lib/server/utils/acceptFriendRequest';
+import { pusher } from '$lib/server/pusher';
 
 const log = logger().prefix("trpc").prefix("router.user");
 
