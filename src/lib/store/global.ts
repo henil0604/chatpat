@@ -1,3 +1,4 @@
+import type { Session } from "@auth/core/types";
 import { writable } from "svelte/store";
 
 export let loading = writable<{
@@ -9,3 +10,5 @@ export let loading = writable<{
     label: '',
     device: 'both'
 });
+
+export let userStore = writable<Session["user"] | null | undefined>(null)
