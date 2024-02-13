@@ -78,7 +78,13 @@
 		<!-- wrapper -->
 		<div class="mx-auto flex w-full max-w-md flex-col overflow-auto pb-64">
 			<!-- search bar -->
-			<div class="relative flex px-3">
+			<input
+				type="text"
+				class="w-full"
+				bind:value={inputUsername}
+				on:input={debouncedHandleSearchInput}
+			/>
+			<!-- <div class="relative flex px-3">
 				<div class="grid w-full items-center gap-1">
 					<div class="flex rounded border px-3">
 						<div class="flex-center">
@@ -97,7 +103,7 @@
 						/>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<!-- list -->
 			{#if loading}
