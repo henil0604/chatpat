@@ -161,7 +161,8 @@ export const userRouter = t.router({
                             not: {
                                 equals: ctx.session.user.username
                             }
-                        }
+                        },
+                        hasCompletedProfile: true
                     },
                     select: {
                         id: true,
