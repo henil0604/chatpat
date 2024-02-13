@@ -12,15 +12,7 @@
 	export let data: PageData;
 </script>
 
-<!-- <FindFriendsDrawer bind:open={$isFindFriendsDrawerOpen} /> -->
-
-<Drawer.Root bind:open={$isFindFriendsDrawerOpen}>
-	<Drawer.Content class="h-[50%]">
-		<div class="mx-auto flex w-full max-w-md flex-col overflow-auto rounded-t-[10px] p-4 pb-64">
-			<input class="my-8 border border-gray-400" placeholder="Input" />
-		</div>
-	</Drawer.Content>
-</Drawer.Root>
+<FindFriendsDrawer bind:open={$isFindFriendsDrawerOpen} />
 
 <div class="relative flex h-full min-w-full flex-col">
 	<!-- top bar -->
