@@ -78,13 +78,7 @@
 		<!-- wrapper -->
 		<div class="mx-auto flex w-full max-w-md flex-col overflow-auto pb-64">
 			<!-- search bar -->
-			<input
-				type="text"
-				class="w-full"
-				bind:value={inputUsername}
-				on:input={debouncedHandleSearchInput}
-			/>
-			<!-- <div class="relative flex px-3">
+			<div class="relative flex px-3">
 				<div class="grid w-full items-center gap-1">
 					<div class="flex rounded border px-3">
 						<div class="flex-center">
@@ -103,10 +97,10 @@
 						/>
 					</div>
 				</div>
-			</div> -->
+			</div>
 
 			<!-- list -->
-			{#if loading}
+			<!-- {#if loading}
 				<div class="flex-center w-full flex-col py-4">
 					<l-ring size="30" stroke="2" bg-opacity="0" speed="1.5" color={colors.gray[700]}></l-ring>
 				</div>
@@ -130,7 +124,7 @@
 						</div>
 					{/each}
 				</div>
-			{/if}
+			{/if} -->
 		</div>
 	</Drawer.Content>
 </Drawer.Root>
