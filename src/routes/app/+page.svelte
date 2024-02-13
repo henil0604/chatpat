@@ -15,7 +15,7 @@
 <!-- <FindFriendsDrawer bind:open={$isFindFriendsDrawerOpen} /> -->
 
 <Drawer.Root bind:open={$isFindFriendsDrawerOpen}>
-	<Drawer.Content class="max-h-[50%]">
+	<Drawer.Content class="h-[50%]">
 		<div class="mx-auto flex w-full max-w-md flex-col overflow-auto rounded-t-[10px] p-4">
 			<input class="my-8 border border-gray-400" placeholder="Input" />
 			<p>
