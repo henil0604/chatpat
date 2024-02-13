@@ -83,9 +83,9 @@
 		<div class="flex items-center gap-1 bg-black px-3 py-3 text-white">
 			<!-- back -->
 			<Button on:click={() => (open = false)} class="h-fit w-fit rounded-full p-2" variant="ghost">
-				<ArrowLeft size={20} />
+				<ArrowLeft size={18} />
 			</Button>
-			<div class="flex-grow text-xl">Find Pats</div>
+			<div class="flex-grow text-lg">Find Pats</div>
 		</div>
 
 		<div class="relative flex px-3 py-3">
