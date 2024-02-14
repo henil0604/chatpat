@@ -7,9 +7,10 @@ import { userFriendRouter } from './user.friend';
 import type { inferRouterOutputs } from '@trpc/server';
 import { sendFriendRequest } from '$lib/server/utils/sendFriendRequest';
 import { acceptFriendRequest } from '$lib/server/utils/acceptFriendRequest';
+import { rejectFriendRequest } from '$lib/server/utils/rejectFriendRequest';
 import { pusher } from '$lib/server/pusher';
 import { createNotification } from '$lib/server/utils/createNotification';
-import { $Enums, NotificationType, UserRole } from '@prisma/client';
+import { $Enums, FriendRequestStatus, NotificationType, UserRole } from '@prisma/client';
 import { isFriendOf } from '$lib/server/utils/isFriendOf';
 import { getPusherChannelName } from '$lib/utils/getPusherChannelName';
 
@@ -308,6 +309,7 @@ export const userRouter = t.router({
                 where: {
                     senderUserId: input.userId,
                     receiverUserId: user.id,
+                    status: FriendRequestStatus.PENDING
                 }
             })
 
@@ -473,6 +475,58 @@ export const userRouter = t.router({
                 }
             }
 
+        }),
+
+    rejectFriendRequest: privateProcedure.
+        input(z.object({
+            userId: z.string()
+        }))
+        .output(DefaultTRPCResponseSchema.extend({
+            data: z.object({
+                id: z.string()
+            }).optional()
+        }))
+        .query(async ({ ctx, input }) => {
+
+            const user = ctx.session.user;
+
+            const request = await ctx.db.friendRequest.findFirst({
+                where: {
+                    senderUserId: input.userId,
+                    receiverUserId: user.id,
+                    status: FriendRequestStatus.PENDING
+                },
+                select: {
+                    id: true
+                }
+            })
+
+            if (!request) {
+                return {
+                    error: false,
+                    code: 'FORBIDDEN',
+                    message: 'Request not found',
+                }
+            }
+
+            await rejectFriendRequest(request.id);
+
+            const notification = await createNotification(input.userId, NotificationType.OUTGOING_FRIEND_REQUEST_REJECTED, {
+                receiverUserId: user.id,
+                friendRequestId: request.id
+            });
+
+            await pusher.trigger(getPusherChannelName('NOTIFICATION', input.userId), 'new', {
+                notificationId: notification.id
+            })
+
+            return {
+                error: false,
+                code: 'DONE',
+                data: {
+                    id: request.id
+                }
+            }
         }),
 
     friend: userFriendRouter,

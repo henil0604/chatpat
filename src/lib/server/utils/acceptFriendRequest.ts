@@ -1,5 +1,5 @@
 import { FriendRequestStatus } from "@prisma/client";
-import { db } from "../db";
+import { db } from "$lib/server/db";
 
 export async function acceptFriendRequest(requestId: string, senderUserId: string, receiverUserId: string) {
     await db.user.update({

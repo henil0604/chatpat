@@ -15,10 +15,19 @@
 	import { toast } from 'svelte-sonner';
 	import IncomingFriendRequestNotificationItem from '$lib/components/IncomingFriendRequest.NotificationItem.svelte';
 	import OutgoingFriendRequestAcceptedNotificationItem from '$lib/components/OutgoingFriendRequestAccepted.NotificationItem.svelte';
+	import OutgoingFriendRequestRejectedNotificationItem from '$lib/components/OutgoingFriendRequestRejected.NotificationItem.svelte';
 	import { getChannel } from '$lib/pusher/channels';
+	import OutgoingFriendRequestAccepted from '$lib/components/OutgoingFriendRequestAccepted.NotificationItem.svelte';
+	import OutgoingFriendRequestRejected from '$lib/components/OutgoingFriendRequestRejected.NotificationItem.svelte';
 
 	export let open: boolean = false;
 	let notifications: MetaNotification[] = [];
+	let notificationComponents: {
+		[key: string]:
+			| IncomingFriendRequestNotificationItem
+			| OutgoingFriendRequestAccepted
+			| OutgoingFriendRequestRejected;
+	} = {};
 	let loading = false;
 	// TODO resolve this
 	let fetchError = false;
@@ -47,13 +56,29 @@
 			id: id
 		});
 
+		console.log('notificationResponse?', notificationResponse);
+
 		if (notificationResponse.code !== 'DONE') {
 			toast.error(notificationResponse.message || 'Something went wrong', {
 				duration: 5000,
 				description: `CODE: ${notificationResponse.code}`
 			});
 		} else {
-			notifications = [notificationResponse.data.notification, ...notifications];
+			// if notification is already there
+			if (notifications.find((e) => e.id === id)) {
+				notifications = notifications.map((notification) => {
+					if (notification.id === id) {
+						// replace old data with new data
+						return {
+							...notificationResponse.data.notification
+						};
+					}
+					return notification;
+				});
+			} else {
+				// its a new notification, push it to the top
+				notifications = [notificationResponse.data.notification, ...notifications];
+			}
 		}
 	}
 
@@ -89,22 +114,40 @@
 				{:else}
 					<div class="flex w-full flex-col">
 						{#each notifications as notification}
-							{#if notification.type === 'INCOMING_FRIEND_REQUEST'}
-								<IncomingFriendRequestNotificationItem
-									on:acceptFriendRequest={() => {
-										fetchLatestNotifications();
-									}}
-									{notification}
-									userId={notification.meta.senderUserId}
-								/>
-							{/if}
+							{#key notification.id}
+								{#if notification.type === 'INCOMING_FRIEND_REQUEST'}
+									<IncomingFriendRequestNotificationItem
+										on:acceptFriendRequest={() => {
+											fetchNotificationById(notification.id);
+											notificationComponents[notification.id].refetch();
+										}}
+										on:rejectFriendRequest={() => {
+											fetchNotificationById(notification.id);
+											notificationComponents[notification.id].refetch();
+										}}
+										bind:this={notificationComponents[notification.id]}
+										{notification}
+										bind:userId={notification.meta.senderUserId}
+										bind:friendRequestId={notification.meta.friendRequestId}
+									/>
+								{/if}
 
-							{#if notification.type === 'OUTGOING_FRIEND_REQUEST_ACCEPTED'}
-								<OutgoingFriendRequestAcceptedNotificationItem
-									{notification}
-									userId={notification.meta.receiverUserId}
-								/>
-							{/if}
+								{#if notification.type === 'OUTGOING_FRIEND_REQUEST_ACCEPTED'}
+									<OutgoingFriendRequestAcceptedNotificationItem
+										bind:this={notificationComponents[notification.id]}
+										{notification}
+										bind:userId={notification.meta.receiverUserId}
+									/>
+								{/if}
+
+								{#if notification.type === 'OUTGOING_FRIEND_REQUEST_REJECTED'}
+									<OutgoingFriendRequestRejectedNotificationItem
+										bind:this={notificationComponents[notification.id]}
+										{notification}
+										bind:userId={notification.meta.receiverUserId}
+									/>
+								{/if}
+							{/key}
 						{/each}
 					</div>
 				{/if}

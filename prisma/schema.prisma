@@ -89,6 +89,7 @@ model Notification {
 enum NotificationType {
   INCOMING_FRIEND_REQUEST
   OUTGOING_FRIEND_REQUEST_ACCEPTED
+  OUTGOING_FRIEND_REQUEST_REJECTED
 }
 
 enum FriendRequestStatus {
