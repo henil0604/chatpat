@@ -15,16 +15,18 @@
 	import { toast } from 'svelte-sonner';
 	import IncomingFriendRequestNotificationItem from '$lib/components/IncomingFriendRequest.NotificationItem.svelte';
 	import OutgoingFriendRequestAcceptedNotificationItem from '$lib/components/OutgoingFriendRequestAccepted.NotificationItem.svelte';
+	import { getChannel } from '$lib/pusher/channels';
 
 	export let open: boolean = false;
 	let notifications: MetaNotification[] = [];
 	let loading = false;
+	// TODO resolve this
 	let fetchError = false;
 
 	async function fetchLatestNotifications() {
 		loading = true;
 
-		const notificationsResponse = await trpc().user.getLatestNotifications.query({});
+		const notificationsResponse = await trpc().user.getLatestNotifications.query();
 
 		if (notificationsResponse.code !== 'DONE') {
 			fetchError = true;
@@ -40,8 +42,29 @@
 		loading = false;
 	}
 
+	async function fetchNotificationById(id: string) {
+		const notificationResponse = await trpc().user.getNotificationById.query({
+			id: id
+		});
+
+		if (notificationResponse.code !== 'DONE') {
+			toast.error(notificationResponse.message || 'Something went wrong', {
+				duration: 5000,
+				description: `CODE: ${notificationResponse.code}`
+			});
+		} else {
+			notifications = [notificationResponse.data.notification, ...notifications];
+		}
+	}
+
 	onMount(() => {
 		fetchLatestNotifications();
+
+		// on new notification
+		getChannel('NOTIFICATION')?.bind('new', (data: any) => {
+			if (!data.notificationId) return;
+			fetchNotificationById(data.notificationId);
+		});
 	});
 </script>
 

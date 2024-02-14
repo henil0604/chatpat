@@ -11,6 +11,7 @@ import { pusher } from '$lib/server/pusher';
 import { createNotification } from '$lib/server/utils/createNotification';
 import { $Enums, NotificationType, UserRole } from '@prisma/client';
 import { isFriendOf } from '$lib/server/utils/isFriendOf';
+import { getPusherChannelName } from '$lib/utils/getPusherChannelName';
 
 const log = logger().prefix("trpc").prefix("router.user");
 
@@ -259,12 +260,14 @@ export const userRouter = t.router({
             try {
                 const requestDoc = await sendFriendRequest(user.id, input.userId);
 
-                await createNotification(input.userId, $Enums.NotificationType.INCOMING_FRIEND_REQUEST, {
+                const notification = await createNotification(input.userId, $Enums.NotificationType.INCOMING_FRIEND_REQUEST, {
                     senderUserId: user.id,
                     friendRequestId: requestDoc.id
                 })
 
-                // TODO generate pusher event
+                await pusher.trigger(getPusherChannelName('NOTIFICATION', input.userId), 'new', {
+                    notificationId: notification.id
+                })
 
                 return {
                     error: false,
@@ -318,12 +321,14 @@ export const userRouter = t.router({
 
             await acceptFriendRequest(request.id, input.userId, user.id);
 
-            await createNotification(input.userId, NotificationType.OUTGOING_FRIEND_REQUEST_ACCEPTED, {
+            const notification = await createNotification(input.userId, NotificationType.OUTGOING_FRIEND_REQUEST_ACCEPTED, {
                 receiverUserId: user.id,
                 friendRequestId: request.id
             });
 
-            // TODO generate pusher event
+            await pusher.trigger(getPusherChannelName('NOTIFICATION', input.userId), 'new', {
+                notificationId: notification.id
+            })
 
             return {
                 error: false,
@@ -337,6 +342,8 @@ export const userRouter = t.router({
     getLatestNotifications: privateProcedure
         .input(z.object({
             limit: z.number().positive().default(20)
+        }).optional().default({
+            limit: 20
         }))
         .output(DefaultTRPCResponseSchema)
         .query(async ({ ctx, input }) => {
@@ -420,6 +427,42 @@ export const userRouter = t.router({
                 logger()
                     .clone()
                     .prefix("getBasicInfo")
+                    .message("failed to query", error)
+                    .commit();
+
+                return {
+                    error: true,
+                    code: 'DATABASE_QUERY_ERROR',
+                    message: 'failed to query'
+                }
+            }
+
+        }),
+
+    getNotificationById: privateProcedure
+        .input(z.object({
+            id: z.string()
+        }))
+        .output(DefaultTRPCResponseSchema)
+        .query(async ({ ctx, input }) => {
+
+            try {
+                const notification = await ctx.db.notification.findFirst({
+                    where: {
+                        id: input.id
+                    },
+                })
+                return {
+                    error: false,
+                    code: 'DONE',
+                    data: {
+                        notification: notification
+                    }
+                }
+            } catch (error) {
+                logger()
+                    .clone()
+                    .prefix("getNotificationById")
                     .message("failed to query", error)
                     .commit();
 

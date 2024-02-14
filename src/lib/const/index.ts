@@ -41,3 +41,5 @@ export const DefaultTRPCResponseSchema = z.object({
 export const Regex = {
 	username: /^[a-zA-Z0-9._]+$/
 }
+
+export const PusherChannelNames = ["NOTIFICATION"] as const;
