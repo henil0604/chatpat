@@ -8,6 +8,9 @@ import type { inferRouterOutputs } from '@trpc/server';
 import { sendFriendRequest } from '$lib/server/utils/sendFriendRequest';
 import { acceptFriendRequest } from '$lib/server/utils/acceptFriendRequest';
 import { pusher } from '$lib/server/pusher';
+import { createNotification } from '$lib/server/utils/createNotification';
+import { $Enums, NotificationType, UserRole } from '@prisma/client';
+import { isFriendOf } from '$lib/server/utils/isFriendOf';
 
 const log = logger().prefix("trpc").prefix("router.user");
 
@@ -256,6 +259,13 @@ export const userRouter = t.router({
             try {
                 const requestDoc = await sendFriendRequest(user.id, input.userId);
 
+                await createNotification(input.userId, $Enums.NotificationType.INCOMING_FRIEND_REQUEST, {
+                    senderUserId: user.id,
+                    friendRequestId: requestDoc.id
+                })
+
+                // TODO generate pusher event
+
                 return {
                     error: false,
                     code: 'DONE',
@@ -263,7 +273,6 @@ export const userRouter = t.router({
                         id: requestDoc.id,
                     }
                 }
-
             } catch (error) {
                 logger()
                     .clone()
@@ -309,6 +318,13 @@ export const userRouter = t.router({
 
             await acceptFriendRequest(request.id, input.userId, user.id);
 
+            await createNotification(input.userId, NotificationType.OUTGOING_FRIEND_REQUEST_ACCEPTED, {
+                receiverUserId: user.id,
+                friendRequestId: request.id
+            });
+
+            // TODO generate pusher event
+
             return {
                 error: false,
                 code: 'DONE',
@@ -316,6 +332,104 @@ export const userRouter = t.router({
                     id: request.id
                 }
             }
+        }),
+
+    getLatestNotifications: privateProcedure
+        .input(z.object({
+            limit: z.number().positive().default(20)
+        }))
+        .output(DefaultTRPCResponseSchema)
+        .query(async ({ ctx, input }) => {
+
+            const user = ctx.session.user;
+
+            try {
+                const notifications = await ctx.db.notification.findMany({
+                    where: {
+                        userId: user.id
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                    take: -input.limit,
+                })
+
+                return {
+                    error: false,
+                    code: 'DONE',
+                    data: {
+                        notifications: notifications
+                    }
+                }
+
+            } catch (error) {
+                logger()
+                    .clone()
+                    .prefix("getLatestNotifications")
+                    .message("failed to query", error)
+                    .commit();
+
+                return {
+                    error: true,
+                    code: 'DATABASE_QUERY_ERROR',
+                    message: 'failed to query',
+                    data: undefined
+                }
+            }
+        }),
+
+    getBasicInfo: privateProcedure
+        .input(z.object({
+            userId: z.string()
+        }))
+        .output(DefaultTRPCResponseSchema.extend({
+            data: z.object({
+                name: z.string().optional().nullable(),
+                username: z.string().optional().nullable(),
+                image: z.string().optional().nullable(),
+                isFriend: z.boolean().default(false)
+            }).optional()
+        }))
+        .query(async ({ ctx, input }) => {
+
+            try {
+                const user = await ctx.db.user.findFirst({
+                    where: {
+                        id: input.userId
+                    },
+                    select: {
+                        name: true,
+                        username: true,
+                        image: true,
+                        role: true,
+                    }
+                })
+
+                const isFriend = await isFriendOf(input.userId, ctx.session.user.id);
+
+                return {
+                    error: false,
+                    code: 'DONE',
+                    data: {
+                        ...user,
+                        isFriend
+                    }
+                }
+
+            } catch (error) {
+                logger()
+                    .clone()
+                    .prefix("getBasicInfo")
+                    .message("failed to query", error)
+                    .commit();
+
+                return {
+                    error: true,
+                    code: 'DATABASE_QUERY_ERROR',
+                    message: 'failed to query'
+                }
+            }
+
         }),
 
     friend: userFriendRouter,
