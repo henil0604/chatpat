@@ -27,10 +27,6 @@
 				<Skeleton class="h-[14px] w-[30%] bg-gray-300" />
 			</div>
 		</div>
-		<div class="flex gap-1">
-			<Skeleton class="h-8 w-14 bg-gray-600" />
-			<Skeleton class="h-8 w-14 bg-gray-600" />
-		</div>
 	</div>
 {:then user}
 	<div use:loadingAction={loading} class="flex flex-row gap-3 px-5 py-2">
