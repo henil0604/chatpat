@@ -53,6 +53,7 @@ model User {
 
   sentFriendRequests     FriendRequest[] @relation(name: "senderUser")
   receivedFriendRequests FriendRequest[] @relation(name: "receiverUser")
+  Notification           Notification[]
 }
 
 model FriendRequest {
@@ -68,6 +69,26 @@ model FriendRequest {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  type NotificationType
+  meta Json
+
+  read Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum NotificationType {
+  INCOMING_FRIEND_REQUEST
+  OUTGOING_FRIEND_REQUEST_ACCEPTED
 }
 
 enum FriendRequestStatus {
