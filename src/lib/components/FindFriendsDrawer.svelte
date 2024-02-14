@@ -31,8 +31,6 @@
 			}
 		});
 
-		console.log('searchResponse?', searchResponse);
-
 		if (searchResponse.error === true) {
 			toast.error(searchResponse.message || 'Something went wrong', {
 				duration: 5000,
@@ -71,8 +69,6 @@
 			userId
 		});
 
-		console.log('sendFriendRequestResponse?', sendFriendRequestResponse);
-
 		if (sendFriendRequestResponse.error === true) {
 			toast.error(sendFriendRequestResponse.message || 'Something went wrong', {
 				duration: 5000,
@@ -97,8 +93,6 @@
 		const acceptFriendRequestResponse = await trpc().user.acceptFriendRequest.query({
 			userId
 		});
-
-		console.log('acceptFriendRequestResponse?', acceptFriendRequestResponse);
 
 		if (acceptFriendRequestResponse.code !== 'DONE') {
 			toast.error(acceptFriendRequestResponse.message || 'Something went wrong', {
