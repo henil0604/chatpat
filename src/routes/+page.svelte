@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import AnimatedChatpatTitle from '$lib/components/AnimatedChatpatTitle.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import mediaQueryObserver from '$lib/utils/mediaQuery';
 	import { tippy } from 'svelte-tippy';
 	import { Mail, Twitter } from 'lucide-svelte';
 	import colors from 'tailwindcss/colors';
@@ -11,10 +10,6 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 	import DesktopOnly from '$lib/components/DesktopOnly.svelte';
 	import MobileOnly from '$lib/components/MobileOnly.svelte';
-
-	let isMobile = mediaQueryObserver(1000);
-
-	$: console.log($page.data);
 </script>
 
 <svelte:head>
