@@ -14,6 +14,7 @@
 	export let userId: string;
 	export let friendRequestId: string;
 	export let notification: MetaNotification;
+	export let wrapperElement: HTMLDivElement | void;
 
 	$: userPromise = getBasicUserInfoById(userId);
 	$: friendRequestPromise = getFriendRequestInfoById(friendRequestId);
@@ -89,7 +90,12 @@
 		</div>
 	</div>
 {:then [user, friendRequest]}
-	<div use:loadingAction={loading} class="flex flex-row gap-3 px-5 py-2">
+	<div
+		bind:this={wrapperElement}
+		use:loadingAction={loading}
+		class="flex flex-row gap-3 px-5 py-2"
+		class:bg-blue-100={!notification.read}
+	>
 		<div>
 			<Avatar class="min-w-10 rounded-full border border-gray-400" src={user?.image} alt="" />
 		</div>

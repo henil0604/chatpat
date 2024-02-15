@@ -1,6 +1,7 @@
 <script>
+	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
-	import { isNotificationsDrawerOpen } from '$lib/store/app';
+	import { isNotificationsDrawerOpen, numberOfUnreadNotifications } from '$lib/store/app';
 	import { Bell } from 'lucide-svelte';
 </script>
 
@@ -13,8 +14,11 @@
 			variant="ghost"
 			size="sm"
 			on:click={() => ($isNotificationsDrawerOpen = true)}
-			class="h-fit w-fit rounded-full p-1"
+			class="relative h-fit w-fit rounded-full p-1"
 		>
+			{#if $numberOfUnreadNotifications > 0}
+				<div class="absolute right-0 top-0 h-2 w-2 rounded-full bg-blue-600"></div>
+			{/if}
 			<Bell size={20} />
 		</Button>
 	</div>

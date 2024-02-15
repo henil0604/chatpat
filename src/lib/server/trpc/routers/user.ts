@@ -529,6 +529,52 @@ export const userRouter = t.router({
             }
         }),
 
+    markNotificationAsRead: privateProcedure
+        .input(z.object({
+            notificationId: z.string()
+        }))
+        .output(DefaultTRPCResponseSchema.extend({
+
+        }))
+        .mutation(async ({ ctx, input }) => {
+
+            try {
+                const notification = await ctx.db.notification.update({
+                    where: {
+                        id: input.notificationId,
+                    },
+                    data: {
+                        read: true
+                    },
+                    select: {
+                        id: true,
+                        read: true
+                    }
+                });
+
+                return {
+                    error: false,
+                    code: 'DONE',
+                    data: {
+                        notification
+                    }
+                }
+
+            } catch (error) {
+                logger()
+                    .clone()
+                    .prefix("markNotificationAsRead")
+                    .message("failed to query", error)
+                    .commit();
+
+                return {
+                    error: true,
+                    code: 'DATABASE_QUERY_ERROR',
+                    message: 'failed to query'
+                }
+            }
+        }),
+
     friend: userFriendRouter,
 });
 

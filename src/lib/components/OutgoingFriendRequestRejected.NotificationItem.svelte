@@ -28,7 +28,11 @@
 		</div>
 	</div>
 {:then user}
-	<div use:loadingAction={loading} class="flex flex-row gap-3 px-5 py-2">
+	<div
+		use:loadingAction={loading}
+		class="flex flex-row gap-3 px-5 py-2"
+		class:bg-blue-100={!notification.read}
+	>
 		<div>
 			<Avatar class="min-w-10 rounded-full border border-gray-400" src={user?.image} alt="" />
 		</div>

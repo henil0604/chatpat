@@ -6,15 +6,24 @@
 	import { Plus } from 'lucide-svelte';
 	import Header from './Header.svelte';
 	import FindFriendsDrawer from '$lib/components/FindFriendsDrawer.svelte';
-	import { isFindFriendsDrawerOpen, isNotificationsDrawerOpen } from '$lib/store/app';
+	import {
+		isFindFriendsDrawerOpen,
+		isNotificationsDrawerOpen,
+		numberOfUnreadNotifications
+	} from '$lib/store/app';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import NotificationDrawer from '$lib/components/NotificationDrawer.svelte';
 
 	export let data: PageData;
+
+	$: console.log($numberOfUnreadNotifications);
 </script>
 
 <FindFriendsDrawer bind:open={$isFindFriendsDrawerOpen} />
-<NotificationDrawer bind:open={$isNotificationsDrawerOpen} />
+<NotificationDrawer
+	bind:numberOfUnreadNotifications={$numberOfUnreadNotifications}
+	bind:open={$isNotificationsDrawerOpen}
+/>
 
 <div class="relative flex h-full min-w-full flex-col">
 	<!-- top bar -->

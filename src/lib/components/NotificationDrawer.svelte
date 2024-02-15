@@ -26,11 +26,20 @@
 		[key: string]:
 			| IncomingFriendRequestNotificationItem
 			| OutgoingFriendRequestAccepted
-			| OutgoingFriendRequestRejected;
+			| OutgoingFriendRequestRejected
+			| undefined;
+	} = {};
+	let wrapperElementRefs: {
+		[key: string]: HTMLDivElement;
 	} = {};
 	let loading = false;
 	// TODO resolve this
 	let fetchError = false;
+	export let numberOfUnreadNotifications: number;
+
+	$: numberOfUnreadNotifications = notifications.filter(
+		(notification) => notification.read === false
+	).length;
 
 	async function fetchLatestNotifications() {
 		loading = true;
@@ -56,8 +65,6 @@
 			id: id
 		});
 
-		console.log('notificationResponse?', notificationResponse);
-
 		if (notificationResponse.code !== 'DONE') {
 			toast.error(notificationResponse.message || 'Something went wrong', {
 				duration: 5000,
@@ -79,6 +86,65 @@
 				// its a new notification, push it to the top
 				notifications = [notificationResponse.data.notification, ...notifications];
 			}
+		}
+	}
+
+	async function markNotificationAsRead(notificationId: string) {
+		const markNotificationAsReadResponse = await trpc().user.markNotificationAsRead.mutate({
+			notificationId
+		});
+
+		if (markNotificationAsReadResponse.error) {
+			toast.error(markNotificationAsReadResponse.message || 'Something went wrong', {
+				duration: 5000,
+				description: `CODE: ${markNotificationAsReadResponse.code}`
+			});
+			return;
+		}
+
+		notifications = notifications.map((notification) => {
+			if (notification.id === notificationId) {
+				notification.read = true;
+			}
+			return notification;
+		});
+	}
+
+	async function observeNotificationWrapperElementVisibility(
+		element: HTMLElement,
+		durationInSeconds: number = 2
+	) {
+		let isVisibleForDuration = false;
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					// Element is currently on the screen
+					setTimeout(() => {
+						const notificationId = element.dataset?.notificationId;
+						// Check if the element is still on the screen after the timeout
+						if (isVisibleForDuration && notificationId) {
+							// mark the notification read
+							markNotificationAsRead(notificationId);
+						}
+					}, durationInSeconds * 1000); // Convert seconds to milliseconds for setTimeout
+
+					isVisibleForDuration = true;
+				} else {
+					// Element is not on the screen
+					isVisibleForDuration = false;
+				}
+			});
+		});
+
+		observer.observe(element);
+	}
+
+	$: if (wrapperElementRefs) {
+		for (const notificationId in wrapperElementRefs) {
+			const ref = wrapperElementRefs[notificationId];
+			if (!ref) continue;
+
+			observeNotificationWrapperElementVisibility(ref);
 		}
 	}
 
@@ -113,40 +179,46 @@
 					<div class="py-2 text-center text-muted-foreground">Nothing to see</div>
 				{:else}
 					<div class="flex w-full flex-col">
-						{#each notifications as notification}
+						{#each notifications as notification, index}
 							{#key notification.id}
-								{#if notification.type === 'INCOMING_FRIEND_REQUEST'}
-									<IncomingFriendRequestNotificationItem
-										on:acceptFriendRequest={() => {
-											fetchNotificationById(notification.id);
-											notificationComponents[notification.id].refetch();
-										}}
-										on:rejectFriendRequest={() => {
-											fetchNotificationById(notification.id);
-											notificationComponents[notification.id].refetch();
-										}}
-										bind:this={notificationComponents[notification.id]}
-										{notification}
-										bind:userId={notification.meta.senderUserId}
-										bind:friendRequestId={notification.meta.friendRequestId}
-									/>
-								{/if}
+								<div
+									bind:this={wrapperElementRefs[notification.id]}
+									data-notification-id={notification.id}
+								>
+									{#if notification.type === 'INCOMING_FRIEND_REQUEST'}
+										<IncomingFriendRequestNotificationItem
+											on:acceptFriendRequest={() => {
+												fetchNotificationById(notification.id);
+												notificationComponents[notification.id]?.refetch();
+											}}
+											on:rejectFriendRequest={() => {
+												fetchNotificationById(notification.id);
+												notificationComponents[notification.id]?.refetch();
+											}}
+											bind:this={notificationComponents[notification.id]}
+											{notification}
+											bind:userId={notification.meta.senderUserId}
+											wrapperElement={void 0}
+											bind:friendRequestId={notification.meta.friendRequestId}
+										/>
+									{/if}
 
-								{#if notification.type === 'OUTGOING_FRIEND_REQUEST_ACCEPTED'}
-									<OutgoingFriendRequestAcceptedNotificationItem
-										bind:this={notificationComponents[notification.id]}
-										{notification}
-										bind:userId={notification.meta.receiverUserId}
-									/>
-								{/if}
+									{#if notification.type === 'OUTGOING_FRIEND_REQUEST_ACCEPTED'}
+										<OutgoingFriendRequestAcceptedNotificationItem
+											bind:this={notificationComponents[notification.id]}
+											{notification}
+											bind:userId={notification.meta.receiverUserId}
+										/>
+									{/if}
 
-								{#if notification.type === 'OUTGOING_FRIEND_REQUEST_REJECTED'}
-									<OutgoingFriendRequestRejectedNotificationItem
-										bind:this={notificationComponents[notification.id]}
-										{notification}
-										bind:userId={notification.meta.receiverUserId}
-									/>
-								{/if}
+									{#if notification.type === 'OUTGOING_FRIEND_REQUEST_REJECTED'}
+										<OutgoingFriendRequestRejectedNotificationItem
+											bind:this={notificationComponents[notification.id]}
+											{notification}
+											bind:userId={notification.meta.receiverUserId}
+										/>
+									{/if}
+								</div>
 							{/key}
 						{/each}
 					</div>
