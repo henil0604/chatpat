@@ -1,5 +1,4 @@
 <script>
-	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
 	import { isNotificationsDrawerOpen, numberOfUnreadNotifications } from '$lib/store/app';
 	import { Bell } from 'lucide-svelte';
