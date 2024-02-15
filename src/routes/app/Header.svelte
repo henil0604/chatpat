@@ -1,10 +1,14 @@
 <script>
 	import { Button } from '$lib/components/ui/button';
-	import { isNotificationsDrawerOpen, numberOfUnreadNotifications } from '$lib/store/app';
-	import { Bell } from 'lucide-svelte';
+	import {
+		isFindFriendsDrawerOpen,
+		isNotificationsDrawerOpen,
+		numberOfUnreadNotifications
+	} from '$lib/store/app';
+	import { Bell, UserSearch } from 'lucide-svelte';
 </script>
 
-<div class="flex h-fit w-full justify-between bg-black px-5 py-4 text-white">
+<div class="flex h-fit w-full justify-between bg-black px-4 py-4 text-white">
 	<!-- head -->
 	<div class="text-xl">ChatPat</div>
 	<!-- tail -->
@@ -19,6 +23,14 @@
 				<div class="absolute right-0 top-0 h-2 w-2 rounded-full bg-blue-600"></div>
 			{/if}
 			<Bell size={20} />
+		</Button>
+		<Button
+			on:click={() => ($isFindFriendsDrawerOpen = true)}
+			variant="ghost"
+			size="sm"
+			class="h-fit w-fit rounded-full p-1"
+		>
+			<UserSearch size={20} />
 		</Button>
 	</div>
 </div>

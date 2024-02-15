@@ -15,8 +15,6 @@
 	import NotificationDrawer from '$lib/components/NotificationDrawer.svelte';
 
 	export let data: PageData;
-
-	$: console.log($numberOfUnreadNotifications);
 </script>
 
 <FindFriendsDrawer bind:open={$isFindFriendsDrawerOpen} />
