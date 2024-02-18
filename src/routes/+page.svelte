@@ -3,9 +3,9 @@
 	import AnimatedChatpatTitle from '$lib/components/AnimatedChatpatTitle.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { tippy } from 'svelte-tippy';
-	import { Mail, Twitter } from 'lucide-svelte';
 	import colors from 'tailwindcss/colors';
-	import { Pages, SOCIAL_EMAIL, SOCIAL_TWITTER_LINK } from '$lib/const';
+	import Icon from '@iconify/svelte';
+	import { Icons, Pages, SOCIAL_EMAIL, SOCIAL_TWITTER_LINK } from '$lib/const';
 	import { goto } from '$app/navigation';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import DesktopOnly from '$lib/components/DesktopOnly.svelte';
@@ -72,10 +72,10 @@
 				size="sm"
 				variant="outline"
 				href={SOCIAL_TWITTER_LINK}
-				class="bg-white p-3 shadow [&>svg]:stroke-sky-600"
+				class="bg-white p-3 shadow"
 				target="_blank"
 			>
-				<Twitter />
+				<Icon width={22} icon={Icons.Twitter} />
 			</Button>
 		</div>
 		<div
@@ -90,7 +90,7 @@
 			}}
 		>
 			<Button size="sm" href="mailto:{SOCIAL_EMAIL}" variant="outline" class="bg-white p-3 shadow">
-				<Mail color={colors.red[500]} />
+				<Icon width={22} icon={Icons.Mail} color={colors.red[500]} />
 			</Button>
 		</div>
 	</div>

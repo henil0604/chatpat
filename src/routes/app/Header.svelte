@@ -5,7 +5,8 @@
 		isNotificationsDrawerOpen,
 		numberOfUnreadNotifications
 	} from '$lib/store/app';
-	import { Bell, UserSearch } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
+	import { Icons } from '$lib/const';
 </script>
 
 <div class="flex h-fit w-full justify-between bg-black px-4 py-4 text-white">
@@ -22,7 +23,7 @@
 			{#if $numberOfUnreadNotifications > 0}
 				<div class="absolute right-0 top-0 h-2 w-2 rounded-full bg-blue-600"></div>
 			{/if}
-			<Bell size={20} />
+			<Icon width={20} icon={Icons.Bell} />
 		</Button>
 		<Button
 			on:click={() => ($isFindFriendsDrawerOpen = true)}
@@ -30,7 +31,7 @@
 			size="sm"
 			class="h-fit w-fit rounded-full p-1"
 		>
-			<UserSearch size={20} />
+			<Icon width={20} icon={Icons.UserSearch} />
 		</Button>
 	</div>
 </div>

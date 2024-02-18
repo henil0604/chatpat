@@ -1,17 +1,18 @@
 <script>
 	import { page } from '$app/stores';
-	import { MessageCircle, Users } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
+	import { Icons } from '$lib/const';
 
 	const paths = [
 		{
 			href: '/app',
 			name: 'Chats',
-			icon: MessageCircle
+			icon: Icons.MessageCircle
 		},
 		{
 			href: '/app/friends',
 			name: 'Friends',
-			icon: Users
+			icon: Icons.Friends
 		}
 	];
 </script>
@@ -26,7 +27,7 @@
 					class:hidden={!isActive}
 				></div>
 
-				<svelte:component this={path.icon} />
+				<Icon icon={path.icon} />
 			</a>
 		{/each}
 	</div>

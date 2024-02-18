@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { ArrowLeft, AtSign, Check, HeartHandshake, Plus } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
 	import colors from 'tailwindcss/colors';
 	import { trpc } from '$lib/trpc/client';
 	import { debounce } from 'lodash-es';
@@ -11,6 +11,7 @@
 	import { fly } from 'svelte/transition';
 	import type { UserRouterOutput } from '$lib/server/trpc/routers/user';
 	import { loadingAction } from 'svelte-legos';
+	import { Icons } from '$lib/const';
 
 	export let open = true;
 
@@ -132,7 +133,7 @@
 		<div class="flex items-center gap-1 bg-black px-3 py-3 text-white">
 			<!-- back -->
 			<Button on:click={() => (open = false)} class="h-fit w-fit rounded-full p-2" variant="ghost">
-				<ArrowLeft size={18} />
+				<Icon width={20} icon={Icons.ArrowLeft} />
 			</Button>
 			<div class="flex-grow text-lg">Find Pats</div>
 		</div>
@@ -141,7 +142,7 @@
 			<div class="grid w-full items-center gap-1">
 				<div class="flex rounded border px-3">
 					<div class="flex-center">
-						<AtSign class="text-muted-foreground" size={17} />
+						<Icon width={17} class="text-muted-foreground" icon={Icons.AtSign} />
 					</div>
 					<input
 						bind:value={inputUsername}
@@ -189,7 +190,7 @@
 									size="sm"
 									class="gap-1"
 								>
-									<Plus /> Add
+									<Icon width={18} icon={Icons.Plus} /> Add
 								</Button>
 							{/if}
 
@@ -211,7 +212,7 @@
 
 							{#if user.friendStatus === 'FRIEND'}
 								<Button size="sm" disabled class="gap-1">
-									<HeartHandshake size={18} />
+									<Icon width={18} icon={Icons.HeartHandshake} />
 									Friends
 								</Button>
 							{/if}
