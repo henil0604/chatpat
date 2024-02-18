@@ -205,13 +205,9 @@ export const userRouter = t.router({
 
                     if (user.friends.find(u => u.id === ctx.session.user.id)) {
                         friendStatus = 'FRIEND'
-                    }
-
-                    if (user.sentFriendRequests.find(u => u.receiverUserId === ctx.session.user.id)) {
+                    } else if (user.sentFriendRequests.find(u => u.receiverUserId === ctx.session.user.id)) {
                         friendStatus = 'REQUEST_RECEIVED';
-                    }
-
-                    if (user.receivedFriendRequests.find(u => u.senderUserId === ctx.session.user.id)) {
+                    } else if (user.receivedFriendRequests.find(u => u.senderUserId === ctx.session.user.id)) {
                         friendStatus = 'REQUEST_SENT';
                     }
 
