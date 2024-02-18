@@ -21,6 +21,7 @@
 	"devDependencies": {
 		"@dicebear/collection": "^7.0.4",
 		"@dicebear/core": "^7.0.4",
+		"@iconify/svelte": "^3.1.6",
 		"@sveltejs/adapter-auto": "^3.1.1",
 		"@sveltejs/kit": "^2.4.1",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
@@ -66,7 +67,6 @@
 		"chalk": "^5.3.0",
 		"clsx": "^2.0.0",
 		"lodash-es": "^4.17.21",
-		"lucide-svelte": "^0.302.0",
 		"moment": "^2.29.4",
 		"pusher": "^5.2.0",
 		"simplex-noise": "2.4.0",

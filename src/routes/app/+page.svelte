@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Skeleton } from '$lib/components/ui/skeleton';
 	import type { PageData } from './$types';
-	import { Plus } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
 	import Header from './Header.svelte';
 	import FindFriendsDrawer from '$lib/components/FindFriendsDrawer.svelte';
 	import {
@@ -13,6 +13,7 @@
 	} from '$lib/store/app';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import NotificationDrawer from '$lib/components/NotificationDrawer.svelte';
+	import { Icons } from '$lib/const';
 
 	export let data: PageData;
 </script>
@@ -32,7 +33,7 @@
 				<div class="text-muted-foreground">You have no Pats</div>
 				<div>
 					<Button size="sm" class="gap-1" on:click={() => ($isFindFriendsDrawerOpen = true)}
-						><Plus /> Add</Button
+						><Icon width={17} icon={Icons.Plus} /> Add</Button
 					>
 				</div>
 			</div>

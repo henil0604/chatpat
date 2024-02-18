@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Dices, Info, Triangle, AlertTriangle, AtSign, BadgeCheck } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import { debounce } from 'lodash-es';
@@ -9,7 +9,7 @@
 	import AnimatedFloatingBlob from '$lib/components/AnimatedFloatingBlob.svelte';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
-	import { Pages } from '$lib/const';
+	import { Icons, Pages } from '$lib/const';
 	import { fade } from 'svelte/transition';
 	import { generateAvatar } from '$lib/utils/avatar';
 	import Avatar from '$lib/components/Avatar.svelte';
@@ -160,8 +160,8 @@
 		</DesktopOnly>
 
 		<!-- header -->
-		<h1 class="flex gap-2 text-lg font-bold">
-			<Info />
+		<h1 class="flex items-center gap-2 text-lg font-bold">
+			<Icon width={22} icon={Icons.Info} />
 			Complete your profile
 		</h1>
 
@@ -188,7 +188,7 @@
 						variant="outline"
 						class="h-fit w-fit p-1"
 					>
-						<Dices size={20} />
+						<Icon width={20} icon={Icons.Dices} />
 					</Button>
 				</div>
 			</div>
@@ -206,7 +206,7 @@
 					class:border-green-600={usernameStatus.available === true && !usernameStatus.checking}
 				>
 					<div class="flex-center">
-						<AtSign class="text-muted-foreground" size={17} />
+						<Icon width={17} class="text-muted-foreground" icon={Icons.AtSign} />
 					</div>
 					<input
 						type="text"
@@ -223,12 +223,12 @@
 				</div>
 				{#if usernameStatus.checking}
 					<div class="flex items-center gap-2 text-sm text-muted-foreground">
-						<Triangle class="animate-spin" size={15} />
+						<Icon class="animate-spin" width={16} icon={Icons.Triangle} />
 						<p>Checking availability</p>
 					</div>
 				{:else if usernameStatus.available === false}
 					<div class="flex items-center gap-2 text-sm text-red-700">
-						<AlertTriangle size={15} />
+						<Icon width={17} icon={Icons.TriangleError} />
 						{#if usernameStatus.error !== null}
 							<p>{usernameStatus.error}</p>
 						{:else}
@@ -237,7 +237,7 @@
 					</div>
 				{:else if usernameStatus.available === true}
 					<div class="flex items-center gap-2 text-sm text-green-700">
-						<BadgeCheck size={15} />
+						<Icon width={17} icon={Icons.BadgeCheck} />
 						<p>Username is available</p>
 					</div>
 				{/if}

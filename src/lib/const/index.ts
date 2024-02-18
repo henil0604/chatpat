@@ -43,3 +43,21 @@ export const Regex = {
 }
 
 export const PusherChannelNames = ["NOTIFICATION"] as const;
+
+export const Icons = {
+	Plus: 'tabler:plus',
+	Mail: 'tabler:mail',
+	Twitter: 'ri:twitter-x-fill',
+	Info: 'ph:info',
+	Dices: 'lucide:dices',
+	Triangle: 'tabler:triangle',
+	TriangleError: 'bx:error',
+	AtSign: 'carbon:at',
+	BadgeCheck: 'iconoir:badge-check',
+	Bell: 'ph:bell',
+	UserSearch: 'lucide:user-round-search',
+	MessageCircle: 'lucide:message-circle',
+	Friends: 'ic:outline-people',
+	ArrowLeft: 'ph:arrow-left',
+	HeartHandshake: 'lucide:heart-handshake'
+}
