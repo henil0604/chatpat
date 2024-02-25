@@ -5,7 +5,6 @@
 	import moment from 'moment';
 	import type {
 		ContextType as NotificationDrawerContextType,
-		MetaNotification
 	} from '$lib/components/NotificationDrawer.svelte';
 	import { loadingAction } from 'svelte-legos';
 	import { getContext } from 'svelte';
