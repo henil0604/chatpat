@@ -1,4 +1,4 @@
-import { DefaultTRPCResponseSchema, Regex } from '$lib/const';
+import { DefaultTRPCResponseSchema, FriendRequestRejectedRequestsCountThreshold, FriendRequestRejectedRequestsTimePeriodInMinutesThreshold, Regex } from '$lib/const';
 import { privateProcedure, t } from '$lib/server/trpc';
 import { z } from 'zod';
 import { LogType, logger } from '$lib/server/modules/log';
@@ -13,6 +13,7 @@ import { createNotification } from '$lib/server/utils/createNotification';
 import { $Enums, FriendRequestStatus, NotificationType, UserRole } from '@prisma/client';
 import { isFriendOf } from '$lib/server/utils/isFriendOf';
 import { getPusherChannelName } from '$lib/utils/getPusherChannelName';
+import moment from 'moment';
 
 const log = logger().prefix("trpc").prefix("router.user");
 
@@ -205,9 +206,9 @@ export const userRouter = t.router({
 
                     if (user.friends.find(u => u.id === ctx.session.user.id)) {
                         friendStatus = 'FRIEND'
-                    } else if (user.sentFriendRequests.find(u => u.receiverUserId === ctx.session.user.id)) {
+                    } else if (user.sentFriendRequests.find(u => u.receiverUserId === ctx.session.user.id && u.status === FriendRequestStatus.PENDING)) {
                         friendStatus = 'REQUEST_RECEIVED';
-                    } else if (user.receivedFriendRequests.find(u => u.senderUserId === ctx.session.user.id)) {
+                    } else if (user.receivedFriendRequests.find(u => u.senderUserId === ctx.session.user.id && u.status === FriendRequestStatus.PENDING)) {
                         friendStatus = 'REQUEST_SENT';
                     }
 
@@ -253,6 +254,44 @@ export const userRouter = t.router({
         .query(async ({ ctx, input }) => {
 
             const user = ctx.session.user;
+
+            try {
+                // if user's friend request has been rejected "n" times in last "m" minutes, don't send another friend request.
+                const lastRejectedRequests = await ctx.db.friendRequest.findMany({
+                    where: {
+                        receiverUserId: input.userId,
+                        status: FriendRequestStatus.REJECTED,
+                        senderUserId: user.id,
+                        updatedAt: {
+                            gte: moment().subtract({
+                                minutes: FriendRequestRejectedRequestsTimePeriodInMinutesThreshold
+                            }).toDate()
+                        }
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                    take: -FriendRequestRejectedRequestsCountThreshold,
+                })
+
+                if (lastRejectedRequests.length >= FriendRequestRejectedRequestsCountThreshold) {
+                    return {
+                        code: 'FORBIDDEN',
+                        error: true,
+                        message: 'Too many rejected requests, Try again later.',
+                    }
+                }
+
+            } catch (error) {
+                logger()
+                    .clone()
+                    .prefix("sendFriendRequest")
+                    .prefix("guard")
+                    .message("failed to query", error)
+                    .commit();
+
+                // TODO: decide if we should continue sending friend request or send response immediately, for now we are continuing
+            }
 
             try {
                 const requestDoc = await sendFriendRequest(user.id, input.userId);

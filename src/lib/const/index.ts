@@ -61,3 +61,8 @@ export const Icons = {
 	ArrowLeft: 'ph:arrow-left',
 	HeartHandshake: 'lucide:heart-handshake'
 }
+
+// how many rejected friend requests there should be before not allowing user to send another friend request
+export const FriendRequestRejectedRequestsCountThreshold = 2;
+// how much time should have been passed before sending another friend request, this only applies if there are "FriendRequestRejectedRequestsCountThreshold" number of rejected friend requests.
+export const FriendRequestRejectedRequestsTimePeriodInMinutesThreshold = 60 * 24 // 1 Day;

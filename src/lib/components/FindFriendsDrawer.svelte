@@ -75,6 +75,7 @@
 				duration: 5000,
 				description: `CODE: ${sendFriendRequestResponse.code}`
 			});
+			loadingUserId = null;
 			return false;
 		}
 
@@ -100,6 +101,7 @@
 				duration: 5000,
 				description: `CODE: ${acceptFriendRequestResponse.code}`
 			});
+			loadingUserId = null;
 			return false;
 		}
 
