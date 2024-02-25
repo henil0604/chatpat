@@ -2,15 +2,23 @@
 	import { getBasicUserInfoById } from '$lib/utils/getBasicUserInfoById';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton';
-	import { Button } from '$lib/components/ui/button';
 	import moment from 'moment';
-	import type { MetaNotification } from '$lib/components/NotificationDrawer.svelte';
+	import type {
+		ContextType as NotificationDrawerContextType,
+		MetaNotification
+	} from '$lib/components/NotificationDrawer.svelte';
 	import { loadingAction } from 'svelte-legos';
+	import { getContext } from 'svelte';
 
 	export let userId: string;
-	export let notification: MetaNotification;
+	export let notificationId: string;
 	let userPromise = getBasicUserInfoById(userId);
 	let loading = false;
+
+	$: notification =
+		getContext<NotificationDrawerContextType['notifications.getById']>('notifications.getById')(
+			notificationId
+		)!;
 </script>
 
 {#await userPromise}

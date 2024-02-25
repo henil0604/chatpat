@@ -4,6 +4,10 @@
 			[key: string]: any;
 		};
 	};
+	export type ContextType = {
+		notifications: Writable<MetaNotification[]>;
+		'notifications.getById': (id: string) => MetaNotification | undefined;
+	};
 </script>
 
 <script lang="ts">
@@ -11,7 +15,7 @@
 	import type { Notification } from '@prisma/client';
 	import { trpc } from '$lib/trpc/client';
 	import colors from 'tailwindcss/colors';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
 	import IncomingFriendRequestNotificationItem from '$lib/components/IncomingFriendRequest.NotificationItem.svelte';
 	import OutgoingFriendRequestAcceptedNotificationItem from '$lib/components/OutgoingFriendRequestAccepted.NotificationItem.svelte';
@@ -19,9 +23,10 @@
 	import { getChannel } from '$lib/pusher/channels';
 	import OutgoingFriendRequestAccepted from '$lib/components/OutgoingFriendRequestAccepted.NotificationItem.svelte';
 	import OutgoingFriendRequestRejected from '$lib/components/OutgoingFriendRequestRejected.NotificationItem.svelte';
+	import { writable, type Writable } from 'svelte/store';
 
 	export let open: boolean = false;
-	let notifications: MetaNotification[] = [];
+	let notifications = writable<MetaNotification[]>([]);
 	let notificationComponents: {
 		[key: string]:
 			| IncomingFriendRequestNotificationItem
@@ -37,9 +42,20 @@
 	let fetchError = false;
 	export let numberOfUnreadNotifications: number;
 
-	$: numberOfUnreadNotifications = notifications.filter(
+	$: numberOfUnreadNotifications = $notifications.filter(
 		(notification) => notification.read === false
 	).length;
+
+	function getLocalNotificationById(id: string) {
+		return $notifications.find((e) => e.id === id);
+	}
+
+	// set the local notification to context
+	setContext<ContextType['notifications']>('notifications', notifications);
+	setContext<ContextType['notifications.getById']>(
+		'notifications.getById',
+		getLocalNotificationById
+	);
 
 	async function fetchLatestNotifications() {
 		loading = true;
@@ -54,7 +70,7 @@
 			});
 		} else {
 			fetchError = false;
-			notifications = notificationsResponse.data.notifications;
+			$notifications = notificationsResponse.data.notifications;
 		}
 
 		loading = false;
@@ -72,8 +88,8 @@
 			});
 		} else {
 			// if notification is already there
-			if (notifications.find((e) => e.id === id)) {
-				notifications = notifications.map((notification) => {
+			if (getLocalNotificationById(id)) {
+				$notifications = $notifications.map((notification) => {
 					if (notification.id === id) {
 						// replace old data with new data
 						return {
@@ -84,7 +100,7 @@
 				});
 			} else {
 				// its a new notification, push it to the top
-				notifications = [notificationResponse.data.notification, ...notifications];
+				$notifications = [notificationResponse.data.notification, ...$notifications];
 			}
 		}
 	}
@@ -102,7 +118,7 @@
 			return;
 		}
 
-		notifications = notifications.map((notification) => {
+		$notifications = $notifications.map((notification) => {
 			if (notification.id === notificationId) {
 				notification.read = true;
 			}
@@ -175,11 +191,11 @@
 							></l-ring>
 						</div>
 					</div>
-				{:else if notifications.length === 0}
+				{:else if $notifications.length === 0}
 					<div class="py-2 text-center text-muted-foreground">Nothing to see</div>
 				{:else}
 					<div class="flex w-full flex-col">
-						{#each notifications as notification, index}
+						{#each $notifications as notification, index}
 							{#key notification.id}
 								<div
 									bind:this={wrapperElementRefs[notification.id]}
@@ -196,7 +212,7 @@
 												notificationComponents[notification.id]?.refetch();
 											}}
 											bind:this={notificationComponents[notification.id]}
-											{notification}
+											bind:notificationId={notification.id}
 											bind:userId={notification.meta.senderUserId}
 											wrapperElement={void 0}
 											bind:friendRequestId={notification.meta.friendRequestId}
@@ -206,7 +222,7 @@
 									{#if notification.type === 'OUTGOING_FRIEND_REQUEST_ACCEPTED'}
 										<OutgoingFriendRequestAcceptedNotificationItem
 											bind:this={notificationComponents[notification.id]}
-											{notification}
+											bind:notificationId={notification.id}
 											bind:userId={notification.meta.receiverUserId}
 										/>
 									{/if}
@@ -214,7 +230,7 @@
 									{#if notification.type === 'OUTGOING_FRIEND_REQUEST_REJECTED'}
 										<OutgoingFriendRequestRejectedNotificationItem
 											bind:this={notificationComponents[notification.id]}
-											{notification}
+											bind:notificationId={notification.id}
 											bind:userId={notification.meta.receiverUserId}
 										/>
 									{/if}
