@@ -356,6 +356,16 @@ export const userRouter = t.router({
                     orderBy: {
                         createdAt: 'desc',
                     },
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                username: true,
+                                image: true,
+                                name: true,
+                            }
+                        }
+                    },
                     take: -input.limit,
                 })
 
